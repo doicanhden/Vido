@@ -4,7 +4,7 @@
   using System.Windows.Forms;
   using Vido.Capture.Events;
   using Vido.Capture.Interfaces;
-  using Vido.Common.Debug;
+  using Vido.Common;
 
   public partial class Form1 : Form
   {

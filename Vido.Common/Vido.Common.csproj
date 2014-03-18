@@ -41,8 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Debug\ErrorLevels.cs" />
-    <Compile Include="Debug\Debug.cs" />
+    <Compile Include="ErrorLevels.cs" />
+    <Compile Include="Debug.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
