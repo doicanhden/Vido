@@ -60,8 +60,8 @@ namespace Vido.Parking.Core.Test
       //    rawInput.Keyboard.DevicesChanged += Keyboard_DevicesChanged;
       //    rawInput.Keyboard.EnumerateDevices();
       
-      var s = SerializeToString(lane);
-      MessageBox.Show(s);
+      //var s = SerializeToString(lane);
+      //MessageBox.Show(s);
     }
 
     void Keyboard_DevicesChanged(IRawKeyboard s, DevicesChangedEventArgs e)
