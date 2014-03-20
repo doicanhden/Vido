@@ -23,6 +23,12 @@
     {
       this.devicesEnumlator = devicesEnumlator;
       this.devicesEnumlator.DevicesChanged += devicesEnumlator_DevicesChanged;
+
+
+      foreach (var lane in lanes)
+      {
+        lane.Entry += lane_Entry;
+      }
     }
     #endregion
 
@@ -37,7 +43,7 @@
 
       switch ((s as Lane).Direction)
       {
-        case Vido.Parking.Enums.Direction.Exit:
+        case Vido.Parking.Enums.Direction.In:
           if (parking.CanExit(e.Uid, plateNumber))
           {
             parking.Exit(e.Uid, plateNumber, e.FrontImage, e.BackImage);
@@ -47,7 +53,7 @@
             //
           }
           break;
-        case Vido.Parking.Enums.Direction.Entry:
+        case Vido.Parking.Enums.Direction.Out:
           if (parking.CanEntry(e.Uid, plateNumber))
           {
             parking.Entry(e.Uid, plateNumber, e.FrontImage, e.BackImage);

@@ -1,7 +1,9 @@
 ﻿namespace Vido.Parking.Interfaces
 {
   using System.Drawing;
-
+/// <summary>go vo
+/// 
+/// </summary>
   public interface IParking
   {
     bool CanExit(byte[] data, string plateNumber);
