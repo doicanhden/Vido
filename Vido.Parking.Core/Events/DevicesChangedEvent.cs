@@ -4,7 +4,7 @@
   using System.Collections.Generic;
   using Vido.Parking.Interfaces;
 
-  public delegate void DevicesChangedEventHandler(object s, DevicesChangedEventArgs e);
+  public delegate void DevicesChangedEventHandler(object sender, DevicesChangedEventArgs e);
 
   public class DevicesChangedEventArgs : EventArgs
   {

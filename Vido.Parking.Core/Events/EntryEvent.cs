@@ -3,7 +3,7 @@
   using System;
   using System.Drawing;
 
-  public delegate void EntryEventHandler(object s, EntryEventArgs e);
+  public delegate void EntryEventHandler(object sender, EntryEventArgs e);
 
   public class EntryEventArgs : EventArgs
   {

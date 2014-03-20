@@ -67,12 +67,12 @@ namespace Vido.Parking.Test
     }
 
 
-    void capture2_NewFrame(ICapture sender, NewFrameEventArgs e)
+    void capture2_NewFrame(object sender, NewFrameEventArgs e)
     {
       pictureBox2.Image = e.Bitmap;
     }
 
-    void capture1_NewFrame(ICapture sender, NewFrameEventArgs e)
+    void capture1_NewFrame(object sender, NewFrameEventArgs e)
     {
       pictureBox1.Image = e.Bitmap;
     }

@@ -15,9 +15,9 @@
       // JPEG http://pasteldth.dyndns.org/cgi-bin/net_jpeg.cgi?ch=2
       // MJPEG http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240
       var captureFactory = new CaptureFactory();
-      captureFactory.CaptureType = Enums.Coding.Jpeg;
+      //captureFactory.CaptureType = Enums.Coding.Jpeg;
 
-      capture = captureFactory.Create();
+      //capture = captureFactory.Create();
       capture.NewFrame += capture_NewFrame;
 
       var config = new CaptureConfigs();
@@ -30,7 +30,7 @@
     }
 
 
-    void capture_NewFrame(ICapture sender, NewFrameEventArgs e)
+    void capture_NewFrame(object sender, NewFrameEventArgs e)
     {
       pictureBox1.Image = e.Bitmap;
     }

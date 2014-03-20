@@ -4,7 +4,7 @@
   using System.Collections.Generic;
   using Vido.RawInput.Interfaces;
 
-  public delegate void DevicesChangedEventHandler(IRawKeyboard s, DevicesChangedEventArgs e);
+  public delegate void DevicesChangedEventHandler(object sender, DevicesChangedEventArgs e);
 
   public class DevicesChangedEventArgs : EventArgs
   {

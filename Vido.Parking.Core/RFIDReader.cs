@@ -41,7 +41,7 @@
     #endregion
 
     #region Private Methods
-    private void keyboard_KeyDown(IKeyboard s, KeyEventArgs e)
+    private void keyboard_KeyDown(object s, KeyEventArgs e)
     {
       if (e.KeyValue == 13) // Enter key
       {

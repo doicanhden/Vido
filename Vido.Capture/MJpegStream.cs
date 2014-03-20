@@ -10,7 +10,7 @@
   using Vido.Capture.Interfaces;
   using Vido.Common;
 
-  public class MJpegStream : ICapture
+  public class MJpegStream : ICapture, IDisposable
   {
     #region Data Members
     private const int readSize = 1024;
@@ -61,6 +61,25 @@
     }
     #endregion
 
+    #region Dispose
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        // dispose managed resources
+        stopEvent.Dispose();
+        reloadEvent.Dispose();
+      }
+      // free native resources
+    }
+
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+    #endregion
+    
     #region Methods
     public bool Start()
     {

@@ -4,7 +4,7 @@
   using System.Drawing;
   using Vido.Capture.Interfaces;
 
-  public delegate void NewFrameEventHandler(ICapture sender, NewFrameEventArgs e);
+  public delegate void NewFrameEventHandler(object sender, NewFrameEventArgs e);
 
   public class NewFrameEventArgs : EventArgs
   {

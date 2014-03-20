@@ -2,7 +2,7 @@
 {
   using System;
 
-  public delegate void DataInEventHandler(object s, DataInEventArgs e);
+  public delegate void DataInEventHandler(object sender, DataInEventArgs e);
 
   public class DataInEventArgs : EventArgs
   {

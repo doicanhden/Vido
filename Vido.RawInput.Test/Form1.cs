@@ -37,14 +37,16 @@
       }
     }
 
-    void keyboard_KeyUp(IKeyboard s, Vido.RawInput.Events.KeyEventArgs e)
+    void keyboard_KeyUp(object sender, Vido.RawInput.Events.KeyEventArgs e)
     {
+      IKeyboard s = sender as IKeyboard;
       listBox1.Items.Add(string.Format("Keyboard: {0}, Key up: {1}", s.Description, e.KeyValue));
       listBox1.SelectedItem = listBox1.Items.Count - 1;
     }
 
-    void keyboard_KeyDown(IKeyboard s, Vido.RawInput.Events.KeyEventArgs e)
+    void keyboard_KeyDown(object sender, Vido.RawInput.Events.KeyEventArgs e)
     {
+      IKeyboard s = sender as IKeyboard;
       listBox1.Items.Add(string.Format("Keyboard: {0}, Key down: {1}", s.Description, e.KeyValue));
       listBox1.SelectedItem = listBox1.Items.Count - 1;
     }

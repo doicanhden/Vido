@@ -3,7 +3,7 @@
   using System;
   using Vido.RawInput.Interfaces;
 
-  public delegate void KeyEventHandler(IKeyboard s, KeyEventArgs e);
+  public delegate void KeyEventHandler(object sender, KeyEventArgs e);
 
   public class KeyEventArgs : EventArgs
   {
