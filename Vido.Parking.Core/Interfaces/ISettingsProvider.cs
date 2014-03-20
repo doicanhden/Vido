@@ -1,4 +1,4 @@
-﻿namespace Vido.Parking.Core.Interfaces
+﻿namespace Vido.Parking.Interfaces
 {
   public interface ISettingsProvider
   {

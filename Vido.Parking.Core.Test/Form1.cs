@@ -1,5 +1,5 @@
 ﻿
-namespace Vido.Parking.Core.Test
+namespace Vido.Parking.Test
 {
   using System;
   using System.IO;
@@ -8,7 +8,8 @@ namespace Vido.Parking.Core.Test
   using Vido.Capture;
   using Vido.Capture.Events;
   using Vido.Capture.Interfaces;
-  using Vido.Parking.Core.Interfaces;
+  using Vido.Parking.Controls;
+  using Vido.Parking.Interfaces;
   using Vido.RawInput.Events;
   using Vido.RawInput.Interfaces;
 
@@ -17,15 +18,14 @@ namespace Vido.Parking.Core.Test
     SQLiteDatabase db = new SQLiteDatabase(@"E:\vidoparking.s3db");
     RFIDReader rfidReader = new RFIDReader();
     RawInput.RawInput rawInput = null;
-    ILane lane = null;
+    Lane lane = null;
     public Form1()
     {
       InitializeComponent();
 
       lane = new Lane()
       {
-        Name = "lane 1",
-        PlateCamera = new JpegStream()
+        BackCamera = new JpegStream()
         {
           Configs = new CaptureConfigs()
           {
@@ -35,7 +35,7 @@ namespace Vido.Parking.Core.Test
             FrameInterval = 0
           }
         },
-        FaceCamera = new MJpegStream()
+        FrontCamera = new MJpegStream()
         {
           Configs = new CaptureConfigs()
           {
@@ -47,21 +47,18 @@ namespace Vido.Parking.Core.Test
         }
       };
 
-      lane.PlateCamera.NewFrame += capture1_NewFrame;
-      lane.FaceCamera.NewFrame += capture2_NewFrame;
+      lane.BackCamera.NewFrame += capture1_NewFrame;
+      lane.FrontCamera.NewFrame += capture2_NewFrame;
 
-      lane.FaceCamera.Start();
-      lane.PlateCamera.Start();
+      lane.FrontCamera.Start();
+      lane.BackCamera.Start();
       lane.UidDevice = rfidReader;
-      rfidReader.Uid += rfidReader_UidRead;
       rawInput = new RawInput.RawInput(Handle);
       rawInput.AddMessageFilter();
 
       //    rawInput.Keyboard.DevicesChanged += Keyboard_DevicesChanged;
       //    rawInput.Keyboard.EnumerateDevices();
       
-      var s = SerializeToString(lane);
-      MessageBox.Show(s);
     }
 
     void Keyboard_DevicesChanged(IRawKeyboard s, DevicesChangedEventArgs e)
@@ -69,10 +66,6 @@ namespace Vido.Parking.Core.Test
       rfidReader.Keyboard = e.NewDevices[3];
     }
 
-    void rfidReader_UidRead(object s, UidEventArgs e)
-    {
-      Utilites.Entry(db, e.Uid, lane);
-    }
 
     void capture2_NewFrame(ICapture sender, NewFrameEventArgs e)
     {

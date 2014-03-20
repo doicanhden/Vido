@@ -1,4 +1,4 @@
-﻿namespace Vido.Parking.Core
+﻿namespace Vido.Parking
 {
   using System;
   using System.Collections.Generic;
@@ -6,7 +6,8 @@
   using System.IO;
   using System.Threading;
   using Vido.Capture.Interfaces;
-  using Vido.Parking.Core.Interfaces;
+  using Vido.Parking.Controls;
+  using Vido.Parking.Interfaces;
 
   public static class Utilites
   {
@@ -72,7 +73,7 @@
     {
       return (Controls.Card.IsUse(database, cardId));
     }
-    public static bool Entry(IDatabase database, string cardId, ILane lane)
+    public static bool Entry(IDatabase database, string cardId, Lane lane)
     {
       var time = DateTime.Now;
       var dailyDirectoryName = DailyDirectoryName(time);
@@ -84,16 +85,16 @@
 
       var prefixFileName = dailyDirectoryName +
         Path.DirectorySeparatorChar +
-        lane.Name.ToUpper() + time.ToString("HHmmss") + EntryString;
+        time.ToString("HHmmss") + EntryString;
 
       var plateNumber = string.Empty;
       var plateFileName = string.Empty;
       var faceFileName = string.Empty;
 
-      if (lane.PlateCamera != null)
+      if (lane.BackCamera != null)
       {
         plateFileName = prefixFileName + SuffixPlateFileName;
-        if (!TakeAndSave(lane.PlateCamera, plateFileName))
+        if (!TakeAndSave(lane.BackCamera, plateFileName))
         {
           // Error
         }
@@ -105,10 +106,10 @@
         // Error
       }
 
-      if (lane.FaceCamera != null)
+      if (lane.FrontCamera != null)
       {
         faceFileName = prefixFileName + SuffixFaceFileName;
-        if (!TakeAndSave(lane.FaceCamera, faceFileName))
+        if (!TakeAndSave(lane.FrontCamera, faceFileName))
         {
           faceFileName = string.Empty;
         }
@@ -133,7 +134,7 @@
     {
       return (Controls.Card.IsUse(database, cardId));
     }
-    public static bool Exit(IDatabase database, string cardId, ILane lane)
+    public static bool Exit(IDatabase database, string cardId, Lane lane)
     {
       var time = DateTime.Now;
       var dailyDirectoryName = DailyDirectoryName(time);
@@ -145,16 +146,16 @@
 
       var prefixFileName = dailyDirectoryName +
         Path.DirectorySeparatorChar +
-        lane.Name.ToUpper() + time.ToString("HHmmss") + ExitString;
+        time.ToString("HHmmss") + ExitString;
 
       var plateNumber = string.Empty;
       var plateFileName = string.Empty;
       var faceFileName = string.Empty;
 
-      if (lane.PlateCamera != null)
+      if (lane.BackCamera != null)
       {
         plateFileName = prefixFileName + SuffixPlateFileName;
-        if (!TakeAndSave(lane.PlateCamera, plateFileName))
+        if (!TakeAndSave(lane.BackCamera, plateFileName))
         {
           // Error
         }
@@ -166,10 +167,10 @@
         // Error
       }
 
-      if (lane.FaceCamera != null)
+      if (lane.FrontCamera != null)
       {
         faceFileName = prefixFileName + SuffixFaceFileName;
-        if (!TakeAndSave(lane.FaceCamera, faceFileName))
+        if (!TakeAndSave(lane.FrontCamera, faceFileName))
         {
           faceFileName = string.Empty;
         }

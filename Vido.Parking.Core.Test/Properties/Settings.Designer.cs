@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Vido.Parking.Core.Test.Properties
+namespace Vido.Parking.Test.Properties
 {
 
 

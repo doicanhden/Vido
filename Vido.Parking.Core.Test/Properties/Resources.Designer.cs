@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Vido.Parking.Core.Test.Properties
+namespace Vido.Parking.Test.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace Vido.Parking.Core.Test.Properties
       {
         if ((resourceMan == null))
         {
-          global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Vido.Parking.Core.Test.Properties.Resources", typeof(Resources).Assembly);
+          global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Vido.Parking.Test.Properties.Resources", typeof(Resources).Assembly);
           resourceMan = temp;
         }
         return resourceMan;

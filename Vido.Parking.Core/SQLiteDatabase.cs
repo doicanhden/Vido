@@ -1,11 +1,11 @@
-﻿namespace Vido.Parking.Core
+﻿namespace Vido.Parking
 {
   using System;
   using System.Collections.Generic;
   using System.Data;
   using System.Data.SQLite;
   using System.Text;
-  using Vido.Parking.Core.Interfaces;
+  using Vido.Parking.Interfaces;
 
   public class SQLiteDatabase : IDatabase
   {
@@ -60,6 +60,7 @@
     public DataTable ExecuteReader(string sql)
     {
       SQLiteConnection connection = new SQLiteConnection(connectionString);
+      
       try
       {
         connection.Open();

@@ -26,7 +26,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Vido.Parking.Core
+namespace Vido.Parking
 {
   using System;
   using System.Text;

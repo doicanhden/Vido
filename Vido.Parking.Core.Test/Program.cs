@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Vido.Parking.Core.Test
+namespace Vido.Parking.Test
 {
   static class Program
   {

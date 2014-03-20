@@ -1,4 +1,5 @@
-﻿namespace Vido.Capture.Interfaces
+﻿using Vido.Capture.Enums;
+namespace Vido.Capture.Interfaces
 {
   public interface ICaptureConfigs
   {
@@ -18,5 +19,7 @@
     string Source { get; set; }
 
     int FrameInterval { get; set;}
+
+    Coding Coding { get; set; }
   }
 }

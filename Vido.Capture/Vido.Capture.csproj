@@ -44,7 +44,7 @@
     <Compile Include="ByteArrayUtils.cs" />
     <Compile Include="CaptureConfigs.cs" />
     <Compile Include="CaptureFactory.cs" />
-    <Compile Include="Enums\StreamType.cs" />
+    <Compile Include="Enums\Coding.cs" />
     <Compile Include="Events\NewFrame.cs" />
     <Compile Include="Interfaces\ICapture.cs" />
     <Compile Include="Interfaces\ICaptureConfigs.cs" />

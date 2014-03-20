@@ -34,7 +34,7 @@
   public class RawKeyboard : IRawKeyboard
   {
     private readonly object objLock = new object();
-    private List<IKeyboard> devices = null;
+    private List<IKeyboard> devices = new List<IKeyboard>();
     private static InputData rawBuffer;
 
     public event DevicesChangedEventHandler DevicesChanged;

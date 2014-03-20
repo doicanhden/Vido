@@ -1,30 +1,25 @@
-﻿namespace Vido.Parking.Core
+﻿namespace Vido.Parking
 {
-  using System.Text;
-  using System.Xml.Serialization;
-  using Vido.Parking.Core.Interfaces;
+  using System.Collections.Generic;
+  using Vido.Parking.Events;
+  using Vido.Parking.Interfaces;
   using Vido.RawInput.Events;
   using Vido.RawInput.Interfaces;
 
   public class RFIDReader : IUidDevice
   {
     #region Data Members
-    private readonly StringBuilder buffer = new StringBuilder();
+    private readonly List<byte> buffer = new List<byte>();
     private IKeyboard keyboard = null;
     #endregion
 
     #region Events
-    public event UidEventHandler Uid;
+    public event DataInEventHandler DataIn;
     #endregion
-
-    public RFIDReader()
-    {
-    }
 
     #region Public Properties
     public string Name { get; set; }
 
-    [XmlIgnore]
     public IKeyboard Keyboard
     {
       get { return (keyboard); }
@@ -50,19 +45,18 @@
     {
       if (e.KeyValue == 13) // Enter key
       {
-        if (Uid != null)
+        if (DataIn != null)
         {
-          Uid(this, new UidEventArgs(buffer.ToString()));
+          DataIn(this, new DataInEventArgs(buffer.ToArray()));
         }
 
         buffer.Clear();
       }
       else
       {
-        buffer.Append(System.Convert.ToChar(e.KeyValue));
+        buffer.Add((byte)e.KeyValue);
       }
     }
     #endregion
-
   }
 }

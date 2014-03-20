@@ -15,7 +15,7 @@
       // JPEG http://pasteldth.dyndns.org/cgi-bin/net_jpeg.cgi?ch=2
       // MJPEG http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240
       var captureFactory = new CaptureFactory();
-      captureFactory.CaptureType = Enums.StreamType.Jpeg;
+      captureFactory.CaptureType = Enums.Coding.Jpeg;
 
       capture = captureFactory.Create();
       capture.NewFrame += capture_NewFrame;

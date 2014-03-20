@@ -1,9 +1,10 @@
 ﻿namespace Vido.Capture.Enums
 {
-  public enum StreamType
+  public enum Coding : int
   {
     Unknown = 0,
     Jpeg = 1,
-    MJpeg = 2
+    MJpeg = 2,
+    H264 = 3
   }
 }

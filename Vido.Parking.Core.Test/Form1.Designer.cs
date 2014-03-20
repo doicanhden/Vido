@@ -1,4 +1,4 @@
-﻿namespace Vido.Parking.Core.Test
+﻿namespace Vido.Parking.Test
 {
   partial class Form1
   {

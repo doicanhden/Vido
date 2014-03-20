@@ -4,14 +4,13 @@
   using Vido.Capture.Interfaces;
   public class CaptureFactory : ICaptureFactory
   {
-    public StreamType CaptureType { get; set; }
-    public ICapture Create()
+    public ICapture Create(CaptureConfigs configs)
     {
-      switch (CaptureType)
+      switch (configs.Coding)
       {
-        case StreamType.Jpeg:
+        case Coding.Jpeg:
           return (new JpegStream());
-        case StreamType.MJpeg:
+        case Coding.MJpeg:
           return (new MJpegStream());
         default:
           return (null);

@@ -1,6 +1,6 @@
-﻿namespace Vido.Parking.Core.Controls
+﻿namespace Vido.Parking.Controls
 {
-  using Vido.Parking.Core.Interfaces;
+  using Vido.Parking.Interfaces;
 
   public static class Card
   {

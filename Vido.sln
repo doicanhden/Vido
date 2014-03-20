@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vido.RawInput", "Vido.RawInput\Vido.RawInput.csproj", "{D3EDEE2B-4D2A-4395-80AA-60FE75549E19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vido.Common", "Vido.Common\Vido.Common.csproj", "{9CAD97AA-BC66-47B9-918D-5C147B11B60C}"
@@ -13,13 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vido.Capture", "Vido.Captur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vido.Capture.Test", "Vido.Capture.Test\Vido.Capture.Test.csproj", "{FD2D394F-CE33-4401-868E-64360710481D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vido.Parking.Core", "Vido.Parking.Core\Vido.Parking.Core.csproj", "{C9C6B46E-6D5E-4DAC-940E-A800200F6B22}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vido.Parking", "Vido.Parking.Core\Vido.Parking.csproj", "{C9C6B46E-6D5E-4DAC-940E-A800200F6B22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vido.Parking.Core.Test", "Vido.Parking.Core.Test\Vido.Parking.Core.Test.csproj", "{803C640F-EB87-4FFE-AE96-6D7EDA534651}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vido.Parking.Ocr", "Vido.Parking.Ocr\Vido.Parking.Ocr.vcxproj", "{606A6952-6532-4397-9F73-FC0E7436DE99}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project1", "Project1\Project1.csproj", "{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,20 +147,6 @@ Global
 		{606A6952-6532-4397-9F73-FC0E7436DE99}.Release|Win32.ActiveCfg = Release|Win32
 		{606A6952-6532-4397-9F73-FC0E7436DE99}.Release|Win32.Build.0 = Release|Win32
 		{606A6952-6532-4397-9F73-FC0E7436DE99}.Release|x64.ActiveCfg = Release|Win32
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Release|ARM.ActiveCfg = Release|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Release|Win32.ActiveCfg = Release|Any CPU
-		{849E73A0-9A6E-45E5-AA4C-F95637EA3B4A}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-namespace Vido.Parking.Core.Interfaces
+namespace Vido.Parking.Interfaces
 {
   public interface IDatabase
   {
