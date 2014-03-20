@@ -4,17 +4,30 @@
   using Vido.Capture.Interfaces;
   public class CaptureFactory : ICaptureFactory
   {
+    /// <summary>
+    /// Tạo đối tượng Capture và set Config.
+    /// </summary>
+    /// <param name="configs"></param>
+    /// <returns></returns>
     public ICapture Create(CaptureConfigs configs)
     {
+      ICapture capture = null;
       switch (configs.Coding)
       {
         case Coding.Jpeg:
-          return (new JpegStream());
+          capture = new JpegStream();
+          break;
         case Coding.MJpeg:
-          return (new MJpegStream());
-        default:
-          return (null);
+          capture = new MJpegStream();
+          break;
       }
+
+      if (capture != null)
+      {
+        capture.Configs = configs;
+      }
+
+      return (capture);
     }
   }
 }

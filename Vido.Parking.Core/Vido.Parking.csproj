@@ -57,12 +57,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Controller.cs" />
-    <Compile Include="Controls\Card.cs" />
+    <Compile Include="Controller.cs" />
     <Compile Include="Events\DataInEvent.cs" />
     <Compile Include="Events\DevicesChangedEvent.cs" />
     <Compile Include="Events\EntryEvent.cs" />
-    <Compile Include="Interfaces\IDatabase.cs" />
     <Compile Include="Interfaces\IParking.cs" />
     <Compile Include="Interfaces\ISettingsProvider.cs" />
     <Compile Include="Interfaces\IUidDevice.cs" />
@@ -70,10 +68,9 @@
     <Compile Include="Interfaces\IUidDevicesEnumerator.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Controls\Lane.cs" />
-    <Compile Include="PasswordHash.cs" />
+    <Compile Include="Utilities\PasswordHash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RFIDReader.cs" />
-    <Compile Include="SQLiteDatabase.cs" />
     <Compile Include="Utilites.cs" />
   </ItemGroup>
   <ItemGroup>

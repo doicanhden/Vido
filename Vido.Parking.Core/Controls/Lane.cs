@@ -34,7 +34,9 @@
     }
     public Direction Direction { get; set; }
     public LaneState State { get; set; }
-    public int NumberOfReTries { get; set; }
+    public int NumberOfRetries { get; set; }
+
+    public string Message { get; set; }
     #endregion
 
     public event EntryEventHandler Entry;
@@ -69,7 +71,7 @@
 
     private Image TryCapture(ICapture capture)
     {
-      for (int i = 0; i < NumberOfReTries; ++i)
+      for (int i = 0; i < NumberOfRetries; ++i)
       {
         var image = capture.Take();
         if (image != null)

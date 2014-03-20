@@ -15,7 +15,6 @@ namespace Vido.Parking.Test
 
   public partial class Form1 : Form
   {
-    SQLiteDatabase db = new SQLiteDatabase(@"E:\vidoparking.s3db");
     RFIDReader rfidReader = new RFIDReader();
     RawInput.RawInput rawInput = null;
     Lane lane = null;
