@@ -2,20 +2,21 @@
 {
   using System;
   using System.Collections.Generic;
+  using System.ComponentModel;
+  using System.Configuration;
   using System.Drawing;
   using Vido.Capture.Interfaces;
   using Vido.Parking.Controls;
   using Vido.Parking.Enums;
   using Vido.Parking.Events;
   using Vido.Parking.Interfaces;
-  using Vido.Parking.Models;
+  using Vido.Parking.Properties;
 
 
   public class Controller
   {
     #region Data Members
     private readonly IParking parking = null;
-    private readonly ISettingsProvider settingsProvider = null;
     private readonly ICaptureFactory captureFactory = null;
     private readonly IUidDevicesEnumerator devicesEnumlator = null;
     private readonly List<Lane> lanes = new List<Lane>();
@@ -23,21 +24,32 @@
     #endregion
 
     #region Constructors
-    public Controller(IParking parking, ISettingsProvider settingsProvider, ICaptureFactory captureFactory, IUidDevicesEnumerator devicesEnumlator)
+    public Controller(IParking parking, ICaptureFactory captureFactory, IUidDevicesEnumerator devicesEnumlator)
     {
       this.parking = parking;
-      this.settingsProvider = settingsProvider;
       this.captureFactory = captureFactory;
       this.devicesEnumlator = devicesEnumlator;
+      this.devicesEnumlator.DevicesChanged += devicesEnumlator_DevicesChanged;
+      Settings.Default.SettingsLoaded += Default_SettingsLoaded;
+      Settings.Default.SettingChanging += Default_SettingChanging;
     }
+
+    private void Default_SettingsLoaded(object sender, SettingsLoadedEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
+
+    private void Default_SettingChanging(object sender, SettingChangingEventArgs e)
+    {
+      throw new NotImplementedException();
+    }
+
     #endregion
     private void InitializeObject()
     {
       lanes.Clear();
       uidDevices = devicesEnumlator.GetDevicesList();
-
-      var laneSetting = settingsProvider.Query<LaneConfigs[]>("Lanes");
-      foreach (var cfg in laneSetting)
+      foreach (var cfg in Settings.Default.Lanes)
       {
         var lane = new Lane()
         {

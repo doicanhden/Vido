@@ -77,7 +77,7 @@
       }
       catch (InvalidOperationException ex)
       {
-        throw ex;
+        throw;
       }
     }
 

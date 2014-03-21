@@ -1,8 +1,9 @@
-﻿namespace Vido.Parking.Models
+﻿namespace Vido.Parking
 {
+  using System;
   using Vido.Capture;
   using Vido.Parking.Enums;
-
+  [Serializable]
   public class LaneConfigs
   {
     public CaptureConfigs FrontCamera { get; set; }
