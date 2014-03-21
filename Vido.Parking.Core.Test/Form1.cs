@@ -22,7 +22,6 @@ namespace Vido.Parking.Test
       InitializeComponent();
 
       controller = new Controller(null, captureFactory, RFIDReaderEnumerator.GetInstance(Handle));
-      Vido.Parking.Properties.Settings.Default.Save();
     }
   }
 }
