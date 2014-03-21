@@ -11,6 +11,7 @@
     public byte[] Uid { get; private set; }
     public Image FrontImage { get; private set; }
     public Image BackImage { get; private set; }
+    public bool Allow { get; set; }
     #endregion
 
     #region Constructors
@@ -19,6 +20,7 @@
       this.Uid = uid;
       this.FrontImage = frontImage;
       this.BackImage = backImage;
+      this.Allow = true;
     }
     #endregion
   }

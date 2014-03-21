@@ -47,7 +47,7 @@
 
     private void uidDevice_DataIn(object sender, DataInEventArgs e)
     {
-      if (e.Data == null || Entry == null)
+      if (e.Data == null || Entry == null || State == LaneState.Stop)
       {
         return;
       }
@@ -61,11 +61,17 @@
           backImage = TryCapture(BackCamera);
         }
 
-        Entry(this, new EntryEventArgs(e.Data, frontImage, backImage));
+        var entryArg = new EntryEventArgs(e.Data, frontImage, backImage);
+        Entry(this, entryArg);
+
+        if (!entryArg.Allow)
+        {
+          
+        }
       }
       catch (InvalidOperationException ex)
       {
-
+        throw ex;
       }
     }
 
