@@ -1,7 +1,11 @@
 ﻿namespace Vido.Parking.Interfaces
 {
+  using Vido.Parking.Events;
+
   public interface ISettingsProvider
   {
+    event SettingChangedEventHandler SettingChanged;
+
     void Load();
     void Save();
 

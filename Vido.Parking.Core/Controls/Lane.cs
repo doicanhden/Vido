@@ -9,7 +9,9 @@
 
   public class Lane
   {
+    #region Data Members
     private IUidDevice uidDevice = null;
+    #endregion
 
     #region Public Properties
     public ICapture FrontCamera { get; set; }
@@ -39,11 +41,15 @@
     public string Message { get; set; }
     #endregion
 
+    #region Public Events
     public event EntryEventHandler Entry;
+    #endregion
 
+    #region Constructors
     public Lane()
     {
     }
+    #endregion
 
     private void uidDevice_DataIn(object sender, DataInEventArgs e)
     {

@@ -8,6 +8,7 @@
   using Vido.Parking.Enums;
   using Vido.Parking.Events;
   using Vido.Parking.Interfaces;
+  using Vido.Parking.Models;
 
 
   public class Controller
@@ -30,10 +31,56 @@
       this.devicesEnumlator = devicesEnumlator;
     }
     #endregion
+    private void InitializeObject()
+    {
+      lanes.Clear();
+      uidDevices = devicesEnumlator.GetDevicesList();
 
+      var laneSetting = settingsProvider.Query<LaneConfigs[]>("Lanes");
+      foreach (var cfg in laneSetting)
+      {
+        var lane = new Lane()
+        {
+          FrontCamera = captureFactory.Create(cfg.FrontCamera),
+          BackCamera = captureFactory.Create(cfg.BackCamera),
+          Direction = cfg.Direction,
+          NumberOfRetries = cfg.NumberOfRetries,
+          State = cfg.State
+        };
+        
+        foreach (var i in uidDevices)
+        {
+          if (cfg.UidDeviceName == i.Name)
+          {
+            lane.UidDevice = i;
+            break;
+          }
+        }
+
+        if (lane.UidDevice == null)
+        {
+          lane.Message = "";
+        }
+
+        lane.Entry += lane_Entry;
+
+        lanes.Add(lane);
+      }
+    }
     private void devicesEnumlator_DevicesChanged(object sender, DevicesChangedEventArgs e)
     {
       uidDevices = devicesEnumlator.GetDevicesList();
+      if (lanes.Count > 0)
+      {
+        foreach (var lane in lanes)
+        {
+          foreach (var uidDev in uidDevices)
+          {
+
+          }
+        }
+
+      }
     }
 
     private void lane_Entry(object sender, EntryEventArgs e)
