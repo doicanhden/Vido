@@ -33,24 +33,7 @@
     {
       get { return (@"F:\Khanh\SkyDrive\Development\Github\Vido's Projects\Vido\RootImages"); }
     }
-    public static string DailyDirectoryNameFormat
-    {
-      get
-      {
-        if (Path.DirectorySeparatorChar == '\\')
-        {
-          return (@"yyyy\\MM\\dd");
-        }
 
-        return ("yyyy/MM/dd");
-      }
-    }
-    public static string DailyDirectoryName(DateTime time)
-    {
-      return (RootImageDirectoryName +
-        Path.DirectorySeparatorChar +
-        time.ToString(DailyDirectoryNameFormat));
-    }
     
     public static string GetPlateNumber(Image image)
     {

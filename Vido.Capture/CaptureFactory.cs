@@ -12,19 +12,22 @@
     public ICapture Create(CaptureConfigs configs)
     {
       ICapture capture = null;
-      switch (configs.Coding)
+      if (configs != null)
       {
-        case Coding.Jpeg:
-          capture = new JpegStream();
-          break;
-        case Coding.MJpeg:
-          capture = new MJpegStream();
-          break;
-      }
+        switch (configs.Coding)
+        {
+          case Coding.Jpeg:
+            capture = new JpegStream();
+            break;
+          case Coding.MJpeg:
+            capture = new MJpegStream();
+            break;
+        }
 
-      if (capture != null)
-      {
-        capture.Configs = configs;
+        if (capture != null)
+        {
+          capture.Configs = configs;
+        }
       }
 
       return (capture);

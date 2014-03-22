@@ -30,25 +30,20 @@
       this.captureFactory = captureFactory;
       this.devicesEnumlator = devicesEnumlator;
       this.devicesEnumlator.DevicesChanged += devicesEnumlator_DevicesChanged;
-      Settings.Default.SettingsLoaded += Default_SettingsLoaded;
-      Settings.Default.SettingChanging += Default_SettingChanging;
-    }
 
-    private void Default_SettingsLoaded(object sender, SettingsLoadedEventArgs e)
-    {
-      throw new NotImplementedException();
+      if (LaneConfigs == null)
+      {
+        LaneConfigs = new LaneConfigs[1] { new LaneConfigs() };
+        SaveConfigs();
+      }
+      InitLanes();
     }
-
-    private void Default_SettingChanging(object sender, SettingChangingEventArgs e)
-    {
-      throw new NotImplementedException();
-    }
-
     #endregion
-    private void InitializeObject()
+    private void InitLanes()
     {
       lanes.Clear();
       uidDevices = devicesEnumlator.GetDevicesList();
+
       foreach (var cfg in Settings.Default.Lanes)
       {
         var lane = new Lane()
@@ -59,19 +54,17 @@
           NumberOfRetries = cfg.NumberOfRetries,
           State = cfg.State
         };
-        
-        foreach (var i in uidDevices)
-        {
-          if (cfg.UidDeviceName == i.Name)
-          {
-            lane.UidDevice = i;
-            break;
-          }
-        }
 
-        if (lane.UidDevice == null)
+        if (uidDevices != null)
         {
-          lane.Message = "";
+          foreach (var i in uidDevices)
+          {
+            if (cfg.UidDeviceName == i.Name)
+            {
+              lane.UidDevice = i;
+              break;
+            }
+          }
         }
 
         lane.Entry += lane_Entry;
@@ -79,22 +72,31 @@
         lanes.Add(lane);
       }
     }
+    private void ClearLanes()
+    {
+     
+    }
     private void devicesEnumlator_DevicesChanged(object sender, DevicesChangedEventArgs e)
     {
       uidDevices = devicesEnumlator.GetDevicesList();
+      
+
       if (lanes.Count > 0)
       {
         foreach (var lane in lanes)
         {
           foreach (var uidDev in uidDevices)
           {
-
+            if (lane.UidDevice.Name == uidDev.Name)
+            {
+              lane.UidDevice = uidDev;
+              break;
+            }
           }
         }
 
       }
     }
-
     private void lane_Entry(object sender, EntryEventArgs e)
     {
       var lane = sender as Lane;
@@ -125,10 +127,14 @@
           break;
       }
     }
-
-    private static string GetPlateNumber(Image image)
+    private static LaneConfigs[] LaneConfigs
     {
-      return (string.Empty);
+      get { return (Properties.Settings.Default.Lanes); }
+      set { Properties.Settings.Default.Lanes = value; }
+    }
+    private static void SaveConfigs()
+    {
+      Properties.Settings.Default.Save();
     }
   }
 }

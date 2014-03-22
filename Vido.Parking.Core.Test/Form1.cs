@@ -3,6 +3,7 @@ namespace Vido.Parking.Test
 {
   using System;
   using System.IO;
+  using System.Text;
   using System.Windows.Forms;
   using System.Xml.Serialization;
   using Vido.Capture;
@@ -22,6 +23,13 @@ namespace Vido.Parking.Test
     {
       InitializeComponent();
 
+      StringBuilder sb = new StringBuilder();
+
+      sb.AppendFormat(@"\\yyyy\\MM\\dd", DateTime.Now);
+      
+      
+      MessageBox.Show(sb.ToString());
+      
       controller = new Controller(parking, captureFactory, RFIDReaderEnumerator.GetInstance(Handle));
     }
   }
