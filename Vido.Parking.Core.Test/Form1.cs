@@ -17,11 +17,12 @@ namespace Vido.Parking.Test
   {
     private CaptureFactory captureFactory = new CaptureFactory();
     private Controller controller = null;
+    private Parking parking = new Parking();
     public Form1()
     {
       InitializeComponent();
 
-      controller = new Controller(null, captureFactory, RFIDReaderEnumerator.GetInstance(Handle));
+      controller = new Controller(parking, captureFactory, RFIDReaderEnumerator.GetInstance(Handle));
     }
   }
 }

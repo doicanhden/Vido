@@ -98,14 +98,13 @@
     private void lane_Entry(object sender, EntryEventArgs e)
     {
       var lane = sender as Lane;
-      var plateNumber = GetPlateNumber(e.FrontImage);
 
       switch (lane.Direction)
       {
         case Direction.Out:
-          if (parking.CanExit(e.Uid, plateNumber))
+          if (parking.CanExit(e.Uid, e.PlateNumber))
           {
-            parking.Exit(e.Uid, plateNumber, e.FrontImage, e.BackImage);
+            parking.Exit(e.Uid, e.PlateNumber, e.FrontImage, e.BackImage);
           }
           else
           {
@@ -113,9 +112,9 @@
           }
           break;
         case Direction.In:
-          if (parking.CanEntry(e.Uid, plateNumber))
+          if (parking.CanEntry(e.Uid, e.PlateNumber))
           {
-            parking.Entry(e.Uid, plateNumber, e.FrontImage, e.BackImage);
+            parking.Entry(e.Uid, e.PlateNumber, e.FrontImage, e.BackImage);
           }
           else
           {

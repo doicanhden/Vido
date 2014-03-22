@@ -1,4 +1,4 @@
-﻿namespace Vido.Parking
+﻿namespace Vido.Parking.Utilities
 {
   using System;
   using System.Collections.Generic;
@@ -9,7 +9,7 @@
   using Vido.Parking.Controls;
   using Vido.Parking.Interfaces;
 
-  public static class Utilites
+  public static class Utilities
   {
     public static string EntryString
     {
@@ -50,6 +50,11 @@
       return (RootImageDirectoryName +
         Path.DirectorySeparatorChar +
         time.ToString(DailyDirectoryNameFormat));
+    }
+    
+    public static string GetPlateNumber(Image image)
+    {
+      return (string.Empty);
     }
   }
 }

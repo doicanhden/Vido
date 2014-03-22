@@ -43,6 +43,7 @@
 
     #region Public Events
     public event EntryEventHandler Entry;
+    public event EntryAllowedEventHandler EntryAllowed;
     #endregion
 
     #region Constructors
@@ -68,11 +69,13 @@
         }
 
         var entryArg = new EntryEventArgs(e.Data, frontImage, backImage);
+        entryArg.PlateNumber = Utilities.Utilities.GetPlateNumber(frontImage);
+
         Entry(this, entryArg);
 
-        if (!entryArg.Allow)
+        if (entryArg.Allow && EntryAllowed != null)
         {
-          
+          EntryAllowed(this, new EntryAllowedEventArgs(entryArg.PlateNumber));
         }
       }
       catch (InvalidOperationException ex)
