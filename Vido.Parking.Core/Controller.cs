@@ -39,6 +39,45 @@
       InitLanes();
     }
     #endregion
+
+    #region Event Handlers
+    private void devicesEnumlator_DevicesChanged(object sender, DevicesChangedEventArgs e)
+    {
+      InitLanes();
+    }
+
+    private void lane_Entry(object sender, EntryEventArgs e)
+    {
+      var lane = sender as Lane;
+
+      switch (lane.Direction)
+      {
+        case Direction.Out:
+          if (parking.CanExit(e.Uid, e.PlateNumber))
+          {
+            parking.Exit(e.Uid, e.PlateNumber, e.FrontImage, e.BackImage);
+          }
+          else
+          {
+            e.Allow = false;
+          }
+          break;
+        case Direction.In:
+          if (parking.CanEntry(e.Uid, e.PlateNumber))
+          {
+            parking.Entry(e.Uid, e.PlateNumber, e.FrontImage, e.BackImage);
+          }
+          else
+          {
+            e.Allow = false;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    #endregion
+
     private void InitLanes()
     {
       lanes.Clear();
@@ -72,69 +111,18 @@
         lanes.Add(lane);
       }
     }
-    private void ClearLanes()
-    {
-     
-    }
-    private void devicesEnumlator_DevicesChanged(object sender, DevicesChangedEventArgs e)
-    {
-      uidDevices = devicesEnumlator.GetDevicesList();
-      
 
-      if (lanes.Count > 0)
-      {
-        foreach (var lane in lanes)
-        {
-          foreach (var uidDev in uidDevices)
-          {
-            if (lane.UidDevice.Name == uidDev.Name)
-            {
-              lane.UidDevice = uidDev;
-              break;
-            }
-          }
-        }
-
-      }
-    }
-    private void lane_Entry(object sender, EntryEventArgs e)
-    {
-      var lane = sender as Lane;
-
-      switch (lane.Direction)
-      {
-        case Direction.Out:
-          if (parking.CanExit(e.Uid, e.PlateNumber))
-          {
-            parking.Exit(e.Uid, e.PlateNumber, e.FrontImage, e.BackImage);
-          }
-          else
-          {
-            e.Allow = false;
-          }
-          break;
-        case Direction.In:
-          if (parking.CanEntry(e.Uid, e.PlateNumber))
-          {
-            parking.Entry(e.Uid, e.PlateNumber, e.FrontImage, e.BackImage);
-          }
-          else
-          {
-            e.Allow = false;
-          }
-          break;
-        default:
-          break;
-      }
-    }
+    #region Settings
     private static LaneConfigs[] LaneConfigs
     {
       get { return (Properties.Settings.Default.Lanes); }
       set { Properties.Settings.Default.Lanes = value; }
     }
+
     private static void SaveConfigs()
     {
       Properties.Settings.Default.Save();
     }
+    #endregion
   }
 }

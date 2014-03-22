@@ -2,10 +2,13 @@
 {
   using System;
   using System.Drawing;
+  using System.Drawing.Imaging;
   using System.IO;
   using System.Text;
+  using Vido.Parking.DataSet;
   using Vido.Parking.Interfaces;
   using Vido.Parking.Utilities;
+
   public class Parking : IParking
   {
     public bool CanExit(byte[] data, string plateNumber)
@@ -28,23 +31,34 @@
 
       // Tạo thư mục chứa ảnh.
       CreateDailyDirectory(time);
-      
+
+      var prefixName = PrefixName(time, data, plateNumber, 'I');
+      var frontImageFileName = prefixName + "F.jpg";
+      var backImageFileName = prefixName + "B.jpg";
+
+      SaveImage(frontImage, frontImageFileName);
+      SaveImage(backImage , backImageFileName);
+
+    }
+    private static string PrefixName(DateTime time, byte[] uidData, string plateNumber, char io)
+    {
       var sb = new StringBuilder();
       sb.Append(time.ToString(DailyDirectoryNameFormat));
       sb.Append(Path.DirectorySeparatorChar);
       sb.Append(time.ToString("HHmmss"));
-      sb.Append(Convert.ToBase64String(data));
-      sb.Append('I');
+      sb.Append(Convert.ToBase64String(uidData));
+      sb.Append(io);
       sb.Append(plateNumber);
 
-      var prefixName = PrefixName(time) + Convert.ToBase64String(data) +  '0';
-
+      return (sb.ToString());
     }
     
-    private static void SaveImage(Image image, string name)
+    private static bool SaveImage(Image image, string subFileName)
     {
-      var fileName = RootImageDirectoryName + name;
-      image.Save(fileName);
+      var fileName = RootImageDirectoryName + subFileName;
+      image.Save(fileName, ImageFormat.Jpeg);
+
+      return (File.Exists(fileName));
     }
 
     private static void CreateDailyDirectory(DateTime time)

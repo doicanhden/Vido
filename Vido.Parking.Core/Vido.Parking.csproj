@@ -63,6 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller.cs" />
+    <Compile Include="DataSet\DsParking.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DsParking.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Events\DataInEvent.cs" />
     <Compile Include="Events\DevicesChangedEvent.cs" />
     <Compile Include="Events\EntryAllowedEvent.cs" />
@@ -86,6 +91,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="DataSet\DsParking.xsc">
+      <DependentUpon>DsParking.xsd</DependentUpon>
+    </None>
+    <None Include="DataSet\DsParking.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DsParking.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSet\DsParking.xss">
+      <DependentUpon>DsParking.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
