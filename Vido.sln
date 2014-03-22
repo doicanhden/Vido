@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vido.Parking.Core.Test", "V
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vido.Parking.Ocr", "Vido.Parking.Ocr\Vido.Parking.Ocr.vcxproj", "{606A6952-6532-4397-9F73-FC0E7436DE99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vido.Parking.UI.WPF", "Vido.Parking.UI.WPF\Vido.Parking.UI.WPF.csproj", "{7A01C76C-1F5F-48A8-AE2D-247167EABC77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,20 @@ Global
 		{606A6952-6532-4397-9F73-FC0E7436DE99}.Release|Win32.ActiveCfg = Release|Win32
 		{606A6952-6532-4397-9F73-FC0E7436DE99}.Release|Win32.Build.0 = Release|Win32
 		{606A6952-6532-4397-9F73-FC0E7436DE99}.Release|x64.ActiveCfg = Release|Win32
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Release|Win32.ActiveCfg = Release|Any CPU
+		{7A01C76C-1F5F-48A8-AE2D-247167EABC77}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
