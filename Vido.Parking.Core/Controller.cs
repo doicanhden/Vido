@@ -1,7 +1,7 @@
 ﻿namespace Vido.Parking
 {
   using System;
-  using System.Collections.Generic;
+  using System.Collections.ObjectModel;
   using System.ComponentModel;
   using System.Configuration;
   using System.Drawing;
@@ -10,8 +10,6 @@
   using Vido.Parking.Enums;
   using Vido.Parking.Events;
   using Vido.Parking.Interfaces;
-  using Vido.Parking.Properties;
-
 
   public class Controller
   {
@@ -19,8 +17,7 @@
     private readonly IParking parking = null;
     private readonly ICaptureFactory captureFactory = null;
     private readonly IUidDevicesEnumerator devicesEnumlator = null;
-    private readonly List<Lane> lanes = new List<Lane>();
-    private IList<IUidDevice> uidDevices = null;
+    private readonly ObservableCollection<Lane> lanes = new ObservableCollection<Lane>();
     #endregion
 
     #region Constructors
@@ -31,12 +28,21 @@
       this.devicesEnumlator = devicesEnumlator;
       this.devicesEnumlator.DevicesChanged += devicesEnumlator_DevicesChanged;
 
+      this.parking.Settings.SettingChanged += Settings_SettingChanged;
       if (LaneConfigs == null)
       {
         LaneConfigs = new LaneConfigs[1] { new LaneConfigs() };
         SaveConfigs();
       }
       InitLanes();
+    }
+
+    #endregion
+
+    #region Public Properties
+    public ObservableCollection<Lane> Lanes
+    {
+      get { return (lanes); }
     }
     #endregion
 
@@ -45,7 +51,17 @@
     {
       InitLanes();
     }
-
+    private void Settings_SettingChanged(object sender, SettingChangedEventArgs e)
+    {
+      switch (e.SettingKey)
+      {
+        case SettingKeys.Lanes:
+          InitLanes();
+          break;
+        default:
+          break;
+      }
+    }
     private void lane_Entry(object sender, EntryEventArgs e)
     {
       var lane = sender as Lane;
@@ -81,9 +97,9 @@
     private void InitLanes()
     {
       lanes.Clear();
-      uidDevices = devicesEnumlator.GetDevicesList();
+      var uids = devicesEnumlator.GetDevicesList();
 
-      foreach (var cfg in Settings.Default.Lanes)
+      foreach (var cfg in LaneConfigs)
       {
         var lane = new Lane()
         {
@@ -94,13 +110,13 @@
           State = cfg.State
         };
 
-        if (uidDevices != null)
+        if (uids != null)
         {
-          foreach (var i in uidDevices)
+          foreach (var uid in uids)
           {
-            if (cfg.UidDeviceName == i.Name)
+            if (cfg.UidDeviceName == uid.Name)
             {
-              lane.UidDevice = i;
+              lane.UidDevice = uid;
               break;
             }
           }
@@ -112,16 +128,16 @@
       }
     }
 
-    #region Settings
-    private static LaneConfigs[] LaneConfigs
+    #region Settings Accessor
+    private LaneConfigs[] LaneConfigs
     {
-      get { return (Properties.Settings.Default.Lanes); }
-      set { Properties.Settings.Default.Lanes = value; }
+      get { return (parking.Settings.Query<LaneConfigs[]>(SettingKeys.Lanes)); }
+      set { parking.Settings.Set(SettingKeys.Lanes, value); }
     }
 
-    private static void SaveConfigs()
+    private void SaveConfigs()
     {
-      Properties.Settings.Default.Save();
+      parking.Settings.Save();
     }
     #endregion
   }

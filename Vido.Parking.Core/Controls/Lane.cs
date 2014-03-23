@@ -2,14 +2,17 @@
 {
   using System;
   using System.Drawing;
+  using System.Threading.Tasks;
   using Vido.Capture.Interfaces;
   using Vido.Parking.Enums;
   using Vido.Parking.Events;
   using Vido.Parking.Interfaces;
+  using Vido.Parking.Utilities;
 
   public class Lane
   {
     #region Data Members
+    private bool isStarted = false;
     private IUidDevice uidDevice = null;
     #endregion
 
@@ -52,37 +55,70 @@
     }
     #endregion
 
+    #region Public Methods
+    public bool Start()
+    {
+      bool ret = false;
+      if (State == LaneState.Ready)
+      {
+        if (BackCamera != null)
+        {
+          ret = BackCamera.Start();
+        }
+
+        if (ret && FrontCamera != null)
+        {
+          ret = FrontCamera.Start();
+        }
+
+        isStarted = ret;
+      }
+
+      return (ret);
+    }
+    public void Stop()
+    {
+      isStarted = false;
+    }
+    #endregion
+
+    #region Event Handlers
     private void uidDevice_DataIn(object sender, DataInEventArgs e)
     {
-      if (e.Data == null || Entry == null || State == LaneState.Stop)
+      if (!isStarted || e.Data == null || Entry == null || State == LaneState.Stop)
       {
         return;
       }
 
       try
       {
-        Image frontImage = TryCapture(FrontCamera);
-        Image backImage = null;
-        if (BackCamera != null)
+        Image backImage = TryCapture(BackCamera);
+        Image frontImage = null;
+        if (FrontCamera != null)
         {
-          backImage = TryCapture(BackCamera);
+          frontImage = TryCapture(FrontCamera);
         }
 
-        var entryArg = new EntryEventArgs(e.Data, frontImage, backImage);
-        entryArg.PlateNumber = Utilities.Utilities.GetPlateNumber(frontImage);
+//      Task task = new Task(() =>
+//      {
+        var entry = new EntryEventArgs(e.Data, Ocr.GetPlateNumber(frontImage), frontImage, backImage);
 
-        Entry(this, entryArg);
+        Entry(this, entry);
 
-        if (entryArg.Allow && EntryAllowed != null)
+        if (entry.Allow && EntryAllowed != null)
         {
-          EntryAllowed(this, new EntryAllowedEventArgs(entryArg.PlateNumber));
+          EntryAllowed(this, new EntryAllowedEventArgs(entry.PlateNumber));
         }
+//      });
+
+//      task.Start();
       }
       catch (InvalidOperationException ex)
       {
         throw;
       }
     }
+    #endregion
 
     private Image TryCapture(ICapture capture)
     {

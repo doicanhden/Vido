@@ -16,9 +16,10 @@
     #endregion
 
     #region Constructors
-    public EntryEventArgs(byte[] uid, Image frontImage, Image backImage)
+    public EntryEventArgs(byte[] uid, string plateNumber, Image frontImage, Image backImage)
     {
       this.Uid = uid;
+      this.PlateNumber = plateNumber;
       this.FrontImage = frontImage;
       this.BackImage = backImage;
       this.Allow = true;

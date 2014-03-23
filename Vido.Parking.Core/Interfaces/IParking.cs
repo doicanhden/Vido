@@ -6,6 +6,8 @@
 /// </summary>
   public interface IParking
   {
+    ISettingsProvider Settings { get; }
+
     bool CanExit(byte[] data, string plateNumber);
     void Exit(byte[] data, string plateNumber, Image frontImage, Image backImage);
 
