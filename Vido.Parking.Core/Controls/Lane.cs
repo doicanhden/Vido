@@ -2,12 +2,14 @@
 {
   using System;
   using System.Drawing;
+  using System.Threading;
   using System.Threading.Tasks;
   using Vido.Capture.Interfaces;
   using Vido.Parking.Enums;
   using Vido.Parking.Events;
   using Vido.Parking.Interfaces;
   using Vido.Parking.Utilities;
+  using Vido.RawInput.Interfaces;
 
   public class Lane
   {
@@ -40,7 +42,6 @@
     public Direction Direction { get; set; }
     public LaneState State { get; set; }
     public int NumberOfRetries { get; set; }
-
     public string Message { get; set; }
     #endregion
 
@@ -54,6 +55,16 @@
     {
     }
     #endregion
+
+    #region TEST
+    public string UidDeviceName { get; set; }
+    public void keyboard_KeyDown(object sender, Vido.RawInput.Events.KeyEventArgs e)
+    {
+      IKeyboard s = sender as IKeyboard;
+      Console.WriteLine(string.Format("Lane: {2} Keyboard: {0}, Key down: {1}", s.Description, e.KeyValue, UidDeviceName));
+    }
+    #endregion
+
 
     #region Public Methods
     public bool Start()
@@ -78,6 +89,10 @@
     }
     public void Stop()
     {
+      if (BackCamera != null)
+        BackCamera.Stop();
+      if (FrontCamera != null)
+        FrontCamera.Stop();
       isStarted = false;
     }
     #endregion
@@ -85,7 +100,7 @@
     #region Event Handlers
     private void uidDevice_DataIn(object sender, DataInEventArgs e)
     {
-      if (!isStarted || e.Data == null || Entry == null || State == LaneState.Stop)
+      if (e.Data == null || Entry == null || State == LaneState.Stop)
       {
         return;
       }
@@ -129,6 +144,7 @@
         {
           return (image);
         }
+        Thread.Sleep(250);
       }
 
       throw new System.InvalidOperationException("Can't capture from Device");

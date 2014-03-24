@@ -49,6 +49,7 @@
     {
       rawInput = new RawInput(handle);
       rawInput.Keyboard.DevicesChanged += Keyboard_DevicesChanged;
+      rawInput.Keyboard.EnumerateDevices();
     }
     #endregion
 

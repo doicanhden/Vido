@@ -25,9 +25,10 @@
     {
       this.parking = parking;
       this.captureFactory = captureFactory;
-      this.devicesEnumlator = devicesEnumlator;
-      this.devicesEnumlator.DevicesChanged += devicesEnumlator_DevicesChanged;
-
+      // COMMENETED FOR TESTING
+      //this.devicesEnumlator = devicesEnumlator;
+      //this.devicesEnumlator.DevicesChanged += devicesEnumlator_DevicesChanged;
+      
       this.parking.Settings.SettingChanged += Settings_SettingChanged;
       if (LaneConfigs == null)
       {
@@ -49,7 +50,7 @@
     #region Event Handlers
     private void devicesEnumlator_DevicesChanged(object sender, DevicesChangedEventArgs e)
     {
-      InitLanes();
+//    InitLanes();
     }
     private void Settings_SettingChanged(object sender, SettingChangedEventArgs e)
     {
@@ -97,32 +98,41 @@
     private void InitLanes()
     {
       lanes.Clear();
-      var uids = devicesEnumlator.GetDevicesList();
+      //COMMENTED FOR TESTING
+      //  var uids = devicesEnumlator.GetDevicesList();
 
       foreach (var cfg in LaneConfigs)
       {
         var lane = new Lane()
         {
-          FrontCamera = captureFactory.Create(cfg.FrontCamera),
-          BackCamera = captureFactory.Create(cfg.BackCamera),
+          //COMMENTED FOR TESTING
+          //FrontCamera = captureFactory.Create(cfg.FrontCamera),
+          //BackCamera = captureFactory.Create(cfg.BackCamera),
           Direction = cfg.Direction,
           NumberOfRetries = cfg.NumberOfRetries,
           State = cfg.State
+          
         };
 
-        if (uids != null)
-        {
-          foreach (var uid in uids)
-          {
-            if (cfg.UidDeviceName == uid.Name)
-            {
-              lane.UidDevice = uid;
-              break;
-            }
-          }
-        }
+        lane.UidDeviceName = cfg.UidDeviceName;
+
+        /// TODO:
+        /// Try lane.UidDevice = devicesManagement.Register(cfg.UidDeviceName);
+
+        //if (uids != null)
+        //{
+        //  foreach (var uid in uids)
+        //  {
+        //    if (cfg.UidDeviceName == uid.Name)
+        //    {
+        //      lane.UidDevice = uid;
+        //      break;
+        //    }
+        //  }
+        //}
 
         lane.Entry += lane_Entry;
+        lane.Start();
 
         lanes.Add(lane);
       }

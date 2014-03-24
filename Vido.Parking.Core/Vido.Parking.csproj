@@ -99,6 +99,10 @@
       <Project>{cce14edc-a03f-4056-ab9d-1ea235f392d5}</Project>
       <Name>Vido.Capture</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vido.RawInput\Vido.RawInput.csproj">
+      <Project>{d3edee2b-4d2a-4395-80aa-60fe75549e19}</Project>
+      <Name>Vido.RawInput</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataSet\" />

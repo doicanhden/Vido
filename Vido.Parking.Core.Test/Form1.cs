@@ -2,6 +2,7 @@
 using Vido.Capture;
 using Vido.Parking.Test;
 using Vido.Parking.Interfaces;
+using Vido.Capture.Enums;
 
 namespace Vido.Parking.Test
 {
@@ -32,7 +33,7 @@ namespace Vido.Parking.Test
       var settings = new Settings(fileName);
 
       settings.Set(SettingKeys.RootImageDirectoryName, Application.StartupPath + @"\Images");
-      settings.Set(SettingKeys.DailyDirectoryFormat, "{0}YYYY{0}MM{0}DD");
+      settings.Set(SettingKeys.DailyDirectoryFormat, "{0}yyyy{0}MM{0}dd");
       settings.Set(SettingKeys.BackImageNameFormat , "{0}{1}{2}{3}B.jpg");
       settings.Set(SettingKeys.FrontImageNameFormat, "{0}{1}{2}{3}F.jpg");
       settings.Set(SettingKeys.InFormat , "I");
@@ -44,14 +45,21 @@ namespace Vido.Parking.Test
         {
           BackCamera = new CaptureConfigs()
           {
-            Source = @"http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240"
+            Source = @"http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240",
+            Coding = Coding.MJpeg,
+            Username = "admin",
+            Password = "admin"
           },
           FrontCamera = new CaptureConfigs()
           {
-
+            Source = @"http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240",
+            Coding = Coding.MJpeg,
+            Username = "admin",
+            Password = "admin"
           },
           Direction = Enums.Direction.In,
-          UidDeviceName = "DDD"
+          UidDeviceName = @"\\?\HID#VID_0E6A&PID_030B#6&bb84ee5&1&0000#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}",
+          NumberOfRetries = 3
         },
         new LaneConfigs()
         {

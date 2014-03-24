@@ -11,9 +11,9 @@
 
     /// <summary>
     /// {0} - Directory separator char,
-    /// YYYY - year,
+    /// yyyy - year,
     /// MM - month,
-    /// DD - day
+    /// dd - day
     /// </summary>
     public const string DailyDirectoryFormat = "DailyDirectoryNameFormat";
 
