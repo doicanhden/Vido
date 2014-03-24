@@ -25,10 +25,9 @@
     {
       this.parking = parking;
       this.captureFactory = captureFactory;
-      // COMMENETED FOR TESTING
-      //this.devicesEnumlator = devicesEnumlator;
-      //this.devicesEnumlator.DevicesChanged += devicesEnumlator_DevicesChanged;
-      
+      this.devicesEnumlator = devicesEnumlator;
+
+
       this.parking.Settings.SettingChanged += Settings_SettingChanged;
       if (LaneConfigs == null)
       {
@@ -48,10 +47,6 @@
     #endregion
 
     #region Event Handlers
-    private void devicesEnumlator_DevicesChanged(object sender, DevicesChangedEventArgs e)
-    {
-//    InitLanes();
-    }
     private void Settings_SettingChanged(object sender, SettingChangedEventArgs e)
     {
       switch (e.SettingKey)
@@ -97,44 +92,36 @@
 
     private void InitLanes()
     {
-      lanes.Clear();
-      //COMMENTED FOR TESTING
-      //  var uids = devicesEnumlator.GetDevicesList();
-
-      foreach (var cfg in LaneConfigs)
+      if (lanes.Count > 0)
       {
-        var lane = new Lane()
+        for (int i = 0; i < lanes.Count; ++i)
         {
-          //COMMENTED FOR TESTING
-          //FrontCamera = captureFactory.Create(cfg.FrontCamera),
-          //BackCamera = captureFactory.Create(cfg.BackCamera),
-          Direction = cfg.Direction,
-          NumberOfRetries = cfg.NumberOfRetries,
-          State = cfg.State
-          
-        };
+          devicesEnumlator.Unregister(lanes[i].UidDevice);
+        }
 
-        lane.UidDeviceName = cfg.UidDeviceName;
+        lanes.Clear();
+      }
 
-        /// TODO:
-        /// Try lane.UidDevice = devicesManagement.Register(cfg.UidDeviceName);
+      if (LaneConfigs != null)
+      {
+        foreach (var cfg in LaneConfigs)
+        {
+          var lane = new Lane()
+          {
+            //COMMENTED FOR TESTING
+            FrontCamera = captureFactory.Create(cfg.FrontCamera),
+            BackCamera = captureFactory.Create(cfg.BackCamera),
+            Direction = cfg.Direction,
+            NumberOfRetries = cfg.NumberOfRetries,
+            State = cfg.State,
+            UidDevice = devicesEnumlator.Register(cfg.UidDeviceName)
+          };
 
-        //if (uids != null)
-        //{
-        //  foreach (var uid in uids)
-        //  {
-        //    if (cfg.UidDeviceName == uid.Name)
-        //    {
-        //      lane.UidDevice = uid;
-        //      break;
-        //    }
-        //  }
-        //}
+          lane.Entry += lane_Entry;
+          lane.Start();
 
-        lane.Entry += lane_Entry;
-        lane.Start();
-
-        lanes.Add(lane);
+          lanes.Add(lane);
+        }
       }
     }
 

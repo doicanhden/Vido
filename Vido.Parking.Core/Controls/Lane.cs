@@ -56,14 +56,14 @@
     }
     #endregion
 
-    #region TEST
-    public string UidDeviceName { get; set; }
-    public void keyboard_KeyDown(object sender, Vido.RawInput.Events.KeyEventArgs e)
-    {
-      IKeyboard s = sender as IKeyboard;
-      Console.WriteLine(string.Format("Lane: {2} Keyboard: {0}, Key down: {1}", s.Description, e.KeyValue, UidDeviceName));
-    }
-    #endregion
+    //#region TEST
+    //public string UidDeviceName { get; set; }
+    //public void keyboard_KeyDown(object sender, Vido.RawInput.Events.KeyEventArgs e)
+    //{
+    //  IKeyboard s = sender as IKeyboard;
+    //  Console.WriteLine(string.Format("Lane: {2} Keyboard: {0}, Key down: {1}", s.Description, e.KeyValue, UidDeviceName));
+    //}
+    //#endregion
 
 
     #region Public Methods
@@ -137,16 +137,18 @@
 
     private Image TryCapture(ICapture capture)
     {
-      for (int i = 0; i < NumberOfRetries; ++i)
+      if (capture != null)
       {
-        var image = capture.Take();
-        if (image != null)
+        for (int i = 0; i < NumberOfRetries; ++i)
         {
-          return (image);
+          var image = capture.Take();
+          if (image != null)
+          {
+            return (image);
+          }
+          Thread.Sleep(250);
         }
-        Thread.Sleep(250);
       }
-
       throw new System.InvalidOperationException("Can't capture from Device");
     }
   }

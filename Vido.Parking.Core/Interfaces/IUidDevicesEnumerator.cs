@@ -8,5 +8,8 @@
   {
     event DevicesChangedEventHandler DevicesChanged;
     IList<IUidDevice> GetDevicesList();
+
+    IUidDevice Register(string deviceName);
+    void Unregister(IUidDevice device);
   }
 }

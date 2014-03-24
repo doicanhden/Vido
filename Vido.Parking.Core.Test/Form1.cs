@@ -22,6 +22,18 @@ namespace Vido.Parking.Test
 
       controller = new Controller(parking, captureFactory, RFIDReaderEnumerator.GetInstance(Handle));
       controller.Lanes.CollectionChanged += Lanes_CollectionChanged;
+      controller.Lanes[0].BackCamera.NewFrame += BackCamera_NewFrame;
+      controller.Lanes[0].FrontCamera.NewFrame += FrontCamera_NewFrame;
+    }
+
+    void FrontCamera_NewFrame(object sender, Capture.Events.NewFrameEventArgs e)
+    {
+      pictureBox2.Image = e.Bitmap;
+    }
+
+    void BackCamera_NewFrame(object sender, Capture.Events.NewFrameEventArgs e)
+    {
+      pictureBox1.Image = e.Bitmap;
     }
 
     private void Lanes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -39,7 +51,7 @@ namespace Vido.Parking.Test
       settings.Set(SettingKeys.InFormat , "I");
       settings.Set(SettingKeys.OutFormat, "O");
 
-      settings.Set(SettingKeys.Lanes, new LaneConfigs[2]
+      settings.Set(SettingKeys.Lanes, new LaneConfigs[1]
       {
         new LaneConfigs()
         {
@@ -52,27 +64,15 @@ namespace Vido.Parking.Test
           },
           FrontCamera = new CaptureConfigs()
           {
-            Source = @"http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240",
+            Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
             Coding = Coding.MJpeg,
             Username = "admin",
             Password = "admin"
           },
           Direction = Enums.Direction.In,
           UidDeviceName = @"\\?\HID#VID_0E6A&PID_030B#6&bb84ee5&1&0000#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}",
-          NumberOfRetries = 3
-        },
-        new LaneConfigs()
-        {
-          BackCamera = new CaptureConfigs()
-          {
-            Source = @"http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240"
-          },
-          FrontCamera = new CaptureConfigs()
-          {
-
-          },
-          Direction = Enums.Direction.Out,
-          UidDeviceName = "DDD"
+          NumberOfRetries = 3,
+          State = Enums.LaneState.Ready
         }
       });
 
