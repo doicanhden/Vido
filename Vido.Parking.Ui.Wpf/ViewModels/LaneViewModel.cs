@@ -103,7 +103,8 @@
     }
     private void StopExecute(object obj)
     {
-
+      var button = obj as System.Windows.Controls.Button;
+      button.Content = "Xì tốp";
     }
     #endregion
   }
