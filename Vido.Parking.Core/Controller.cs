@@ -16,12 +16,12 @@
     #region Data Members
     private readonly IParking parking = null;
     private readonly ICaptureFactory captureFactory = null;
-    private readonly IUidDevicesEnumerator devicesEnumlator = null;
+    private readonly IUidDeviceList devicesEnumlator = null;
     private readonly ObservableCollection<Lane> lanes = new ObservableCollection<Lane>();
     #endregion
 
     #region Constructors
-    public Controller(IParking parking, ICaptureFactory captureFactory, IUidDevicesEnumerator devicesEnumlator)
+    public Controller(IParking parking, ICaptureFactory captureFactory, IUidDeviceList devicesEnumlator)
     {
       this.parking = parking;
       this.captureFactory = captureFactory;

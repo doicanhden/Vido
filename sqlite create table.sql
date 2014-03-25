@@ -9,24 +9,29 @@ CREATE TABLE Card
 (
 	CardId TEXT PRIMARY KEY,
 	CardTypeId INTEGER,
-	IsUse NUMERIC,
+	IsUse INteger,
 
 	FOREIGN KEY(CardTypeId) REFERENCES CardType(CardTypeId)
 );
 
 CREATE TABLE EntryExit
 (
-	CardId TEXT PRIMARY KEY,
+	EntryExitId int primary key,
+
+	CardId TEXT,
+	Price NUMERIC,
 
 	EntryPlateNumber TEXT,
 	EntryTime TEXT,
-	EntryPlateImage TEXT,
-	EntryFaceImage TEXT,
+	EntryBackImage TEXT,
+	EntryFrontImage TEXT,
 
 	ExitPlateNumber TEXT,
 	ExitTime TEXT,
-	ExitPlateImage TEXT,
-	ExitFaceImage TEXT
+	ExitBackImage TEXT,
+	ExitFrontImage TEXT,
+
+	FOREIGN KEY(CardId) REFERENCES Card(CardId)
 );
 
 INSERT INTO CardType(CardTypeId, Name, Description)

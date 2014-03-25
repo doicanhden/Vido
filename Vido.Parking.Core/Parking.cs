@@ -7,11 +7,40 @@
   using System.Text;
   using Vido.Parking.Interfaces;
   using Vido.Parking.Utilities;
+  using System.Linq;
 
   public class Parking : IParking
   {
+    private VidoParkingEntities entities = new VidoParkingEntities();
+    
     public ISettingsProvider Settings { get; set; }
 
+    public bool AddCard(byte[] data, long CardTypeId, bool isUse = true)
+    {
+      try
+      {
+        entities.Card.Add(new Card()
+        {
+          CardId = EncodeData(data),
+          CardTypeId = CardTypeId,
+          IsUse = (isUse ? 1 : 0)
+        });
+
+        return (true);
+      }
+      catch
+      {
+        throw;
+      }
+    }
+    public bool IsUse(byte[] data)
+    {
+      var isUses = from Cards in entities.Card
+                   where Cards.CardId == EncodeData(data)
+                   select Cards.IsUse;
+
+      return (!(isUses == null || isUses.All((x) => x.Value == 0)));
+    }
     public bool CanExit(byte[] data, string plateNumber)
     {
       return (true);
@@ -25,7 +54,7 @@
       CreateDirectoryIfNotExists(dailyDirectoryName);
 
       var timeString = time.ToString("HHmmss");
-      var dataBase64 = Convert.ToBase64String(data);
+      var dataBase64 = EncodeData(data);
 
       dailyDirectoryName += Path.DirectorySeparatorChar;
 
@@ -48,6 +77,14 @@
 
     public bool CanEntry(byte[] data, string plateNumber)
     {
+      var isUses = (
+        from cards in entities.Card
+        where cards.CardId == EncodeData(data) && (
+          from entryExit in cards.EntryExit
+          where entryExit.CardId != cards.CardId
+          select entryExit) == null
+        select cards.IsUse);
+
       return (true);
     }
     
@@ -59,7 +96,7 @@
       CreateDirectoryIfNotExists(dailyDirectoryName);
 
       var timeString = time.ToString("HHmmss");
-      var dataBase64 = Convert.ToBase64String(data);
+      var dataBase64 = EncodeData(data);
 
       dailyDirectoryName += Path.DirectorySeparatorChar;
 
@@ -86,6 +123,11 @@
         Directory.CreateDirectory(directoryName);
       }
     }
+    private static string EncodeData(byte[] data)
+    {
+      return (Convert.ToBase64String(data));
+    }
+
     private string DailyDirectoryName(DateTime time)
     {
       var dailyDirectoryName = string.Empty;
@@ -97,6 +139,8 @@
 
       return (RootImageDirectoryName + time.ToString(dailyDirectoryName));
     }
+
+    #region Setting Accessors
     private string InFormat
     {
       get { return (Settings.Query<string>(SettingKeys.InFormat)); }
@@ -121,5 +165,6 @@
     {
       get { return (Settings.Query<string>(SettingKeys.BackImageNameFormat)); }
     }
+    #endregion
   }
 }
