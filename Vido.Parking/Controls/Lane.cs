@@ -128,7 +128,7 @@
 
 //      task.Start();
       }
-      catch (InvalidOperationException ex)
+      catch
       {
         throw;
       }

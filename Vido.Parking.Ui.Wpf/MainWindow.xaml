@@ -1,0 +1,17 @@
+﻿<Window
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:Views="clr-namespace:Vido.Parking.Ui.Wpf.Views"
+  xmlns:ViewModels="clr-namespace:Vido.Parking.Ui.Wpf.ViewModels"
+  x:Class="Vido.Parking.Ui.Wpf.MainWindow"
+  Title="MainWindow" Height="633" Width="961">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="150*"/>
+      <ColumnDefinition Width="367*"/>
+    </Grid.ColumnDefinitions>
+
+    <Views:LaneView HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="475" Width="350" x:Name="TestLane1"/>
+
+  </Grid>
+</Window>
