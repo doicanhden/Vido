@@ -39,7 +39,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DSLaneConfig.cs">
+      <DependentUpon>DSLaneConfig.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DSLaneConfig.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DSLaneConfig.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DSSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DSLaneConfig.xsc">
+      <DependentUpon>DSLaneConfig.xsd</DependentUpon>
+    </None>
+    <None Include="DSLaneConfig.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DSLaneConfig.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DSLaneConfig.xss">
+      <DependentUpon>DSLaneConfig.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Vido.Parking\Vido.Parking.csproj">
+      <Project>{c9c6b46e-6d5e-4dac-940e-a800200f6b22}</Project>
+      <Name>Vido.Parking</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
