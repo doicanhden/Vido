@@ -23,7 +23,7 @@
 
     #region Public Properties
     /// <summary>
-    /// Thời gian phương tiện vào bãi.
+    /// Thời gian phương tiện vào/ra bãi.
     /// </summary>
     public DateTime Time { get; set; }
 
