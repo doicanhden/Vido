@@ -44,11 +44,13 @@
     <Compile Include="ByteArrayUtils.cs" />
     <Compile Include="CaptureConfigs.cs" />
     <Compile Include="CaptureFactory.cs" />
+    <Compile Include="CaptureList.cs" />
     <Compile Include="Enums\Coding.cs" />
     <Compile Include="Events\NewFrame.cs" />
     <Compile Include="Interfaces\ICapture.cs" />
     <Compile Include="Interfaces\ICaptureConfigs.cs" />
     <Compile Include="Interfaces\ICaptureFactory.cs" />
+    <Compile Include="Interfaces\ICaptureList.cs" />
     <Compile Include="Interfaces\IQueryFrame.cs" />
     <Compile Include="JpegStream.cs" />
     <Compile Include="MJpegStream.cs" />

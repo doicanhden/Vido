@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,8 +57,10 @@
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
+    <Compile Include="InputDeviceList.cs" />
     <Compile Include="Utilities\NotificationObject.cs" />
     <Compile Include="ViewModels\LaneViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\LaneView.xaml.cs">
       <DependentUpon>LaneView.xaml</DependentUpon>
     </Compile>
@@ -102,7 +105,20 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Vido.Capture\Vido.Capture.csproj">
+      <Project>{cce14edc-a03f-4056-ab9d-1ea235f392d5}</Project>
+      <Name>Vido.Capture</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vido.Parking\Vido.Parking.csproj">
+      <Project>{c9c6b46e-6d5e-4dac-940e-a800200f6b22}</Project>
+      <Name>Vido.Parking</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vido.RawInput\Vido.RawInput.csproj">
+      <Project>{d3edee2b-4d2a-4395-80aa-60fe75549e19}</Project>
+      <Name>Vido.RawInput</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

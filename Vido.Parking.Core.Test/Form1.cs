@@ -4,6 +4,7 @@ using Vido.Parking.Test;
 using Vido.Parking.Interfaces;
 using Vido.Capture.Enums;
 using Vido.Parking.Core.Test;
+using Vido.Parking.Controls;
 
 namespace Vido.Parking.Test
 {
@@ -21,16 +22,7 @@ namespace Vido.Parking.Test
       parking.Settings = DefaultSetting(Application.StartupPath + @"\settings.xml");
       parking.Settings.Save();
 
-      controller = new Controller(parking, captureFactory, InputDeviceList.GetInstance(Handle));
-      controller.Lanes.CollectionChanged += Lanes_CollectionChanged;
-      controller.Lanes[0].BackCamera.NewFrame += BackCamera_NewFrame;
-      controller.Lanes[0].FrontCamera.NewFrame += FrontCamera_NewFrame;
-
-      VidoParkingEntities2 entities = new VidoParkingEntities2();
-      entities.EntryExit.Add(
-        new EntryExit() { CardId = "0228282404", EntryPlateNumber="59S121893" }
-        );
-      entities.SaveChanges();
+      controller = new Controller(parking, InputDeviceList.GetInstance(Handle), captureFactory);
     }
 
     void FrontCamera_NewFrame(object sender, Capture.Events.NewFrameEventArgs e)

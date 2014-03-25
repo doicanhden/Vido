@@ -8,7 +8,7 @@
   {
     #region Public Properties
     /// <summary>
-    /// Gets data.
+    /// Dữ liệu.
     /// </summary>
     public byte[] Data { get; private set; }
     #endregion

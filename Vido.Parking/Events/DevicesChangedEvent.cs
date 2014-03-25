@@ -9,12 +9,19 @@
   public class DevicesChangedEventArgs : EventArgs
   {
     #region Public Properties
-    public IList<IUidDevice> OldDevices { get; private set; }
-    public IList<IUidDevice> NewDevices { get; private set; }
+    /// <summary>
+    /// Danh sách thiết bị cũ.
+    /// </summary>
+    public ICollection<IUidDevice> OldDevices { get; private set; }
+
+    /// <summary>
+    /// Danh sách thiết bị mới.
+    /// </summary>
+    public ICollection<IUidDevice> NewDevices { get; private set; }
     #endregion
 
     #region Constructors
-    public DevicesChangedEventArgs(IList<IUidDevice> oldDevices, IList<IUidDevice> newDevices)
+    public DevicesChangedEventArgs(ICollection<IUidDevice> oldDevices, ICollection<IUidDevice> newDevices)
     {
       this.OldDevices = oldDevices;
       this.NewDevices = newDevices;

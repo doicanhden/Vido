@@ -6,7 +6,7 @@
   public interface IRawKeyboard
   {
     event DevicesChangedEventHandler DevicesChanged;
-    IList<IKeyboard> Devices { get; }
+    ICollection<IKeyboard> Devices { get; }
 
     int EnumerateDevices();
   }

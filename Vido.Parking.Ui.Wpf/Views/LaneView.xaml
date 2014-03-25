@@ -5,96 +5,96 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
   xmlns:Converters="clr-namespace:Vido.Parking.Ui.Wpf.Converters"
-  mc:Ignorable="d" Height="373" Width="370">
+  mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" MinWidth="346" MinHeight="364" MaxWidth="666" MaxHeight="604">
   <UserControl.Resources>
     <Converters:ImageConverter x:Key="imageConverter"/>
   </UserControl.Resources>
-  <Border BorderThickness="2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-  <Grid DataContext="{Binding}">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="4*"/>
-      <RowDefinition Height="1*"/>
-      <RowDefinition Height="4*"/>
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition/>
-      <ColumnDefinition/>
-    </Grid.ColumnDefinitions>
-
-    <!-- Lane Name & Id number-->
-    <Grid Grid.ColumnSpan="2">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="2*"/>
-        <ColumnDefinition Width="4*"/>
-        <ColumnDefinition Width="4*"/>
-      </Grid.ColumnDefinitions>
-      <TextBlock Grid.Column="0" Margin="2" TextWrapping="WrapWithOverflow" Text="{Binding LaneCode}" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center"/>
-      <StackPanel Grid.Column="1">
-        <TextBlock Text="Card ID" TextAlignment="Center"/>
-        <TextBox Margin="4,0,4,2" Text="{Binding CardID}"/>
-      </StackPanel>
-      <StackPanel Grid.Column="2">
-        <TextBlock Text="User Data" TextAlignment="Center"/>
-        <TextBox Margin="4,0,4,2" Text="{Binding UserData}"/>
-      </StackPanel>
-
-    </Grid>
-    <!-- Videos -->
-    <Grid Grid.Column="0" Grid.Row="1">
+  <Border BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+    <Grid DataContext="{Binding}">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
-      <TextBlock Grid.Row="0" Text="Front Cam" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      
+      <!-- Lane Name & Id number-->
+      <Grid Grid.ColumnSpan="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="4*"/>
+          <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Margin="2" TextWrapping="WrapWithOverflow" Text="{Binding LaneCode}" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Card ID" TextAlignment="Center"/>
+          <TextBox Margin="4,0,4,2" Text="{Binding CardID}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2">
+          <TextBlock Text="User Data" TextAlignment="Center"/>
+          <TextBox Margin="4,0,4,2" Text="{Binding UserData}"/>
+        </StackPanel>
+      </Grid>
+      
+      <!-- Videos -->
+      <Grid Grid.Column="0" Grid.Row="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Front Cam" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
           <Image Source="{Binding FrontImageCamera, Converter={StaticResource imageConverter}}" Stretch="Fill"/>
         </Border>
-    </Grid>
-    <Grid Grid.Column="2" Grid.Row="1">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-      <TextBlock Grid.Row="0" Text="Back Cam" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+      </Grid>
+      <Grid Grid.Column="2" Grid.Row="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Back Cam" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
           <Image Source="{Binding FrontImageCamera, Converter={StaticResource imageConverter}}" Stretch="Fill"/>
         </Border>
-    </Grid>
+      </Grid>
 
-    <!-- Message & Buttons -->
-    <Grid Grid.Row="2" Grid.ColumnSpan="2">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="8*"/>
-        <ColumnDefinition Width="2*"/>
-      </Grid.ColumnDefinitions>
-      <TextBlock Grid.Column="0" Margin="5,0,5,0"/>
-      <Button Grid.Column="1" Margin="5" Content="Stop"
-              Command="{Binding StopCommand}"
-              CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
-    </Grid>
-
-    <!-- Images -->
-    <Grid Grid.Column="0" Grid.Row="3">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-      <TextBlock Grid.Row="0" Text="Front Image Saved" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+      <!-- Message & Buttons -->
+      <Grid Grid.Row="2" Grid.ColumnSpan="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="8*"/>
+          <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Margin="5"/>
+        <Button Grid.Column="1" Margin="5" Content="Stop"
+                Command="{Binding StopCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+      </Grid>
+      
+      <!-- Images -->
+      <Grid Grid.Column="0" Grid.Row="3">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Front Image Saved" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
           <Image Source="{Binding FrontImageSaved, Converter={StaticResource imageConverter}}" Stretch="Fill"/>
         </Border>
       </Grid>
-    <Grid Grid.Column="2" Grid.Row="3">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
-      <TextBlock Grid.Row="0" Text="Back Image Saved" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+      <Grid Grid.Column="2" Grid.Row="3">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Back Image Saved" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
           <Image Source="{Binding BackImageSaved, Converter={StaticResource imageConverter}}" Stretch="Fill"/>
         </Border>
       </Grid>
-  </Grid>
+    </Grid>
   </Border>
 </UserControl>

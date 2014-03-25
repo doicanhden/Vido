@@ -4,10 +4,13 @@
 
   public interface IUidDevice
   {
+    /// <summary>
+    /// Sự kiện kích thoạt khi có dữ liệu đến từ thiết bị.
+    /// </summary>
     event DataInEventHandler DataIn;
 
     /// <summary>
-    /// Gets or sets Name of Uid device
+    /// Tên của thiết bị sinh dữ liệu Uid.
     /// </summary>
     string Name { get; set; }
   }

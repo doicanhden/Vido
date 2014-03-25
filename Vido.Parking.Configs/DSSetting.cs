@@ -38,9 +38,24 @@ namespace Vido.Parking.Configs
 
     public T Query<T>(string key)
     {
-      LaneConfigs[] laneCfgs = new LaneConfigs[dsLaneConfig.Tables["LaneConfig"].Rows.Count];
-      return laneCfgs;
-      
+      var rows = dsLaneConfig.Tables["LaneConfig"].Rows;
+      LaneConfigs[] laneCfgs = new LaneConfigs[rows.Count];
+
+      for (int i = 0; i < rows.Count; i++)
+      {
+        laneCfgs[i] = new LaneConfigs()
+        {
+          Direction = Convert.ToInt16(rows[i]["Direction"]),
+          BackCamera = new Capture.CaptureConfigs()
+          {
+
+          }
+
+        };
+      }
+
+      return (T)Convert.ChangeType(laneCfgs, typeof( T));
     }
   }
+
 }

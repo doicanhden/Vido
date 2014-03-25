@@ -11,7 +11,8 @@
       <ColumnDefinition Width="367*"/>
     </Grid.ColumnDefinitions>
 
-    <Views:LaneView HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="475" Width="350" x:Name="TestLane1"/>
+    <Views:LaneView HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" x:Name="TestLane1" Grid.Column="1"/>
+    <Image Height="120" Width="160"/>
 
   </Grid>
 </Window>

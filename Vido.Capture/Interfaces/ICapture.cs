@@ -1,9 +1,10 @@
 ﻿namespace Vido.Capture.Interfaces
 {
+  using System;
   using System.Drawing;
   using Vido.Capture.Events;
 
-  public interface ICapture
+  public interface ICapture : IDisposable
   {
     event NewFrameEventHandler NewFrame;
     int FramesReceived { get; }

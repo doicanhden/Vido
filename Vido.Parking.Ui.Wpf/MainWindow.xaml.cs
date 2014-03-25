@@ -22,18 +22,6 @@ namespace Vido.Parking.Ui.Wpf
     public MainWindow()
     {
       InitializeComponent();
-      var dt = new ViewModels.LaneViewModel()
-      {
-        LaneCode = "0001",
-        Message = "Xin Chào",
-        UserData = "59S121893",
-        CardID = "0123456"
-      };
-      dt.BackImageSaved = System.Drawing.Bitmap.FromFile(@"F:\Khanh\Desktop\Hình0299.jpg");
-      dt.FrontImageSaved = System.Drawing.Bitmap.FromFile(@"F:\Khanh\Desktop\Hình0299.jpg");
-      dt.FrontImageCamera = System.Drawing.Bitmap.FromFile(@"F:\Khanh\Desktop\report.jpg");
-      dt.BackImageCamera = System.Drawing.Bitmap.FromFile(@"F:\Khanh\Desktop\report.jpg");
-      TestLane1.DataContext = dt;
     }
   }
 }

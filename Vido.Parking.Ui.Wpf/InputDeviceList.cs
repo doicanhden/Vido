@@ -33,6 +33,7 @@ namespace Vido.Parking
 
     #region Implementation of IUidDevicesEnumerator 
     public event DevicesChangedEventHandler DevicesChanged;
+
     public ICollection<IUidDevice> Devices
     {
       get

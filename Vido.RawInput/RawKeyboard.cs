@@ -39,7 +39,7 @@
 
     public event DevicesChangedEventHandler DevicesChanged;
 
-    public IList<IKeyboard> Devices
+    public ICollection<IKeyboard> Devices
     {
       get { return (devices); }
     }
@@ -117,16 +117,19 @@
 
         Marshal.FreeHGlobal(pRawInputDeviceList);
 
+
+        var oldDevices = devices;
         lock (objLock)
         {
-          if (DevicesChanged != null)
-          {
-            DevicesChanged(this, new DevicesChangedEventArgs(devices, newDevices));
-          }
-
           devices = newDevices;
-          return (devices.Count);
         }
+
+        if (DevicesChanged != null)
+        {
+          DevicesChanged(this, new DevicesChangedEventArgs(oldDevices, devices));
+        }
+
+        return (devices.Count);
       }
 
       return (0);

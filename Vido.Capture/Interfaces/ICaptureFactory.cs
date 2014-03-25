@@ -2,6 +2,6 @@
 {
   public interface ICaptureFactory
   {
-    ICapture Create(CaptureConfigs configs);
+    ICapture Create(ICaptureConfigs configs);
   }
 }

@@ -8,7 +8,7 @@
   public class EntryEventArgs : EventArgs
   {
     #region Public Properties
-    public byte[] Uid { get; private set; }
+    public byte[] Data { get; private set; }
     public Image FrontImage { get; private set; }
     public Image BackImage { get; private set; }
     public bool Allow { get; set; }
@@ -18,7 +18,7 @@
     #region Constructors
     public EntryEventArgs(byte[] uid, string plateNumber, Image frontImage, Image backImage)
     {
-      this.Uid = uid;
+      this.Data = uid;
       this.PlateNumber = plateNumber;
       this.FrontImage = frontImage;
       this.BackImage = backImage;

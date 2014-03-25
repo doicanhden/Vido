@@ -9,7 +9,7 @@
     /// </summary>
     /// <param name="configs"></param>
     /// <returns></returns>
-    public ICapture Create(CaptureConfigs configs)
+    public virtual ICapture Create(ICaptureConfigs configs)
     {
       ICapture capture = null;
       if (configs != null)

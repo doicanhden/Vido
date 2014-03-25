@@ -1,6 +1,6 @@
 ﻿namespace Vido.Capture.Enums
 {
-  public enum Coding : int
+  public enum Coding
   {
     Unknown = 0,
     Jpeg = 1,

@@ -47,6 +47,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,7 +61,7 @@
     <Compile Include="CardType.cs">
       <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controller.cs" />
+    <Compile Include="Controls\Controller.cs" />
     <Compile Include="EntryExit.cs">
       <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>
@@ -68,7 +69,10 @@
     <Compile Include="Events\DevicesChangedEvent.cs" />
     <Compile Include="Events\EntryAllowedEvent.cs" />
     <Compile Include="Events\EntryEvent.cs" />
+    <Compile Include="Events\MessageEvent.cs" />
+    <Compile Include="Events\LastImagesEvent.cs" />
     <Compile Include="Events\SettingChangedEvent.cs" />
+    <Compile Include="Interfaces\InOutArgs.cs" />
     <Compile Include="Interfaces\IParking.cs" />
     <Compile Include="Interfaces\ISettingsProvider.cs" />
     <Compile Include="Interfaces\IUidDevice.cs" />

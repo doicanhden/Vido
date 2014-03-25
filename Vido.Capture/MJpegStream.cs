@@ -10,7 +10,7 @@
   using Vido.Capture.Interfaces;
   using Vido.Common;
 
-  public class MJpegStream : ICapture, IDisposable
+  public class MJpegStream : ICapture
   {
     #region Data Members
     private const int readSize = 1024;
