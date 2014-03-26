@@ -5,6 +5,7 @@ using Vido.Parking.Interfaces;
 using Vido.Capture.Enums;
 using Vido.Parking.Core.Test;
 using Vido.Parking.Controls;
+using System;
 
 namespace Vido.Parking.Test
 {

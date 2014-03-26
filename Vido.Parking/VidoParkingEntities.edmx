@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VidoParkingModel.Store" Provider="System.Data.SQLite" ProviderManifestToken="ISO8601" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="InOutRecord">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InUserId" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="InLaneCode" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="InTime" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="InBackImg" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="InFrontImg" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="OutUserId" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="OutLaneCode" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="OutTime" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="OutBackImg" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="OutFrontImg" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="CardId" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="UserData" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="2147483647" />
+          <Property Name="FeeValue" Type="decimal" Precision="53" Scale="0" />
+        </EntityType>
+        <EntityContainer Name="VidoParkingModelStoreContainer">
+          <EntitySet Name="InOutRecord" EntityType="Self.InOutRecord" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VidoParkingModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="InOutRecord">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InUserId" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="InLaneCode" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="InTime" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="InBackImg" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="InFrontImg" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="OutUserId" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="OutLaneCode" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="OutTime" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="OutBackImg" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="OutFrontImg" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="CardId" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="UserData" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="Comment" Type="String" MaxLength="2147483647" FixedLength="false" Unicode="true" />
+          <Property Name="FeeValue" Type="Decimal" Precision="53" Scale="0" />
+        </EntityType>
+        <EntityContainer Name="VidoParkingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="InOutRecord" EntityType="Self.InOutRecord" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VidoParkingModelStoreContainer" CdmEntityContainer="VidoParkingEntities">
+          <EntitySetMapping Name="InOutRecord">
+            <EntityTypeMapping TypeName="VidoParkingModel.InOutRecord">
+              <MappingFragment StoreEntitySet="InOutRecord">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="InUserId" ColumnName="InUserId" />
+                <ScalarProperty Name="InLaneCode" ColumnName="InLaneCode" />
+                <ScalarProperty Name="InTime" ColumnName="InTime" />
+                <ScalarProperty Name="InBackImg" ColumnName="InBackImg" />
+                <ScalarProperty Name="InFrontImg" ColumnName="InFrontImg" />
+                <ScalarProperty Name="OutUserId" ColumnName="OutUserId" />
+                <ScalarProperty Name="OutLaneCode" ColumnName="OutLaneCode" />
+                <ScalarProperty Name="OutTime" ColumnName="OutTime" />
+                <ScalarProperty Name="OutBackImg" ColumnName="OutBackImg" />
+                <ScalarProperty Name="OutFrontImg" ColumnName="OutFrontImg" />
+                <ScalarProperty Name="CardId" ColumnName="CardId" />
+                <ScalarProperty Name="UserData" ColumnName="UserData" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FeeValue" ColumnName="FeeValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -9,6 +9,7 @@
   using Vido.Parking.Enums;
   using Vido.Parking.Events;
   using Vido.Parking.Interfaces;
+  using Vido.Parking.Utilities;
 
   /// <summary>
   /// Controller: Điều khiển các Lane
@@ -145,15 +146,7 @@
     }
     #endregion
 
-    /// <summary>
-    /// Mã hóa dữ liệu Uid thành dạng có thể In
-    /// </summary>
-    /// <param name="data">Dữ liệu Uid</param>
-    /// <returns>Chuỗi có thể In</returns>
-    public static string EncodeData(byte[] data)
-    {
-      return (Convert.ToBase64String(data));
-    }
+
 
     #region Private Methods
     /// <summary>
@@ -173,7 +166,7 @@
           string.Format(DailyDirectoryFormat, Path.DirectorySeparatorChar));
 
         var timeString = inOutArgs.Time.ToString("HHmmss");
-        var dataBase64 = EncodeData(inOutArgs.Data);
+        var encodeData = Encode.EncodeData(inOutArgs.Data);
 
         CreateDirectoryIfNotExists(RootImageDirectoryName + dailyDirectory);
         dailyDirectory += Path.DirectorySeparatorChar;
@@ -181,7 +174,7 @@
         if (back != null)
         {
           inOutArgs.BackImage = dailyDirectory + string.Format(BackImageNameFormat,
-            timeString, inOutFormat, inOutArgs.PlateNumber, dataBase64);
+            timeString, inOutFormat, inOutArgs.PlateNumber, encodeData);
 
           back.Save(RootImageDirectoryName + inOutArgs.BackImage);
         }
@@ -189,7 +182,7 @@
         if (front != null)
         {
           inOutArgs.FrontImage = dailyDirectory + string.Format(FrontImageNameFormat,
-            timeString, inOutFormat, inOutArgs.PlateNumber, dataBase64);
+            timeString, inOutFormat, inOutArgs.PlateNumber, encodeData);
 
           front.Save(RootImageDirectoryName + inOutArgs.FrontImage);
         }

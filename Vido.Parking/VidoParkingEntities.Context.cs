@@ -25,8 +25,6 @@ namespace Vido.Parking
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Card> Card { get; set; }
-        public DbSet<CardType> CardType { get; set; }
-        public DbSet<EntryExit> EntryExit { get; set; }
+        public DbSet<InOutRecord> InOutRecord { get; set; }
     }
 }
