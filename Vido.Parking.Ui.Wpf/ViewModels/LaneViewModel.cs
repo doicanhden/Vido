@@ -7,17 +7,19 @@
 
   public class LaneViewModel : Utilities.NotificationObject
   {
+    #region Data Members
     private readonly Lane lane = null;
 
     private string laneCode = null;
     private string cardID = null;
     private string userData = null;
     private string message = null;
-    private ICommand stopCommand = null;
     private Image backImageSaved = null;
     private Image frontImageSaved = null;
     private Image frontImageCamera = null;
     private Image backImageCamera = null;
+    private ICommand stopCommand = null;
+    #endregion
 
     public LaneViewModel(Lane lane)
     {
@@ -25,8 +27,11 @@
         throw new ArgumentNullException("lane");
 
       this.lane = lane;
-      this.lane.LastImages += lane_LastImages;
       this.lane.Entry += lane_Entry;
+      this.lane.LastImages += lane_LastImages;
+      this.lane.NewMessage += lane_NewMessage;
+
+      this.LaneCode = lane.LaneCode;
 
       if (this.lane.BackCamera != null)
       {
@@ -38,6 +43,7 @@
         this.lane.FrontCamera.NewFrame += FrontCamera_NewFrame;
       }
     }
+
 
     public string LaneCode
     {
@@ -115,18 +121,28 @@
     }
 
     #region Event Handlers
-
     private void lane_Entry(object sender, Events.EntryEventArgs e)
     {
-      // TODO: Fix bad-code;
-      this.CardID = Convert.ToBase64String(e.Data);
+      this.CardID = Controller.EncodeData(e.Data);
       this.UserData = e.PlateNumber;
     }
 
     private void lane_LastImages(object sender, Events.LastImagesEventArgs e)
     {
-      FrontImageSaved = new Bitmap(e.Front);
-      BackImageCamera = new Bitmap(e.Back);
+      if (e.Back != null)
+      {
+        this.BackImageCamera = new Bitmap(e.Back);
+      }
+
+      if (e.Front != null)
+      {
+        this.FrontImageSaved = new Bitmap(e.Front);
+      }
+    }
+
+    private void lane_NewMessage(object sender, Events.NewMessageEventArgs e)
+    {
+      this.Message = e.Message;
     }
 
     private void BackCamera_NewFrame(object sender, Capture.Events.NewFrameEventArgs e)

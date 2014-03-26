@@ -15,15 +15,26 @@ namespace Vido.Parking.Controls
     #endregion
 
     #region Public Properties
-    /// <summary>
-    /// Camera Chụp ảnh Người điều khiển.
-    /// </summary>
-    public ICapture FrontCamera { get; set; }
 
     /// <summary>
-    /// Camera Chụp ảnh Biển số phương tiện.
+    /// Mã Làn.
     /// </summary>
-    public ICapture BackCamera  { get; set; }
+    public string LaneCode { get; set; }
+
+    /// <summary>
+    /// Trạng thái của Làn.
+    /// </summary>
+    public LaneState LaneState { get; set; }
+
+    /// <summary>
+    /// Hướng của Làn.
+    /// </summary>
+    public Direction Direction { get; set; }
+
+    /// <summary>
+    /// Số lần thử lại trước khi thông báo lỗi thiết bị.
+    /// </summary>
+    public int NumberOfRetries { get; set; }
 
     /// <summary>
     /// Thiết bị sinh dữ liệu Uid.
@@ -48,19 +59,14 @@ namespace Vido.Parking.Controls
     }
 
     /// <summary>
-    /// Hướng của Làn.
+    /// Camera Chụp ảnh Biển số phương tiện.
     /// </summary>
-    public Direction Direction { get; set; }
+    public ICapture BackCamera  { get; set; }
 
     /// <summary>
-    /// Trạng thái của Làn.
+    /// Camera Chụp ảnh Người điều khiển.
     /// </summary>
-    public LaneState State { get; set; }
-
-    /// <summary>
-    /// Số lần thử lại trước khi thông báo lỗi thiết bị.
-    /// </summary>
-    public int NumberOfRetries { get; set; }
+    public ICapture FrontCamera { get; set; }
     #endregion
 
     #region Public Events
@@ -85,12 +91,11 @@ namespace Vido.Parking.Controls
     public event MessageEventHandler NewMessage;
     #endregion
 
-
     #region Event Handlers
 
     private void uidDevice_DataIn(object sender, DataInEventArgs e)
     {
-      if (e.Data == null || Entry == null || State == LaneState.Stop)
+      if (e.Data == null || Entry == null || LaneState == LaneState.Stop)
       {
         return;
       }
@@ -130,18 +135,17 @@ namespace Vido.Parking.Controls
           }
           else
           {
-
             if (NewMessage != null)
             {
               // TODO: Fix Hard-Code.
               var message = string.Format("Phương tiện {0}, KHÔNG ĐƯỢC PHÉP ", plateNumber);
               if (Direction == Enums.Direction.In)
               {
-                NewMessage(this, new MessageEventArgs(message + " VÀO bãi."));
+                NewMessage(this, new NewMessageEventArgs(message + " VÀO bãi."));
               }
               else if (Direction == Enums.Direction.Out)
               {
-                NewMessage(this, new MessageEventArgs(message + " RA bãi."));
+                NewMessage(this, new NewMessageEventArgs(message + " RA bãi."));
               }
             }
           }
@@ -154,7 +158,7 @@ namespace Vido.Parking.Controls
         if (NewMessage != null)
         {
           // TODO: Fix Hard-Code.
-          NewMessage(this, new MessageEventArgs(
+          NewMessage(this, new NewMessageEventArgs(
             @"Không thể chụp ảnh từ camera.
             Vui lòng kiểm tra thiết bị"));
         }

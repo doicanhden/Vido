@@ -23,7 +23,7 @@
 
     #region Public Properties
     /// <summary>
-    /// Thời gian phương tiện vào/ra bãi.
+    /// Thời gian phương tiện Vào/Ra bãi.
     /// </summary>
     public DateTime Time { get; set; }
 
@@ -31,6 +31,11 @@
     /// Data từ thiết bị Uid.
     /// </summary>
     public byte[] Data { get; set; }
+
+    /// <summary>
+    /// Mã Làn phương tiện Vào/Ra.
+    /// </summary>
+    public string LaneCode { get; set; }
 
     /// <summary>
     /// Biển số phương tiện vào.

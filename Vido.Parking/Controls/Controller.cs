@@ -81,7 +81,7 @@
           {
             Direction = cfg.Direction,
             NumberOfRetries = cfg.NumberOfRetries,
-            State = cfg.State
+            LaneState = cfg.State
           };
 
           // Tạo các Camera cho Lane.
@@ -110,6 +110,7 @@
         {
           Time = DateTime.Now,
           Data = e.Data,
+          LaneCode = lane.LaneCode,
           PlateNumber = e.PlateNumber
         };
 
@@ -235,11 +236,11 @@
     {
       get { return (parking.Settings.Query<string>(SettingKeys.DailyDirectoryFormat)); }
     }
-    public string FrontImageNameFormat
+    private string FrontImageNameFormat
     {
       get { return (parking.Settings.Query<string>(SettingKeys.FrontImageNameFormat)); }
     }
-    public string BackImageNameFormat
+    private string BackImageNameFormat
     {
       get { return (parking.Settings.Query<string>(SettingKeys.BackImageNameFormat)); }
     }
