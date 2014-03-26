@@ -117,7 +117,7 @@
         {
           case Direction.In:
             if (parking.CanIn(e.Data, e.PlateNumber) &&
-              SaveImages(e.BackImage, e.FrontImage, OutFormat, ref inOut))
+              SaveImages(e.BackImage, e.FrontImage, InFormat, ref inOut))
             {
               parking.In(inOut);
             }
