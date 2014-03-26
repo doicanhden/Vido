@@ -5,7 +5,7 @@
   using System.IO;
   using Vido.Parking.Interfaces;
 
-  public class Parking : IParking
+  public class Parking : IParking, IDisposable
   {
     private VidoParkingEntities entities = new VidoParkingEntities();
 
@@ -54,5 +54,23 @@
     {
       // TODO: Update into DB.
     }
+
+    #region Implementation of IDisposable
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        // dispose managed resources
+        entities.Dispose();
+      }
+      // free native resources
+    }
+
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+    #endregion
   }
 }

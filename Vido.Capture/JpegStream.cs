@@ -40,23 +40,7 @@
     {
     }
     #endregion
-    #region Dispose
-    protected virtual void Dispose(bool disposing)
-    {
-      if (disposing)
-      {
-        // dispose managed resources
-        stopEvent.Dispose();
-      }
-      // free native resources
-    }
 
-    public void Dispose()
-    {
-      Dispose(true);
-      GC.SuppressFinalize(this);
-    }
-    #endregion
     #region Public Methods
     public bool Start()
     {
@@ -199,6 +183,24 @@
         if (stopEvent.WaitOne(0, true))
           break;
       }
+    }
+    #endregion
+
+    #region Implementation of IDisposable
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        // dispose managed resources
+        stopEvent.Dispose();
+      }
+      // free native resources
+    }
+
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
     }
     #endregion
   }

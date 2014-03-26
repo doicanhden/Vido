@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Card.cs">
       <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>

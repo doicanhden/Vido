@@ -42,13 +42,24 @@ namespace Vido.Capture
     #endregion
 
     #region Implementation of IDisposable
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        // dispose managed resources
+        foreach (var capture in Captures)
+        {
+          capture.Stop();
+          capture.Dispose();
+        }
+      }
+      // free native resources
+    }
+
     public void Dispose()
     {
-      foreach (var capture in Captures)
-      {
-        capture.Stop();
-        capture.Dispose();
-      }
+      Dispose(true);
+      GC.SuppressFinalize(this);
     }
     #endregion
   }

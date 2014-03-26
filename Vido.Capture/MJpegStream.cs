@@ -26,11 +26,11 @@
     private ICaptureConfigs configs = null;
     #endregion
 
-    #region Events
+    #region Public Events
     public event NewFrameEventHandler NewFrame;
     #endregion
 
-    #region Properties
+    #region Public Properties
     public ICaptureConfigs Configs
     {
       get { return (configs); }
@@ -55,32 +55,13 @@
     }
     #endregion
 
-    #region Constructors
+    #region Public Constructors
     public MJpegStream()
     {
     }
     #endregion
 
-    #region Dispose
-    protected virtual void Dispose(bool disposing)
-    {
-      if (disposing)
-      {
-        // dispose managed resources
-        stopEvent.Dispose();
-        reloadEvent.Dispose();
-      }
-      // free native resources
-    }
-
-    public void Dispose()
-    {
-      Dispose(true);
-      GC.SuppressFinalize(this);
-    }
-    #endregion
-    
-    #region Methods
+    #region Public Methods
     public bool Start()
     {
       if (Configs != null && thread == null)
@@ -126,6 +107,7 @@
     }
     #endregion
 
+    #region Private Methods
     private void WorkerThread()
     {
       byte[]  buffer = new byte[bufSize];  // buffer to read stream
@@ -318,5 +300,25 @@
           break;
       }
     }
+    #endregion
+
+    #region Implementation of IDisposable
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        // dispose managed resources
+        stopEvent.Dispose();
+        reloadEvent.Dispose();
+      }
+      // free native resources
+    }
+
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+    #endregion
   }
 }

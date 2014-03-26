@@ -9,7 +9,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
   using Vido.Capture.Enums;
   using Vido.Parking.Interfaces;
   using Vido.Parking.Controls;
-  public class MainViewModel
+  public class MainViewModel : IDisposable
   {
     private readonly InputDeviceList inputDevices = InputDeviceList.GetInstance(MainWindowsHandle);
     private readonly CaptureList captures;
@@ -96,5 +96,24 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
     {
       get { return (new WindowInteropHelper(Application.Current.MainWindow).Handle); }
     }
+
+    #region Implementation of IDisposable
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        // dispose managed resources
+        captures.Dispose();
+        parking.Dispose();
+      }
+      // free native resources
+    }
+
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+    #endregion
   }
 }
