@@ -3,16 +3,12 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:Views="clr-namespace:Vido.Parking.Ui.Wpf.Views"
   xmlns:ViewModels="clr-namespace:Vido.Parking.Ui.Wpf.ViewModels"
+  xmlns:metro="http://schemas.codeplex.com/elysium"
   x:Class="Vido.Parking.Ui.Wpf.MainWindow"
+  
   Title="MainWindow" Height="633" Width="961">
   <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="150*"/>
-      <ColumnDefinition Width="367*"/>
-    </Grid.ColumnDefinitions>
-
-    <Views:LaneView HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" x:Name="TestLane1" Grid.Column="1"/>
-    <Image Height="120" Width="160"/>
-
+    
   </Grid>
+
 </Window>
