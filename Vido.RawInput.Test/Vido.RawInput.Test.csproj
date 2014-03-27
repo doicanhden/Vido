@@ -76,10 +76,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Vido.Common\Vido.Common.csproj">
-      <Project>{9cad97aa-bc66-47b9-918d-5c147b11b60c}</Project>
-      <Name>Vido.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vido.RawInput\Vido.RawInput.csproj">
       <Project>{d3edee2b-4d2a-4395-80aa-60fe75549e19}</Project>
       <Name>Vido.RawInput</Name>

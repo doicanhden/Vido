@@ -2,8 +2,8 @@
 {
   using System;
   using System.Drawing;
+  using System.Drawing.Imaging;
   using System.IO;
-  using System.Threading.Tasks;
   using System.Windows.Input;
   using System.Windows.Media.Imaging;
   using Vido.Parking.Controls;
@@ -180,19 +180,19 @@
     private static BitmapSource ConvertToBitmapSource(Image image)
     {
       // TODO: FIX NULLLLLLLLLLLLLLLLLLLLL
-      //if (image != null)
-      //{
-      //  MemoryStream ms = new MemoryStream();
-      //  image.Save(ms, image.RawFormat);
-      //  ms.Seek(0, SeekOrigin.Begin);
+      if (image != null)
+      {
+        MemoryStream ms = new MemoryStream();
+        image.Save(ms, ImageFormat.Jpeg);
+        ms.Seek(0, SeekOrigin.Begin);
 
-      //  BitmapImage bi = new BitmapImage();
-      //  bi.BeginInit();
-      //  bi.StreamSource = ms;
-      //  bi.EndInit();
-      //  bi.Freeze();
-      //  return (bi);
-      //}
+        BitmapImage bi = new BitmapImage();
+        bi.BeginInit();
+        bi.StreamSource = ms;
+        bi.EndInit();
+        bi.Freeze();
+        return (bi);
+      }
       return (null);
     }
   }

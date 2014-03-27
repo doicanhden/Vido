@@ -138,10 +138,6 @@
       <Project>{cce14edc-a03f-4056-ab9d-1ea235f392d5}</Project>
       <Name>Vido.Capture</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Vido.Common\Vido.Common.csproj">
-      <Project>{9cad97aa-bc66-47b9-918d-5c147b11b60c}</Project>
-      <Name>Vido.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vido.Parking\Vido.Parking.csproj">
       <Project>{c9c6b46e-6d5e-4dac-940e-a800200f6b22}</Project>
       <Name>Vido.Parking</Name>
