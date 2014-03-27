@@ -20,16 +20,16 @@
     /// <summary>
     /// {0} - Time,
     /// {1} - In/Out,
-    /// {2} - Plate number,
-    /// {3} - Uid data,
+    /// {2} - Uid data,
+    /// {3} - Plate number,
     /// </summary>
     public const string FrontImageNameFormat = "FrontImageNameFormat";
 
     /// <summary>
     /// {0} - Time,
     /// {1} - In/Out,
-    /// {2} - Plate number,
-    /// {3} - Uid data,
+    /// {2} - Uid data,
+    /// {3} - Plate number,
     /// </summary>
     public const string BackImageNameFormat = "BackImageNameFormat";
   }

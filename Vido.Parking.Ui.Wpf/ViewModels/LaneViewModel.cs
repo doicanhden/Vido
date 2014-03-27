@@ -179,7 +179,6 @@
 
     private static BitmapSource ConvertToBitmapSource(Image image)
     {
-      // TODO: FIX NULLLLLLLLLLLLLLLLLLLLL
       if (image != null)
       {
         MemoryStream ms = new MemoryStream();

@@ -45,6 +45,7 @@
         this.RaisePropertyChanged(name);
       }
     }
+
     /// <summary>
     /// Raises this object's PropertyChanged event.
     /// </summary>

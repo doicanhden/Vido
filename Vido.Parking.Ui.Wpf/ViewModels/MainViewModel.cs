@@ -13,6 +13,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
   using System.Diagnostics;
   public class MainViewModel : IDisposable
   {
+    private ISettingsProvider settings = null;
     private readonly InputDeviceList inputDevices;
     private readonly CaptureList captures;
     private readonly Parking parking;
@@ -21,16 +22,32 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
 
     public MainViewModel(IntPtr mainWindowsHandle)
     {
+      settings = TestSetting(@"\settings.xml");
+      settings.Save();
+
       inputDevices = InputDeviceList.GetInstance(mainWindowsHandle);
       captures = new CaptureList(new CaptureFactory());
       laneViewModels = new ObservableCollection<LaneViewModel>();
 
       parking = new Parking();
-      parking.Settings = DefaultSetting(@"\settings.xml");
-      parking.Settings.Save();
+      parking.Settings = settings;
       parking.MaximumSlots = 1000;
 
-      controller = new Controller(parking, inputDevices, captures);
+      controller = new Controller(parking, inputDevices, captures)
+      {
+        FrontImageNameFormat = settings.Query<string>(SettingKeys.FrontImageNameFormat),
+        BackImageNameFormat = settings.Query<string>(SettingKeys.BackImageNameFormat),
+
+        DailyDirectoryFormat = settings.Query<string>(SettingKeys.DailyDirectoryFormat),
+        InFormat = settings.Query<string>(SettingKeys.InFormat),
+        OutFormat = settings.Query<string>(SettingKeys.OutFormat),
+        LaneConfigs = settings.Query<LaneConfigs[]>(SettingKeys.Lanes),
+        RootImageDirectoryName = settings.Query<string>(SettingKeys.RootImageDirectoryName),
+
+        EncodeData = false
+      };
+
+      controller.GenerateLanes();
 
       parking.Settings.SettingChanged += (s, e) =>
       {
@@ -68,7 +85,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
     {
       get { return (laneViewModels); }
     }
-    private static ISettingsProvider DefaultSetting(string fileName)
+    private static ISettingsProvider TestSetting(string fileName)
     {
       var settings = new Settings(fileName);
 
@@ -98,7 +115,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
             Password = "admin"
           },
           Direction = Enums.Direction.In,
-          UidDeviceName = @"\\?\HID#VID_0E6A&PID_030B#6&bb84ee5&1&0000#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}",
+          UidDeviceName = @"VID_0E6A&PID_030B",
           NumberOfRetries = 3,
           State = Enums.LaneState.Ready
         }

@@ -7,15 +7,15 @@
   Title="MainWindow" Height="633" Width="961">
   <Window.Resources>
     <DataTemplate DataType="{x:Type ViewModels:LaneViewModel}">
-      <Views:LaneView DataContext="{Binding}"/>
+      <Views:LaneView DataContext="{Binding}" Width="346" Height="364"/>
     </DataTemplate>
   </Window.Resources>
 
   <Grid>
-    <ListBox ItemsSource="{Binding Lanes}">
+    <ListBox ItemsSource="{Binding Lanes}" Margin="0,40,0,0">
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
-          <WrapPanel IsItemsHost="True" />
+          <WrapPanel IsItemsHost="True"/>
         </ItemsPanelTemplate>
       </ListBox.ItemsPanel>
     </ListBox>

@@ -4,6 +4,46 @@ using Vido.Parking.Events;
 using Vido.Parking.Interfaces;
 namespace Vido.Parking
 {
+  class KeyDownBuffer : IUidDevice
+  {
+    #region Data Members
+    private readonly List<byte> buffer = new List<byte>();
+    #endregion
+
+    #region Public Events
+    public event DataInEventHandler DataIn;
+    #endregion
+
+    #region Public Properties
+    public string Name { get; set; }
+    public byte EndKey { get; set; }
+    #endregion
+
+    #region Public Methods
+    /// <summary>
+    /// Thêm một kí tự vào bộ đệm,
+    /// kích hoạt sự kiện DataIn khi gặp EndKey
+    /// </summary>
+    /// <param name="data">Mã ASCII của phím.</param>
+    public void PushKey(byte data)
+    {
+      if (data == EndKey)
+      {
+        if (DataIn != null)
+        {
+          DataIn(this, new DataInEventArgs(buffer.ToArray()));
+        }
+
+        buffer.Clear();
+      }
+      else
+      {
+        buffer.Add(data);
+      }
+    }
+    #endregion
+  }
+
   public class InputDeviceList : IUidDeviceList
   {
     #region Thread-Safe Singleton
@@ -26,59 +66,15 @@ namespace Vido.Parking
 
     #region Data Members
     private readonly object objLock = new object();
-    private readonly Dictionary<string, KeyDownBuffer> registered;
+    private readonly List<KeyDownBuffer> registered = null;
     private RawInput.RawInput rawInput = null;
     private List<IUidDevice> devices = null;
-    #endregion
-
-    public RawInput.RawInput RawInput
-    {
-      get { return (rawInput); }
-    }
-
-    #region Implementation of IUidDevicesEnumerator 
-    public event DevicesChangedEventHandler DevicesChanged;
-
-    public ICollection<IUidDevice> Devices
-    {
-      get
-      {
-        lock (objLock)
-        {
-          return (devices);
-        }
-      }
-    }
-
-    public IUidDevice Register(string deviceName)
-    {
-      if (!string.IsNullOrEmpty(deviceName))
-      {
-        var newDevice = new KeyDownBuffer() { Name = deviceName };
-        registered[deviceName] = newDevice;
-
-        return (newDevice);
-      }
-
-      return (null);
-    }
-
-    public void Unregister(IUidDevice device)
-    {
-      if (device != null)
-      {
-        if (registered.ContainsKey(device.Name))
-        {
-          registered.Remove(device.Name);
-        }
-      }
-    }
     #endregion
 
     #region Private Constructors
     private InputDeviceList(IntPtr handle)
     {
-      registered = new Dictionary<string, KeyDownBuffer>();
+      registered = new List<KeyDownBuffer>();
 
       rawInput = new Vido.RawInput.RawInput(handle);
       rawInput.AddMessageFilter();
@@ -123,37 +119,60 @@ namespace Vido.Parking
     private void keyboard_KeyDown(object sender, Vido.RawInput.Events.KeyEventArgs e)
     {
       var keyboard = sender as Vido.RawInput.Interfaces.IKeyboard;
-      if (registered.ContainsKey(keyboard.Name))
+
+      foreach (var reg in registered)
       {
-        registered[keyboard.Name].PushKey((byte)e.KeyValue);
+        if (keyboard.Name.Contains(reg.Name))
+        {
+          reg.PushKey((byte)e.KeyValue);
+        }
       }
     }
     #endregion
 
-    internal class KeyDownBuffer : IUidDevice
+    #region Implementation of IUidDevicesEnumerator
+    public event DevicesChangedEventHandler DevicesChanged;
+
+    public ICollection<IUidDevice> Devices
     {
-      private readonly List<byte> buffer = new List<byte>();
-
-      public event DataInEventHandler DataIn;
-
-      public string Name { get; set; }
-
-      internal void PushKey(byte data)
+      get
       {
-        if (data == 13) // Enter key
+        lock (objLock)
         {
-          if (DataIn != null)
-          {
-            DataIn(this, new DataInEventArgs(buffer.ToArray()));
-          }
-
-          buffer.Clear();
-        }
-        else
-        {
-          buffer.Add(data);
+          return (devices);
         }
       }
     }
+
+    public IUidDevice Register(string deviceName)
+    {
+      return (Register(deviceName, 13)); // 13 - Enter Key.
+    }
+
+    public IUidDevice Register(string deviceName, byte endKey)
+    {
+      if (!string.IsNullOrEmpty(deviceName))
+      {
+        var newDevice = new KeyDownBuffer()
+        {
+          Name = deviceName,
+          EndKey = endKey // Enter Key.
+        };
+        registered.Add(newDevice);
+
+        return (newDevice);
+      }
+
+      return (null);
+    }
+
+    public void Unregister(IUidDevice device)
+    {
+      if (device != null)
+      {
+        registered.RemoveAll((x) => x.Name == device.Name);
+      }
+    }
+    #endregion
   }
 }
