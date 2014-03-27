@@ -2,8 +2,12 @@
 {
   using System;
   using System.Drawing;
+  using System.IO;
+  using System.Threading.Tasks;
   using System.Windows.Input;
+  using System.Windows.Media.Imaging;
   using Vido.Parking.Controls;
+  using Vido.Parking.Utilities;
 
   public class LaneViewModel : Utilities.NotificationObject
   {
@@ -14,10 +18,10 @@
     private string cardID = null;
     private string userData = null;
     private string message = null;
-    private Image backImageSaved = null;
-    private Image frontImageSaved = null;
-    private Image frontImageCamera = null;
-    private Image backImageCamera = null;
+    private BitmapSource backImageSaved = null;
+    private BitmapSource frontImageSaved = null;
+    private BitmapSource frontImageCamera = null;
+    private BitmapSource backImageCamera = null;
     private ICommand stopCommand = null;
     #endregion
 
@@ -82,7 +86,7 @@
       }
     }
 
-    public Image FrontImageCamera
+    public BitmapSource FrontImageCamera
     {
       get { return (frontImageCamera); }
       set
@@ -91,7 +95,7 @@
         RaisePropertyChanged(() => FrontImageCamera);
       }
     }
-    public Image BackImageCamera
+    public BitmapSource BackImageCamera
     {
       get { return (backImageCamera); }
       set
@@ -101,7 +105,7 @@
       }
     }
 
-    public Image FrontImageSaved
+    public BitmapSource FrontImageSaved
     {
       get { return (frontImageSaved); }
       set
@@ -110,7 +114,7 @@
         RaisePropertyChanged(() => FrontImageSaved);
       }
     }
-    public Image BackImageSaved
+    public BitmapSource BackImageSaved
     {
       get { return (backImageSaved); }
       set
@@ -123,7 +127,7 @@
     #region Event Handlers
     private void lane_Entry(object sender, Events.EntryEventArgs e)
     {
-      this.CardID = Controller.EncodeData(e.Data);
+      this.CardID = Encode.EncodeData(e.Data);
       this.UserData = e.PlateNumber;
     }
 
@@ -131,12 +135,12 @@
     {
       if (e.Back != null)
       {
-        this.BackImageCamera = new Bitmap(e.Back);
+        this.BackImageSaved = ConvertToBitmapSource(e.Back);
       }
 
       if (e.Front != null)
       {
-        this.FrontImageSaved = new Bitmap(e.Front);
+        this.FrontImageSaved = ConvertToBitmapSource(e.Front);
       }
     }
 
@@ -147,12 +151,12 @@
 
     private void BackCamera_NewFrame(object sender, Capture.Events.NewFrameEventArgs e)
     {
-      this.BackImageCamera = new Bitmap(e.Bitmap);
+      this.BackImageCamera = ConvertToBitmapSource(e.Bitmap);
     }
 
     private void FrontCamera_NewFrame(object sender, Capture.Events.NewFrameEventArgs e)
     {
-      this.FrontImageCamera = new Bitmap(e.Bitmap);
+      this.FrontImageCamera = ConvertToBitmapSource(e.Bitmap);
     }
     #endregion
 
@@ -170,9 +174,25 @@
     }
     private void StopExecute(object obj)
     {
-      var button = obj as System.Windows.Controls.Button;
-      button.Content = "Xì tốp";
     }
     #endregion
+
+    private static BitmapSource ConvertToBitmapSource(Image image)
+    {
+      if (image != null)
+      {
+        MemoryStream ms = new MemoryStream();
+        image.Save(ms, image.RawFormat);
+        ms.Seek(0, SeekOrigin.Begin);
+
+        BitmapImage bi = new BitmapImage();
+        bi.BeginInit();
+        bi.StreamSource = ms;
+        bi.EndInit();
+        bi.Freeze();
+        return (bi);
+      }
+      return (null);
+    }
   }
 }

@@ -9,6 +9,8 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
   using Vido.Capture.Enums;
   using Vido.Parking.Interfaces;
   using Vido.Parking.Controls;
+  using System.Drawing;
+  using System.Diagnostics;
   public class MainViewModel : IDisposable
   {
     private readonly InputDeviceList inputDevices = InputDeviceList.GetInstance(MainWindowsHandle);
@@ -35,8 +37,24 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
           controller.GenerateLanes();
         }
       };
-
+      ComponentDispatcher.ThreadFilterMessage += ComponentDispatcher_ThreadFilterMessage;
       GenerateLaneViewModels();
+
+      foreach (var cap in captures.Captures)
+      {
+       cap.Start();
+      }
+    }
+
+    void ComponentDispatcher_ThreadFilterMessage(ref MSG msg, ref bool handled)
+    {
+      inputDevices.RawInput.HandleMessage(new System.Windows.Forms.Message()
+      {
+        HWnd = msg.hwnd,
+        Msg = msg.message,
+        LParam = msg.lParam,
+        WParam = msg.wParam
+      });
     }
 
     /// <summary>
@@ -52,7 +70,13 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       }
     }
 
-
+    /// <summary>
+    /// Danh sách các ViewModel của lane.
+    /// </summary>
+    public ObservableCollection<LaneViewModel> Lanes
+    {
+      get { return (laneViewModels); }
+    }
     private static ISettingsProvider DefaultSetting(string fileName)
     {
       var settings = new Settings(fileName);

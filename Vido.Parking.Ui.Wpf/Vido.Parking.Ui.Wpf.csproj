@@ -56,7 +56,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="InputDeviceList.cs" />
     <Compile Include="Utilities\NotificationObject.cs" />
     <Compile Include="ViewModels\LaneViewModel.cs" />
@@ -125,6 +124,9 @@
       <Project>{d3edee2b-4d2a-4395-80aa-60fe75549e19}</Project>
       <Name>Vido.RawInput</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

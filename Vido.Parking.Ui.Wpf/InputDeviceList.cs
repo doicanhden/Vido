@@ -27,9 +27,14 @@ namespace Vido.Parking
     #region Data Members
     private readonly object objLock = new object();
     private readonly Dictionary<string, KeyDownBuffer> registered;
-    private Vido.RawInput.RawInput rawInput = null;
+    private RawInput.RawInput rawInput = null;
     private List<IUidDevice> devices = null;
     #endregion
+
+    public RawInput.RawInput RawInput
+    {
+      get { return (rawInput); }
+    }
 
     #region Implementation of IUidDevicesEnumerator 
     public event DevicesChangedEventHandler DevicesChanged;
@@ -76,6 +81,7 @@ namespace Vido.Parking
       registered = new Dictionary<string, KeyDownBuffer>();
 
       rawInput = new Vido.RawInput.RawInput(handle);
+      rawInput.AddMessageFilter();
       rawInput.Keyboard.DevicesChanged += Keyboard_DevicesChanged;
       rawInput.Keyboard.EnumerateDevices();
     }

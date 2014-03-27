@@ -4,11 +4,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-  xmlns:Converters="clr-namespace:Vido.Parking.Ui.Wpf.Converters"
   mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" MinWidth="346" MinHeight="364" MaxWidth="666" MaxHeight="604">
-  <UserControl.Resources>
-    <Converters:ImageConverter x:Key="imageConverter"/>
-  </UserControl.Resources>
   <Border BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
     <Grid DataContext="{Binding}">
       <Grid.RowDefinitions>
@@ -48,7 +44,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Front Cam" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding FrontImageCamera, Converter={StaticResource imageConverter}}" Stretch="Fill"/>
+          <Image Source="{Binding FrontImageCamera}" Stretch="Fill" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
       <Grid Grid.Column="2" Grid.Row="1">
@@ -58,7 +54,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Back Cam" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding FrontImageCamera, Converter={StaticResource imageConverter}}" Stretch="Fill"/>
+          <Image Source="{Binding FrontImageCamera}" Stretch="Fill" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
 
@@ -82,7 +78,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Front Image Saved" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding FrontImageSaved, Converter={StaticResource imageConverter}}" Stretch="Fill"/>
+          <Image Source="{Binding FrontImageSaved}" Stretch="Fill" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
       <Grid Grid.Column="2" Grid.Row="3">
@@ -92,7 +88,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Back Image Saved" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding BackImageSaved, Converter={StaticResource imageConverter}}" Stretch="Fill"/>
+          <Image Source="{Binding BackImageSaved}" Stretch="Fill" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
     </Grid>

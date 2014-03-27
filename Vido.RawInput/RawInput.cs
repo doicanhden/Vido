@@ -28,9 +28,9 @@ namespace Vido.RawInput
     {
       AssignHandle(parentHandle);
       keyboard = new RawKeyboard();
+      devNotifyHandle = RegisterForDeviceNotifications(parentHandle);
       keyboard.RegisterRawInput(parentHandle);
 
-      devNotifyHandle = RegisterForDeviceNotifications(parentHandle);
     }
 
     ~RawInput()
@@ -91,7 +91,10 @@ namespace Vido.RawInput
 
       return (usbNotifyHandle);
     }
-
+    public void HandleMessage(Message message)
+    {
+      WndProc(ref message);
+    }
     protected override void WndProc(ref Message message)
     {
       switch (message.Msg)

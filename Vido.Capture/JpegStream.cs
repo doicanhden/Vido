@@ -51,6 +51,7 @@
         stopEvent.Reset();
 
         thread = new Thread(new ThreadStart(WorkerThread));
+        thread.Name = Configs.Source;
         thread.IsBackground = true;
         thread.Start();
 
