@@ -70,19 +70,19 @@
       if (IsFull)
         return (false);
 
-      var inRecords = from Records in entities.InOutRecord
-                      where (
-                        Records.UserData == plateNumber &&
-                        Records.CardId == Encode.EncodeData(data)) &&
-                        // Phương tiện đã Vào bãi.
-                        Records.InUserId != null &&
-                        Records.InLaneCode != null &&
-                        Records.InTime != null &&
-                        Records.InBackImg != null &&
-                        Records.InFrontImg != null
-                      select Records;
+      //var inRecords = from Records in entities.InOutRecord
+      //                where (
+      //                  Records.UserData == plateNumber &&
+      //                  Records.CardId == Encode.EncodeData(data)) &&
+      //                  // Phương tiện đã Vào bãi.
+      //                  Records.InUserId != null &&
+      //                  Records.InLaneCode != null &&
+      //                  Records.InTime != null &&
+      //                  Records.InBackImg != null &&
+      //                  Records.InFrontImg != null
+      //                select Records;
 
-      return (inRecords == null);
+      return (true);
     }
 
     /// <summary>
@@ -111,7 +111,7 @@
           r.OutBackImg = outArgs.BackImage;
           r.OutFrontImg = outArgs.FrontImage;
         });
-
+        entities.SaveChanges();
         // Đặt lại trạng thái Bãi chưa đầy.
         IsFull = false;
       }
@@ -134,7 +134,7 @@
         InBackImg = inArgs.BackImage,
         InFrontImg = inArgs.FrontImage
       });
-
+      entities.SaveChanges();
       // TODO: Kiểm tra bãi đầy hay chưa.
       // Đếm số phương tiện chưa Ra bãi và so sánh với số lượng vị trí tối đa.
       IsFull = entities.InOutRecord.Count(IORecordIsNullOut) >= MaximumSlots;

@@ -179,19 +179,20 @@
 
     private static BitmapSource ConvertToBitmapSource(Image image)
     {
-      if (image != null)
-      {
-        MemoryStream ms = new MemoryStream();
-        image.Save(ms, image.RawFormat);
-        ms.Seek(0, SeekOrigin.Begin);
+      // TODO: FIX NULLLLLLLLLLLLLLLLLLLLL
+      //if (image != null)
+      //{
+      //  MemoryStream ms = new MemoryStream();
+      //  image.Save(ms, image.RawFormat);
+      //  ms.Seek(0, SeekOrigin.Begin);
 
-        BitmapImage bi = new BitmapImage();
-        bi.BeginInit();
-        bi.StreamSource = ms;
-        bi.EndInit();
-        bi.Freeze();
-        return (bi);
-      }
+      //  BitmapImage bi = new BitmapImage();
+      //  bi.BeginInit();
+      //  bi.StreamSource = ms;
+      //  bi.EndInit();
+      //  bi.Freeze();
+      //  return (bi);
+      //}
       return (null);
     }
   }

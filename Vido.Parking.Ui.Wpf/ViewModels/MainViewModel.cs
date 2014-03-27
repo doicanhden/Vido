@@ -28,6 +28,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       parking = new Parking();
       parking.Settings = DefaultSetting(@"\settings.xml");
       parking.Settings.Save();
+      parking.MaximumSlots = 1000;
 
       controller = new Controller(parking, inputDevices, captures);
 
@@ -78,29 +79,8 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       settings.Set(SettingKeys.InFormat, "I");
       settings.Set(SettingKeys.OutFormat, "O");
 
-      settings.Set(SettingKeys.Lanes, new LaneConfigs[2]
+      settings.Set(SettingKeys.Lanes, new LaneConfigs[1]
       {
-        new LaneConfigs()
-        {
-          BackCamera = new CaptureConfigs()
-          {
-            Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
-            Coding = Coding.MJpeg,
-            Username = "admin",
-            Password = "admin"
-          },
-          FrontCamera = new CaptureConfigs()
-          {
-            Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
-            Coding = Coding.MJpeg,
-            Username = "admin",
-            Password = "admin"
-          },
-          Direction = Enums.Direction.In,
-          UidDeviceName = @"\\?\HID#VID_0E6A&PID_030B#6&bb84ee5&1&0000#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}",
-          NumberOfRetries = 3,
-          State = Enums.LaneState.Ready
-        },
         new LaneConfigs()
         {
           BackCamera = new CaptureConfigs()
