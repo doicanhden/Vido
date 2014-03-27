@@ -91,10 +91,7 @@ namespace Vido.RawInput
 
       return (usbNotifyHandle);
     }
-    public void HandleMessage(Message message)
-    {
-      WndProc(ref message);
-    }
+
     protected override void WndProc(ref Message message)
     {
       switch (message.Msg)

@@ -1,6 +1,7 @@
 ﻿namespace Vido.Capture
 {
   using System;
+  using System.Diagnostics;
   using System.Drawing;
   using System.IO;
   using System.Net;
@@ -8,7 +9,6 @@
   using System.Threading;
   using Vido.Capture.Events;
   using Vido.Capture.Interfaces;
-  using Vido.Common;
 
   public class MJpegStream : ICapture
   {
@@ -230,7 +230,7 @@
                 todo = total - pos;
 
                 // increment frames counter
-                framesReceived ++;
+                ++framesReceived;
 
                 lock (objLock)
                 {
@@ -262,17 +262,17 @@
         }
         catch (WebException ex)
         {
-          Debug.Logging(ex.Message, "MJpegStream");
+          Debug.WriteLine("MJpegStream: " + ex.Message);
           Thread.Sleep(250);
         }
         catch (ApplicationException ex)
         {
-          Debug.Logging(ex.Message, "MJpegStream");
+          Debug.WriteLine("MJpegStream: " + ex.Message);
           Thread.Sleep(250);
         }
         catch (Exception ex)
         {
-          Debug.Logging(ex.Message, "MJpegStream");
+          Debug.WriteLine("MJpegStream: " + ex.Message);
         }
         finally
         {

@@ -1,13 +1,13 @@
 ﻿namespace Vido.Capture
 {
   using System;
+  using System.Diagnostics;
   using System.Drawing;
   using System.IO;
   using System.Net;
   using System.Threading;
   using Vido.Capture.Events;
   using Vido.Capture.Interfaces;
-  using Vido.Common;
 
   public class JpegStream : ICapture
   {
@@ -153,12 +153,12 @@
         }
         catch (WebException ex)
         {
-          Debug.Logging(ex.Message, "JpegStream");
+          Debug.WriteLine("JpegStream" + ex.Message);
           Thread.Sleep(250);
         }
         catch (Exception ex)
         {
-          Debug.Logging(ex.Message, "JpegStream");
+          Debug.WriteLine("JpegStream" + ex.Message);
         }
         finally
         {

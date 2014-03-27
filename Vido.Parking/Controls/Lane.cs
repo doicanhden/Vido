@@ -100,73 +100,71 @@ namespace Vido.Parking.Controls
         return;
       }
 
-      try
+      Image backImage = TryCapture(BackCamera);
+      if (backImage == null)
       {
-        Image backImage = TryCapture(BackCamera);
-        Image frontImage = null;
+        RaiseNewMessage("Không thể chụp ảnh từ camera. Vui lòng kiểm tra thiết bị");
+        return;
+      }
 
-        // Có thể không thiết lập camera chụp Người điều khiển.
-        if (FrontCamera != null)
+      Image frontImage = null;
+      // Có thể không thiết lập camera chụp Người điều khiển.
+      if (FrontCamera != null)
+      {
+        frontImage = TryCapture(FrontCamera);
+        if (frontImage == null)
         {
-          frontImage = TryCapture(FrontCamera);
+          RaiseNewMessage("Không thể chụp ảnh từ camera. Vui lòng kiểm tra thiết bị");
+          return;
+        }
+      }
+
+      // TODO: Kiểm tra xem có thể dùng Thread ở đây không.
+      // Do tốn nhiều thời gian xử lý OCR để lấy biển số.
+
+      var plateNumber = Ocr.GetPlateNumber(frontImage);
+      var entryArg = new EntryEventArgs(e.Data, plateNumber, frontImage, backImage);
+
+      Entry(this, entryArg);
+
+      if (entryArg.Allow)
+      {
+        if (EntryAllowed != null)
+        {
+          EntryAllowed(this, new EntryAllowedEventArgs(entryArg.PlateNumber));
         }
 
-        // TODO: Kiểm tra xem có thể dùng Thread ở đây không.
-        // Do tốn nhiều thời gian xử lý OCR để lấy biển số.
-
-//      Task task = new Task(() =>
-//      {
-          var plateNumber = Ocr.GetPlateNumber(frontImage);
-          var entryArg = new EntryEventArgs(e.Data, plateNumber, frontImage, backImage);
-
-          Entry(this, entryArg);
-
-          if (entryArg.Allow)
-          {
-            if (EntryAllowed != null)
-            {
-              EntryAllowed(this, new EntryAllowedEventArgs(entryArg.PlateNumber));
-            }
-
-            if (LastImages != null)
-            {
-              LastImages(this, new LastImagesEventArgs(frontImage, backImage));
-            }
-          }
-          else
-          {
-            if (NewMessage != null)
-            {
-              // TODO: Fix Hard-Code.
-              var message = string.Format("Phương tiện {0}, KHÔNG ĐƯỢC PHÉP ", plateNumber);
-              if (Direction == Enums.Direction.In)
-              {
-                NewMessage(this, new NewMessageEventArgs(message + " VÀO bãi."));
-              }
-              else if (Direction == Enums.Direction.Out)
-              {
-                NewMessage(this, new NewMessageEventArgs(message + " RA bãi."));
-              }
-            }
-          }
-//      });
-
-//      task.Start();
+        if (LastImages != null)
+        {
+          LastImages(this, new LastImagesEventArgs(frontImage, backImage));
+        }
       }
-      catch(InvalidOperationException)
+      else
       {
         if (NewMessage != null)
         {
           // TODO: Fix Hard-Code.
-          NewMessage(this, new NewMessageEventArgs(
-            @"Không thể chụp ảnh từ camera.
-            Vui lòng kiểm tra thiết bị"));
+          var message = string.Format("Phương tiện {0}, KHÔNG ĐƯỢC PHÉP ", plateNumber);
+          if (Direction == Enums.Direction.In)
+          {
+            NewMessage(this, new NewMessageEventArgs(message + " VÀO bãi."));
+          }
+          else if (Direction == Enums.Direction.Out)
+          {
+            NewMessage(this, new NewMessageEventArgs(message + " RA bãi."));
+          }
         }
-        throw;
       }
     }
     #endregion
 
+    private void RaiseNewMessage(string message)
+    {
+      if (NewMessage != null)
+      {
+        NewMessage(this, new NewMessageEventArgs(message));
+      }
+    }
     /// <summary>
     /// Chụp ảnh từ Camera
     /// </summary>
@@ -190,7 +188,7 @@ namespace Vido.Parking.Controls
         }
       }
 
-      throw new InvalidOperationException("Can't capture from Device");
+      return (null);
     }
   }
 }

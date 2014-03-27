@@ -32,7 +32,7 @@ namespace Vido.Capture
     public ICapture Create(ICaptureConfigs configs)
     {
       var capture = captureFactory.Create(configs);
-      if (captures != null)
+      if (capture != null)
       {
         captures.Add(capture);
       }

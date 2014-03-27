@@ -13,14 +13,15 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
   using System.Diagnostics;
   public class MainViewModel : IDisposable
   {
-    private readonly InputDeviceList inputDevices = InputDeviceList.GetInstance(MainWindowsHandle);
+    private readonly InputDeviceList inputDevices;
     private readonly CaptureList captures;
     private readonly Parking parking;
     private readonly Controller controller;
     private readonly ObservableCollection<LaneViewModel> laneViewModels;
 
-    public MainViewModel()
+    public MainViewModel(IntPtr mainWindowsHandle)
     {
+      inputDevices = InputDeviceList.GetInstance(mainWindowsHandle);
       captures = new CaptureList(new CaptureFactory());
       laneViewModels = new ObservableCollection<LaneViewModel>();
 
@@ -37,7 +38,6 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
           controller.GenerateLanes();
         }
       };
-      ComponentDispatcher.ThreadFilterMessage += ComponentDispatcher_ThreadFilterMessage;
       GenerateLaneViewModels();
 
       foreach (var cap in captures.Captures)
@@ -46,16 +46,6 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       }
     }
 
-    void ComponentDispatcher_ThreadFilterMessage(ref MSG msg, ref bool handled)
-    {
-      inputDevices.RawInput.HandleMessage(new System.Windows.Forms.Message()
-      {
-        HWnd = msg.hwnd,
-        Msg = msg.message,
-        LParam = msg.lParam,
-        WParam = msg.wParam
-      });
-    }
 
     /// <summary>
     /// Tạo ViewModel cho từng Lane.
@@ -88,13 +78,34 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       settings.Set(SettingKeys.InFormat, "I");
       settings.Set(SettingKeys.OutFormat, "O");
 
-      settings.Set(SettingKeys.Lanes, new LaneConfigs[1]
+      settings.Set(SettingKeys.Lanes, new LaneConfigs[2]
       {
         new LaneConfigs()
         {
           BackCamera = new CaptureConfigs()
           {
-            Source = @"http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240",
+            Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
+            Coding = Coding.MJpeg,
+            Username = "admin",
+            Password = "admin"
+          },
+          FrontCamera = new CaptureConfigs()
+          {
+            Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
+            Coding = Coding.MJpeg,
+            Username = "admin",
+            Password = "admin"
+          },
+          Direction = Enums.Direction.In,
+          UidDeviceName = @"\\?\HID#VID_0E6A&PID_030B#6&bb84ee5&1&0000#{884b96c3-56ef-11d1-bc8c-00a0c91405dd}",
+          NumberOfRetries = 3,
+          State = Enums.LaneState.Ready
+        },
+        new LaneConfigs()
+        {
+          BackCamera = new CaptureConfigs()
+          {
+            Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
             Coding = Coding.MJpeg,
             Username = "admin",
             Password = "admin"

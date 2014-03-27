@@ -3,12 +3,8 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:Views="clr-namespace:Vido.Parking.Ui.Wpf.Views"
   xmlns:ViewModels="clr-namespace:Vido.Parking.Ui.Wpf.ViewModels"
-  x:Class="Vido.Parking.Ui.Wpf.MainWindow"
+  x:Class="Vido.Parking.Ui.Wpf.MainWindow" Loaded="Window_Loaded"
   Title="MainWindow" Height="633" Width="961">
-
-  <Window.DataContext>
-    <ViewModels:MainViewModel/>
-  </Window.DataContext>
   <Window.Resources>
     <DataTemplate DataType="{x:Type ViewModels:LaneViewModel}">
       <Views:LaneView DataContext="{Binding}"/>
@@ -16,6 +12,12 @@
   </Window.Resources>
 
   <Grid>
-    <ListView ItemsSource="{Binding Lanes}"/>
+    <ListBox ItemsSource="{Binding Lanes}">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel IsItemsHost="True" />
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+    </ListBox>
   </Grid>
 </Window>
