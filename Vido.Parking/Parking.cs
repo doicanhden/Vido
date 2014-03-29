@@ -6,12 +6,20 @@
   using System.IO;
   using Vido.Parking.Interfaces;
   using Vido.Parking.Utilities;
+  using Vido.Parking.Events;
 
   public class Parking : IParking, IDisposable
   {
     private VidoParkingEntities entities = new VidoParkingEntities();
     private string currentUserId;
 
+    public event NewMessageEventHandler NewMessage;
+
+    public bool UserLogin(string username, string password)
+    {
+
+      return (true);
+    }
     /// <summary>
     /// Thông tin cài đặt Bãi.
     /// </summary>
@@ -38,11 +46,11 @@
     {
       // TODO: Kiểm tra lại Logic.
       // TODO: Chỉ nên kiểm Tra thời gian?
-
+      var encodeData = Encode.EncodeData(data);
       var inRecords = from Records in entities.InOutRecord
                       where
                         Records.UserData == plateNumber &&
-                        Records.CardId == Encode.EncodeData(data) &&
+                        Records.CardId == encodeData &&
                         // Phương tiện chưa ra khỏi bãi.
                         Records.OutUserId == null &&
                         Records.OutLaneCode == null &&
@@ -51,7 +59,7 @@
                         Records.OutFrontImg == null
                       select Records;
 
-      return (inRecords != null);
+      return (inRecords.Count() == 1);
     }
 
     /// <summary>
@@ -68,21 +76,24 @@
       // TODO: Chỉ nên kiểm Tra thời gian?
 
       if (IsFull)
+      {
+        RaiseNewMessage("Bãi đã đầy.");
         return (false);
+      }
 
-      //var inRecords = from Records in entities.InOutRecord
-      //                where (
-      //                  Records.UserData == plateNumber &&
-      //                  Records.CardId == Encode.EncodeData(data)) &&
-      //                  // Phương tiện đã Vào bãi.
-      //                  Records.InUserId != null &&
-      //                  Records.InLaneCode != null &&
-      //                  Records.InTime != null &&
-      //                  Records.InBackImg != null &&
-      //                  Records.InFrontImg != null
-      //                select Records;
+      var encodeData = Encode.EncodeData(data);
 
-      return (true);
+      var inRecords = from Records in entities.InOutRecord
+                      where
+                        Records.CardId == encodeData &&
+                        Records.OutUserId == null &&
+                        Records.OutLaneCode == null &&
+                        Records.OutTime == null &&
+                        Records.OutBackImg == null &&
+                        Records.OutFrontImg == null
+                      select Records;
+
+      return (inRecords.Count() == 0);
     }
 
     /// <summary>
@@ -94,14 +105,27 @@
       // TODO: Kiểm tra lại Logic.
       // TODO: Chỉ nên kiểm Tra thời gian?
 
+      var encodeData = Encode.EncodeData(outArgs.Data);
+
+      /* Lấy những bản ghi có CardId và PlateNumber khớp,
+       * và chưa có thông tin Ra.
+       */
       var inRecords = from Records in entities.InOutRecord
                       where
+                        Records.CardId == encodeData &&
                         Records.UserData == outArgs.PlateNumber &&
-                        Records.CardId == Encode.EncodeData(outArgs.Data) &&
-                        IORecordIsNullOut(Records)
+                        Records.OutUserId == null &&
+                        Records.OutLaneCode == null &&
+                        Records.OutTime == null &&
+                        Records.OutBackImg == null &&
+                        Records.OutFrontImg == null
                       select Records;
 
-      if (inRecords != null)
+      /* Chỉ có duy nhất 1 bảng ghi khớp,
+       * Nếu có nhiều hơn hoặc không có bản ghi nào 
+       * => Xuất thông báo lỗi Database.
+       */
+      if (inRecords.Count() == 1)
       {
         inRecords.ToList().ForEach((r) =>
         {
@@ -114,6 +138,10 @@
         entities.SaveChanges();
         // Đặt lại trạng thái Bãi chưa đầy.
         IsFull = false;
+      }
+      else
+      {
+        RaiseNewMessage("Lỗi CSDL, không có hoặc có nhiều hơn một thông tin phương tiện vào.");
       }
     }
 
@@ -155,9 +183,20 @@
         record.OutFrontImg == null);
     }
 
+    private void RaiseNewMessage(string message)
+    {
+      if (NewMessage != null)
+      {
+        NewMessage(this, new NewMessageEventArgs(message));
+      }
+    }
+
+    /// <summary>
+    /// Chuỗi định dạng thời gian theo chuẩn ISO-8601
+    /// </summary>
     private static string ISO8601DateTimeFormat
     {
-      get { return ("yyyy-MM-dd HH:MM:ss.fff"); }
+      get { return ("yyyy-MM-dd HH:mm:ss.fff"); }
     }
 
     #region Implementation of IDisposable

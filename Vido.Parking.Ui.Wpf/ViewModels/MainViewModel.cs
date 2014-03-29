@@ -114,7 +114,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
             Username = "admin",
             Password = "admin"
           },
-          Direction = Enums.Direction.In,
+          Direction = Enums.Direction.Out,
           UidDeviceName = @"VID_0E6A&PID_030B",
           NumberOfRetries = 3,
           State = Enums.LaneState.Ready

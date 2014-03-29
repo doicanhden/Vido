@@ -3,7 +3,7 @@ namespace Vido.Parking.Events
 {
   using System;
 
-  public delegate void MessageEventHandler(object sender, NewMessageEventArgs e);
+  public delegate void NewMessageEventHandler(object sender, NewMessageEventArgs e);
 
   public class NewMessageEventArgs : EventArgs
   {

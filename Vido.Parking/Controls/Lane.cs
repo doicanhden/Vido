@@ -88,7 +88,7 @@ namespace Vido.Parking.Controls
     /// <summary>
     /// Sự kiện kích hoạt khi có thông báo mời từ Làn.
     /// </summary>
-    public event MessageEventHandler NewMessage;
+    public event NewMessageEventHandler NewMessage;
     #endregion
 
     #region Event Handlers
