@@ -85,8 +85,8 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
 
       settings.Set(SettingKeys.RootImageDirectoryName, Environment.CurrentDirectory + @"\Images");
       settings.Set(SettingKeys.DailyDirectoryFormat, "{0}yyyy{0}MM{0}dd");
-      settings.Set(SettingKeys.BackImageNameFormat , "IMG_{0}_{1}_{2}_{3}_B.jpg");
-      settings.Set(SettingKeys.FrontImageNameFormat, "IMG_{0}_{1}_{2}_{3}_F.jpg");
+      settings.Set(SettingKeys.BackImageNameFormat , "IMG_{0}_{1}_{2}_{3}_{4}_B.jpg");
+      settings.Set(SettingKeys.FrontImageNameFormat, "IMG_{0}_{1}_{2}_{3}_{4}_F.jpg");
       settings.Set(SettingKeys.InFormat, "I");
       settings.Set(SettingKeys.OutFormat, "O");
 
@@ -108,6 +108,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
             Username = "admin",
             Password = "admin"
           },
+          Code = "LANE1",
           Direction = Enums.Direction.Out,
           UidDeviceName = @"VID_0E6A&PID_030B",
           NumberOfRetries = 3,

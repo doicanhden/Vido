@@ -19,17 +19,19 @@
 
     /// <summary>
     /// {0} - Time,
-    /// {1} - In/Out,
-    /// {2} - Uid data,
-    /// {3} - Plate number,
+    /// {1} - Lane code,
+    /// {2} - In/Out,
+    /// {3} - Uid data,
+    /// {4} - Plate number,
     /// </summary>
     public const string FrontImageNameFormat = "FrontImageNameFormat";
 
     /// <summary>
     /// {0} - Time,
-    /// {1} - In/Out,
-    /// {2} - Uid data,
-    /// {3} - Plate number,
+    /// {1} - Lane code,
+    /// {2} - In/Out,
+    /// {3} - Uid data,
+    /// {4} - Plate number,
     /// </summary>
     public const string BackImageNameFormat = "BackImageNameFormat";
   }

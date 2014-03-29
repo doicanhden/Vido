@@ -8,19 +8,9 @@
   {
     #region Public Properties
     /// <summary>
-    /// Cài đặt Camera chụp ảnh Người điều khiển phương tiện.
+    /// Mã làn.
     /// </summary>
-    public Configs FrontCamera { get; set; }
-
-    /// <summary>
-    /// Cài đặt Camera chụp ảnh Biển số phương tiện.
-    /// </summary>
-    public Configs BackCamera  { get; set; }
-
-    /// <summary>
-    /// Tên của thiết bị sinh Uid.
-    /// </summary>
-    public string UidDeviceName { get; set; }
+    public string Code { get; set; }
 
     /// <summary>
     /// Hướng di chuyển của Làn (VÀO/RA Bãi).
@@ -36,6 +26,21 @@
     /// Số lần thử lại trước khi thông báo lỗi thiết bị.
     /// </summary>
     public int NumberOfRetries { get; set; }
+
+    /// <summary>
+    /// Tên của thiết bị sinh Uid.
+    /// </summary>
+    public string UidDeviceName { get; set; }
+
+    /// <summary>
+    /// Cài đặt Camera chụp ảnh Biển số phương tiện.
+    /// </summary>
+    public Configs BackCamera  { get; set; }
+
+    /// <summary>
+    /// Cài đặt Camera chụp ảnh Người điều khiển phương tiện.
+    /// </summary>
+    public Configs FrontCamera { get; set; }
     #endregion
   }
 }

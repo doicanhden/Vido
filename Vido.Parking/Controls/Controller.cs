@@ -131,6 +131,7 @@
         {
           var lane = new Lane()
           {
+            Code = cfg.Code,
             Direction = cfg.Direction,
             NumberOfRetries = cfg.NumberOfRetries,
             LaneState = cfg.State
@@ -257,7 +258,7 @@
         if (back != null)
         {
           inOutArgs.BackImage = dailyDirectory + string.Format(BackImageNameFormat,
-            timeString, inOutFormat, inOutArgs.Data, inOutArgs.PlateNumber);
+            timeString, inOutArgs.Lane, inOutFormat, inOutArgs.Data, inOutArgs.PlateNumber);
 
           back.Save(RootImageDirectoryName + inOutArgs.BackImage);
         }
@@ -265,7 +266,7 @@
         if (front != null)
         {
           inOutArgs.FrontImage = dailyDirectory + string.Format(FrontImageNameFormat,
-            timeString, inOutFormat, inOutArgs.Data, inOutArgs.PlateNumber);
+            timeString, inOutArgs.Lane, inOutFormat, inOutArgs.Data, inOutArgs.PlateNumber);
 
           front.Save(RootImageDirectoryName + inOutArgs.FrontImage);
         }
