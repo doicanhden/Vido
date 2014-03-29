@@ -2,13 +2,13 @@
 {
   using System;
   using Vido.RawInput.Events;
-  using Vido.RawInput.Interfaces;
+  using Vido.RawInput;
 
   public class Keyboard : IKeyboard
   {
     #region Events
-    public event KeyEventHandler KeyUp;
-    public event KeyEventHandler KeyDown;
+    public event EventHandler KeyUp;
+    public event EventHandler KeyDown;
     #endregion
 
     #region Properties

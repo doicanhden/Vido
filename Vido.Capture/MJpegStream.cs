@@ -8,7 +8,7 @@
   using System.Text;
   using System.Threading;
   using Vido.Capture.Events;
-  using Vido.Capture.Interfaces;
+  using Vido.Capture;
 
   public class MJpegStream : ICapture
   {
@@ -23,15 +23,23 @@
 
     private Image currentFrame = null;
     private int framesReceived = 0;
-    private ICaptureConfigs configs = null;
+    private IConfigs configs = null;
     #endregion
 
     #region Public Events
-    public event NewFrameEventHandler NewFrame;
+    /// <summary>
+    /// Sự kiện kích hoạt khi có khung hình mới từ thiết bị.
+    /// </summary>
+    public event EventHandler NewFrame;
+
+    /// <summary>
+    /// Sự kiện kích hoại khi có lỗi xảy ra với thiết bị.
+    /// </summary>
+    public event EventHandler ErrorOccurred;
     #endregion
 
     #region Public Properties
-    public ICaptureConfigs Configs
+    public IConfigs Configs
     {
       get { return (configs); }
       set
@@ -109,9 +117,17 @@
     #endregion
 
     #region Private Methods
+    private void RaiseErrorOccurred(int code, string message)
+    {
+      if (ErrorOccurred != null)
+      {
+        ErrorOccurred(this, new ErrorOccurredEventArgs(code, message));
+      }
+    }
+
     private void WorkerThread()
     {
-      byte[]  buffer = new byte[bufSize];  // buffer to read stream
+      byte[] buffer = new byte[bufSize];  // buffer to read stream
 
       while (true)
       {

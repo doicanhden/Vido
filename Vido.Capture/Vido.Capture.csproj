@@ -42,26 +42,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteArrayUtils.cs" />
-    <Compile Include="CaptureConfigs.cs" />
-    <Compile Include="CaptureFactory.cs" />
+    <Compile Include="Configs.cs" />
+    <Compile Include="Factory.cs" />
     <Compile Include="CaptureList.cs" />
     <Compile Include="Enums\Coding.cs" />
-    <Compile Include="Events\NewFrame.cs" />
-    <Compile Include="Interfaces\ICapture.cs" />
-    <Compile Include="Interfaces\ICaptureConfigs.cs" />
-    <Compile Include="Interfaces\ICaptureFactory.cs" />
-    <Compile Include="Interfaces\ICaptureList.cs" />
-    <Compile Include="Interfaces\IQueryFrame.cs" />
+    <Compile Include="Events\ErrorOccurredEvent.cs" />
+    <Compile Include="Events\NewFrameEvent.cs" />
+    <Compile Include="ICapture.cs" />
+    <Compile Include="IConfigs.cs" />
+    <Compile Include="IFactory.cs" />
+    <Compile Include="ICaptureList.cs" />
     <Compile Include="JpegStream.cs" />
     <Compile Include="MJpegStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Vido.Common\Vido.Common.csproj">
-      <Project>{9cad97aa-bc66-47b9-918d-5c147b11b60c}</Project>
-      <Name>Vido.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

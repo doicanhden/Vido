@@ -6,6 +6,7 @@
   using System.IO;
   using System.Windows.Input;
   using System.Windows.Media.Imaging;
+  using Vido.Capture.Events;
   using Vido.Parking.Controls;
   using Vido.Parking.Utilities;
 
@@ -32,10 +33,10 @@
 
       this.lane = lane;
       this.lane.Entry += lane_Entry;
-      this.lane.LastImages += lane_LastImages;
+      this.lane.SavedImages += lane_LastImages;
       this.lane.NewMessage += lane_NewMessage;
 
-      this.LaneCode = lane.LaneCode;
+      this.LaneCode = lane.Code;
 
       if (this.lane.BackCamera != null)
       {
@@ -125,38 +126,42 @@
     }
 
     #region Event Handlers
-    private void lane_Entry(object sender, Events.EntryEventArgs e)
+    private void lane_Entry(object sender, EventArgs e)
     {
-      this.CardID = Encode.EncodeData(e.Data);
-      this.UserData = e.PlateNumber;
+      var args = e as Events.EntryEventArgs;
+      this.CardID = Encode.GetDataString(args.DataIn.Data, args.DataIn.Printable);
+      this.UserData = args.PlateNumber;
     }
 
-    private void lane_LastImages(object sender, Events.LastImagesEventArgs e)
+    private void lane_LastImages(object sender, EventArgs e)
     {
-      if (e.Back != null)
+      var args = e as Events.SavedImagesEventArgs;
+      if (args.Back != null)
       {
-        this.BackImageSaved = ConvertToBitmapSource(e.Back);
+        this.BackImageSaved = ConvertToBitmapSource(args.Back);
       }
 
-      if (e.Front != null)
+      if (args.Front != null)
       {
-        this.FrontImageSaved = ConvertToBitmapSource(e.Front);
+        this.FrontImageSaved = ConvertToBitmapSource(args.Front);
       }
     }
 
-    private void lane_NewMessage(object sender, Events.NewMessageEventArgs e)
+    private void lane_NewMessage(object sender, EventArgs e)
     {
-      this.Message = e.Message;
+      this.Message = (e as Events.NewMessageEventArgs).Message;
     }
 
-    private void BackCamera_NewFrame(object sender, Capture.Events.NewFrameEventArgs e)
+    private void BackCamera_NewFrame(object sender, EventArgs e)
     {
-      this.BackImageCamera = ConvertToBitmapSource(e.Bitmap);
+      var args = e as NewFrameEventArgs;
+      this.BackImageCamera = ConvertToBitmapSource(args.Bitmap);
     }
 
-    private void FrontCamera_NewFrame(object sender, Capture.Events.NewFrameEventArgs e)
+    private void FrontCamera_NewFrame(object sender, EventArgs e)
     {
-      this.FrontImageCamera = ConvertToBitmapSource(e.Bitmap);
+      var args = e as NewFrameEventArgs;
+      this.FrontImageCamera = ConvertToBitmapSource(args.Bitmap);
     }
     #endregion
 

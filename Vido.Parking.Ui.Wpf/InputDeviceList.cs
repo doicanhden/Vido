@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Vido.Parking.Events;
-using Vido.Parking.Interfaces;
-namespace Vido.Parking
+﻿namespace Vido.Parking
 {
+  using System;
+  using System.Collections.Generic;
+  using Vido.Parking.Events;
+
   class KeyDownBuffer : IUidDevice
   {
     #region Data Members
@@ -11,7 +11,7 @@ namespace Vido.Parking
     #endregion
 
     #region Public Events
-    public event DataInEventHandler DataIn;
+    public event EventHandler DataIn;
     #endregion
 
     #region Public Properties
@@ -31,7 +31,7 @@ namespace Vido.Parking
       {
         if (DataIn != null)
         {
-          DataIn(this, new DataInEventArgs(buffer.ToArray()));
+          DataIn(this, new DataInEventArgs(buffer.ToArray(), true));
         }
 
         buffer.Clear();
@@ -84,12 +84,13 @@ namespace Vido.Parking
     #endregion
 
     #region Event Handlers
-    private void Keyboard_DevicesChanged(object sender, Vido.RawInput.Events.DevicesChangedEventArgs e)
+    private void Keyboard_DevicesChanged(object sender, EventArgs e)
     {
+      var args = e as RawInput.Events.DevicesChangedEventArgs;
       var oldDevices = devices;
-      if (e.OldDevices != null)
+      if (args.OldDevices != null)
       {
-        foreach (var keyboard in e.OldDevices)
+        foreach (var keyboard in args.OldDevices)
         {
           keyboard.KeyDown -= keyboard_KeyDown;
         }
@@ -99,10 +100,10 @@ namespace Vido.Parking
       {
         devices = null;
 
-        if (e.NewDevices != null)
+        if (args.NewDevices != null)
         {
           devices = new List<IUidDevice>();
-          foreach (var keyboard in e.NewDevices)
+          foreach (var keyboard in args.NewDevices)
           {
             devices.Add(new KeyDownBuffer() { Name = keyboard.Name });
             keyboard.KeyDown += keyboard_KeyDown;
@@ -116,22 +117,23 @@ namespace Vido.Parking
       }
     }
 
-    private void keyboard_KeyDown(object sender, Vido.RawInput.Events.KeyEventArgs e)
+    private void keyboard_KeyDown(object sender, EventArgs e)
     {
-      var keyboard = sender as Vido.RawInput.Interfaces.IKeyboard;
+      var args = e as Vido.RawInput.Events.KeyEventArgs;
+      var keyboard = sender as Vido.RawInput.IKeyboard;
 
       foreach (var reg in registered)
       {
         if (keyboard.Name.Contains(reg.Name))
         {
-          reg.PushKey((byte)e.KeyValue);
+          reg.PushKey((byte)args.KeyValue);
         }
       }
     }
     #endregion
 
     #region Implementation of IUidDevicesEnumerator
-    public event DevicesChangedEventHandler DevicesChanged;
+    public event EventHandler DevicesChanged;
 
     public ICollection<IUidDevice> Devices
     {

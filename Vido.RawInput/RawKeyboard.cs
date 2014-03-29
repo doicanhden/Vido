@@ -8,7 +8,7 @@
   using System.Runtime.InteropServices;
   using Vido.RawInput.Enums;
   using Vido.RawInput.Events;
-  using Vido.RawInput.Interfaces;
+  using Vido.RawInput;
   using Vido.RawInput.User32;
 
   [StructLayout(LayoutKind.Explicit)]

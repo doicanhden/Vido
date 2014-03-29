@@ -1,8 +1,9 @@
 ﻿namespace Vido.RawInput.Test
 {
+  using System;
   using System.Windows.Forms;
   using Vido.RawInput.Events;
-  using Vido.RawInput.Interfaces;
+  using Vido.RawInput;
 
   public partial class Form1 : Form
   {
@@ -37,17 +38,21 @@
       }
     }
 
-    void keyboard_KeyUp(object sender, Vido.RawInput.Events.KeyEventArgs e)
+    void keyboard_KeyUp(object sender, EventArgs e)
     {
-      IKeyboard s = sender as IKeyboard;
-      listBox1.Items.Add(string.Format("Keyboard: {0}, Key up: {1}", s.Description, e.KeyValue));
+      var args = e as Vido.RawInput.Events.KeyEventArgs;
+      var s = sender as IKeyboard;
+
+      listBox1.Items.Add(string.Format("Keyboard: {0}, Key up: {1}", s.Description, args.KeyValue));
       listBox1.SelectedItem = listBox1.Items.Count - 1;
     }
 
-    void keyboard_KeyDown(object sender, Vido.RawInput.Events.KeyEventArgs e)
+    void keyboard_KeyDown(object sender, EventArgs e)
     {
-      IKeyboard s = sender as IKeyboard;
-      listBox1.Items.Add(string.Format("Keyboard: {0}, Key down: {1}", s.Description, e.KeyValue));
+      var args = e as Vido.RawInput.Events.KeyEventArgs;
+      var s = sender as IKeyboard;
+
+      listBox1.Items.Add(string.Format("Keyboard: {0}, Key down: {1}", s.Description, args.KeyValue));
       listBox1.SelectedItem = listBox1.Items.Count - 1;
     }
   }

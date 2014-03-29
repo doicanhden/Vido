@@ -8,7 +8,7 @@
   Title="MainWindow" Height="633" Width="961">
   <Window.Resources>
     <DataTemplate DataType="{x:Type ViewModels:LaneViewModel}">
-      <Views:LaneView DataContext="{Binding}" Width="346" Height="364"/>
+      <Views:LaneView DataContext="{Binding}"/>
     </DataTemplate>
   </Window.Resources>
 

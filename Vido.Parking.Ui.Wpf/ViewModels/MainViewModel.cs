@@ -7,17 +7,18 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
   using System.Collections.ObjectModel;
   using Vido.Capture;
   using Vido.Capture.Enums;
-  using Vido.Parking.Interfaces;
   using Vido.Parking.Controls;
   using System.Drawing;
   using System.Diagnostics;
   public class MainViewModel : IDisposable
   {
     private ISettingsProvider settings = null;
-    private readonly InputDeviceList inputDevices;
-    private readonly CaptureList captures;
-    private readonly Parking parking;
-    private readonly Controller controller;
+    private InputDeviceList inputDevices;
+    private CaptureList captures;
+    private DataCenter dataCenter;
+    private Controller controller;
+
+
     private readonly ObservableCollection<LaneViewModel> laneViewModels;
 
     public MainViewModel(IntPtr mainWindowsHandle)
@@ -26,14 +27,14 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       settings.Save();
 
       inputDevices = InputDeviceList.GetInstance(mainWindowsHandle);
-      captures = new CaptureList(new CaptureFactory());
+      captures = new CaptureList(new Factory());
       laneViewModels = new ObservableCollection<LaneViewModel>();
 
-      parking = new Parking();
-      parking.Settings = settings;
-      parking.MaximumSlots = 1000;
+      dataCenter = new DataCenter();
 
-      controller = new Controller(parking, inputDevices, captures)
+      (dataCenter as IParking).MaximumSlots = 1000;
+
+      controller = new Controller(dataCenter, dataCenter, inputDevices, captures)
       {
         FrontImageNameFormat = settings.Query<string>(SettingKeys.FrontImageNameFormat),
         BackImageNameFormat = settings.Query<string>(SettingKeys.BackImageNameFormat),
@@ -49,13 +50,6 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
 
       controller.GenerateLanes();
 
-      parking.Settings.SettingChanged += (s, e) =>
-      {
-        if (e.SettingKey == SettingKeys.Lanes)
-        {
-          controller.GenerateLanes();
-        }
-      };
       GenerateLaneViewModels();
 
       foreach (var cap in captures.Captures)
@@ -100,14 +94,14 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       {
         new LaneConfigs()
         {
-          BackCamera = new CaptureConfigs()
+          BackCamera = new Configs()
           {
             Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
             Coding = Coding.MJpeg,
             Username = "admin",
             Password = "admin"
           },
-          FrontCamera = new CaptureConfigs()
+          FrontCamera = new Configs()
           {
             Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
             Coding = Coding.MJpeg,
@@ -136,7 +130,6 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       {
         // dispose managed resources
         captures.Dispose();
-        parking.Dispose();
       }
       // free native resources
     }

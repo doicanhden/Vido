@@ -1,12 +1,13 @@
 ﻿namespace Vido.Parking
 {
+  using System;
   using System.Collections.Generic;
   using System.IO;
   using System.Linq;
   using System.Xml.Linq;
   using System.Xml.Serialization;
   using Vido.Parking.Events;
-  using Vido.Parking.Interfaces;
+  using Vido.Parking;
 
   public class Settings : ISettingsProvider
   {
@@ -15,7 +16,7 @@
     #endregion
 
     #region Public Events
-    public event SettingChangedEventHandler SettingChanged;
+    public event EventHandler SettingChanged;
     #endregion
 
     #region Public Properties

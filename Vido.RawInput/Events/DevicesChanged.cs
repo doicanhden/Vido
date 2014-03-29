@@ -2,7 +2,7 @@
 {
   using System;
   using System.Collections.Generic;
-  using Vido.RawInput.Interfaces;
+  using Vido.RawInput;
 
   public delegate void DevicesChangedEventHandler(object sender, DevicesChangedEventArgs e);
 

@@ -1,37 +1,55 @@
-﻿
-namespace Vido.Capture
+﻿namespace Vido.Capture
 {
   using System;
   using System.Collections.Generic;
-  using Vido.Capture.Interfaces;
+  using Vido.Capture;
+
   public class CaptureList : ICaptureList, IDisposable
   {
     #region Data Members
-    private readonly ICaptureFactory captureFactory;
     private readonly IList<ICapture> captures = new List<ICapture>();
     #endregion
 
     #region Public Constructors
-    public CaptureList(ICaptureFactory captureFactory)
+    /// <summary>
+    /// Khởi tạo danh sách các thiết bị Chụp ảnh
+    /// </summary>
+    /// <param name="factory">Đối tượng tạo các thiết bị Chụp ảnh</param>
+    public CaptureList(IFactory factory)
     {
-      if (captureFactory == null)
+      if (factory == null)
       {
         throw new ArgumentNullException("captureFactory");
       }
 
-      this.captureFactory = captureFactory;
+      this.Factory = factory;
     }
     #endregion
 
+    #region Public Properties
+    /// <summary>
+    /// Đối tượng sử dụng để tạo các thiết bị Chụp ảnh
+    /// </summary>
+    public IFactory Factory { get; private set; }
+    #endregion
+
     #region Implementation of ICaptureList
+    /// <summary>
+    /// Danh sách thiết bị đã được tạo bởi phương thức Create()
+    /// </summary>
     public ICollection<ICapture> Captures
     {
       get { return (captures); }
     }
 
-    public ICapture Create(ICaptureConfigs configs)
+    /// <summary>
+    /// Tạo thiết bị Chụp ảnh và thêm vào danh sách thiết bị.
+    /// </summary>
+    /// <param name="configs">Cấu hình thiết bị Chụp ảnh</param>
+    /// <returns></returns>
+    public ICapture Create(IConfigs configs)
     {
-      var capture = captureFactory.Create(configs);
+      var capture = Factory.Create(configs);
       if (capture != null)
       {
         captures.Add(capture);
@@ -53,7 +71,6 @@ namespace Vido.Capture
           capture.Dispose();
         }
       }
-      // free native resources
     }
 
     public void Dispose()

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Drawing;
-using System.Threading;
-using Vido.Capture.Interfaces;
-using Vido.Parking.Enums;
-using Vido.Parking.Events;
-using Vido.Parking.Interfaces;
-using Vido.Parking.Utilities;
-namespace Vido.Parking.Controls
+﻿namespace Vido.Parking.Controls
 {
+  using System;
+  using System.Drawing;
+  using System.Threading;
+  using Vido.Capture;
+  using Vido.Parking.Enums;
+  using Vido.Parking.Events;
+  using Vido.Parking.Utilities;
+
   public class Lane
   {
     #region Data Members
@@ -19,7 +19,7 @@ namespace Vido.Parking.Controls
     /// <summary>
     /// Mã Làn.
     /// </summary>
-    public string LaneCode { get; set; }
+    public string Code { get; set; }
 
     /// <summary>
     /// Trạng thái của Làn.
@@ -61,7 +61,7 @@ namespace Vido.Parking.Controls
     /// <summary>
     /// Camera Chụp ảnh Biển số phương tiện.
     /// </summary>
-    public ICapture BackCamera  { get; set; }
+    public ICapture BackCamera { get; set; }
 
     /// <summary>
     /// Camera Chụp ảnh Người điều khiển.
@@ -73,29 +73,44 @@ namespace Vido.Parking.Controls
     /// <summary>
     /// Sự kiện kích hoạt khi phương tiện vào Làn.
     /// </summary>
-    public event EntryEventHandler Entry;
+    public event EventHandler Entry;
 
     /// <summary>
     /// Sự kiện kích hoạt khi phương tiện được phép di chuyển ra khỏi Làn.
     /// </summary>
-    public event EntryAllowedEventHandler EntryAllowed;
+    public event EventHandler EntryAllowed;
 
     /// <summary>
     /// Sự kiện kích hoạt khi có cập nhật mới về ảnh Biển số/Người điều khiển phương tiện.
     /// </summary>
-    public event LastImagesEventHandler LastImages;
+    public event EventHandler SavedImages;
 
     /// <summary>
     /// Sự kiện kích hoạt khi có thông báo mời từ Làn.
     /// </summary>
-    public event NewMessageEventHandler NewMessage;
+    public event EventHandler NewMessage;
+    #endregion
+
+    #region Public Methods
+    /// <summary>
+    /// Kích hoạt sự kiện Thông báo mới.
+    /// </summary>
+    /// <param name="message">Thông báo</param>
+    public void RaiseNewMessage(string message)
+    {
+      if (NewMessage != null)
+      {
+        NewMessage(this, new NewMessageEventArgs(message));
+      }
+    }
     #endregion
 
     #region Event Handlers
-
-    private void uidDevice_DataIn(object sender, DataInEventArgs e)
+    private void uidDevice_DataIn(object sender, EventArgs e)
     {
-      if (e.Data == null || Entry == null || LaneState == LaneState.Stop)
+      var args = e as DataInEventArgs;
+
+      if (args.Data == null || Entry == null || LaneState == LaneState.Stop)
       {
         return;
       }
@@ -123,7 +138,7 @@ namespace Vido.Parking.Controls
       // Do tốn nhiều thời gian xử lý OCR để lấy biển số.
 
       var plateNumber = Ocr.GetPlateNumber(frontImage);
-      var entryArg = new EntryEventArgs(e.Data, plateNumber, frontImage, backImage);
+      var entryArg = new EntryEventArgs(args, plateNumber, frontImage, backImage);
 
       Entry(this, entryArg);
 
@@ -134,37 +149,29 @@ namespace Vido.Parking.Controls
           EntryAllowed(this, new EntryAllowedEventArgs(entryArg.PlateNumber));
         }
 
-        if (LastImages != null)
+        if (SavedImages != null)
         {
-          LastImages(this, new LastImagesEventArgs(frontImage, backImage));
+          SavedImages(this, new SavedImagesEventArgs(frontImage, backImage));
         }
       }
       else
       {
-        if (NewMessage != null)
+        // TODO: Fix Hard-Code.
+        var message = string.Format("Phương tiện {0}, KHÔNG ĐƯỢC PHÉP ", plateNumber);
+
+        if (Direction == Enums.Direction.In)
         {
-          // TODO: Fix Hard-Code.
-          var message = string.Format("Phương tiện {0}, KHÔNG ĐƯỢC PHÉP ", plateNumber);
-          if (Direction == Enums.Direction.In)
-          {
-            NewMessage(this, new NewMessageEventArgs(message + " VÀO bãi."));
-          }
-          else if (Direction == Enums.Direction.Out)
-          {
-            NewMessage(this, new NewMessageEventArgs(message + " RA bãi."));
-          }
+          RaiseNewMessage(message + " VÀO bãi.");
+        }
+        else if (Direction == Enums.Direction.Out)
+        {
+          RaiseNewMessage(message + " RA bãi.");
         }
       }
     }
     #endregion
 
-    private void RaiseNewMessage(string message)
-    {
-      if (NewMessage != null)
-      {
-        NewMessage(this, new NewMessageEventArgs(message));
-      }
-    }
+    #region Private Methods
     /// <summary>
     /// Chụp ảnh từ Camera
     /// </summary>
@@ -190,5 +197,6 @@ namespace Vido.Parking.Controls
 
       return (null);
     }
+    #endregion
   }
 }

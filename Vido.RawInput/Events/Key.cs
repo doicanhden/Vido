@@ -1,7 +1,7 @@
 ﻿namespace Vido.RawInput.Events
 {
   using System;
-  using Vido.RawInput.Interfaces;
+  using Vido.RawInput;
 
   public delegate void KeyEventHandler(object sender, KeyEventArgs e);
 

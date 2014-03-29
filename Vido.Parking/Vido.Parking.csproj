@@ -56,67 +56,74 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Controls\Controller.cs" />
-    <Compile Include="Events\DataInEvent.cs" />
-    <Compile Include="Events\DevicesChangedEvent.cs" />
-    <Compile Include="Events\EntryAllowedEvent.cs" />
-    <Compile Include="Events\EntryEvent.cs" />
-    <Compile Include="Events\MessageEvent.cs" />
-    <Compile Include="Events\LastImagesEvent.cs" />
-    <Compile Include="Events\SettingChangedEvent.cs" />
-    <Compile Include="InOutRecord.cs">
-      <DependentUpon>VidoParkingEntities.tt</DependentUpon>
+    <Compile Include="Card.cs">
+      <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\InOutArgs.cs" />
-    <Compile Include="Interfaces\IParking.cs" />
-    <Compile Include="Interfaces\ISettingsProvider.cs" />
-    <Compile Include="Interfaces\IUidDevice.cs" />
+    <Compile Include="Controls\Controller.cs" />
+    <Compile Include="Employee.cs">
+      <DependentUpon>VidoParking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Events\DataInArgs.cs" />
+    <Compile Include="Events\DevicesChangedArgs.cs" />
+    <Compile Include="Events\EntryAllowedArgs.cs" />
+    <Compile Include="Events\EntryArgs.cs" />
+    <Compile Include="Events\NewMessageArgs.cs" />
+    <Compile Include="Events\LastImagesArgs.cs" />
+    <Compile Include="Events\SettingChangedArgs.cs" />
+    <Compile Include="InOutRecord.cs">
+      <DependentUpon>VidoParking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ICardManagement.cs" />
+    <Compile Include="Events\InOutArgs.cs" />
+    <Compile Include="IParking.cs" />
+    <Compile Include="ISettingsProvider.cs" />
+    <Compile Include="IUidDevice.cs" />
     <Compile Include="Enums\LaneState.cs" />
-    <Compile Include="Interfaces\IUidDeviceList.cs" />
+    <Compile Include="IUidDeviceList.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Controls\Lane.cs" />
     <Compile Include="LaneConfigs.cs" />
-    <Compile Include="Parking.cs" />
+    <Compile Include="DataCenter.cs" />
     <Compile Include="SettingKeys.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities\Ocr.cs" />
     <Compile Include="Utilities\PasswordHash.cs" />
     <Compile Include="Utilities\Encode.cs" />
-    <Compile Include="VidoParkingEntities.Context.cs">
+    <Compile Include="VidoParking.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>VidoParkingEntities.Context.tt</DependentUpon>
+      <DependentUpon>VidoParking.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="VidoParkingEntities.cs">
-      <AutoGen>True</AutoGen>
+    <Compile Include="VidoParking.cs">
+      <DependentUpon>VidoParking.tt</DependentUpon>
       <DesignTime>True</DesignTime>
-      <DependentUpon>VidoParkingEntities.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="VidoParkingEntities.Designer.cs">
+    <Compile Include="VidoParking.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>VidoParkingEntities.edmx</DependentUpon>
+      <DependentUpon>VidoParking.edmx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.Config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="VidoParkingEntities.edmx">
+    <EntityDeploy Include="VidoParking.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>VidoParkingEntities.Designer.cs</LastGenOutput>
+      <LastGenOutput>VidoParking.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="VidoParkingEntities.Context.tt">
+    <None Include="VidoParking.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>VidoParkingEntities.edmx</DependentUpon>
-      <LastGenOutput>VidoParkingEntities.Context.cs</LastGenOutput>
+      <DependentUpon>VidoParking.edmx</DependentUpon>
+      <LastGenOutput>VidoParking.Context.cs</LastGenOutput>
     </None>
-    <None Include="VidoParkingEntities.edmx.diagram">
-      <DependentUpon>VidoParkingEntities.edmx</DependentUpon>
+    <None Include="VidoParking.edmx.diagram">
+      <DependentUpon>VidoParking.edmx</DependentUpon>
     </None>
-    <None Include="VidoParkingEntities.tt">
+    <None Include="VidoParking.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>VidoParkingEntities.edmx</DependentUpon>
-      <LastGenOutput>VidoParkingEntities.cs</LastGenOutput>
+      <LastGenOutput>VidoParking.cs</LastGenOutput>
+      <DependentUpon>VidoParking.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

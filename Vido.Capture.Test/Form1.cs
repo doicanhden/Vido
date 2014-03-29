@@ -3,8 +3,7 @@
   using System.Diagnostics;
   using System.Windows.Forms;
   using Vido.Capture.Events;
-  using Vido.Capture.Interfaces;
-  using Vido.Common;
+  using Vido.Capture;
 
   public partial class Form1 : Form
   {
@@ -19,22 +18,22 @@
 
       //capture = captureFactory.Create();
 
-      var config = new CaptureConfigs();
+      var config = new Configs();
       config.Source = @"http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240";
       config.Username = "admin";
       config.Password = "123456";
       config.FrameInterval = 0;
       config.Coding = Enums.Coding.MJpeg;
 
-      var captureFactory = new CaptureFactory();
+      var captureFactory = new Factory();
       capture = captureFactory.Create(config);
       capture.NewFrame += capture_NewFrame;
     }
 
 
-    void capture_NewFrame(object sender, NewFrameEventArgs e)
+    void capture_NewFrame(object sender, System.EventArgs e)
     {
-      pictureBox1.Image = e.Bitmap;
+      pictureBox1.Image = (e as NewFrameEventArgs).Bitmap;
     }
 
     private void button1_Click(object sender, System.EventArgs e)

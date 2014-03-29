@@ -5,11 +5,10 @@
   using System.Drawing;
   using System.IO;
   using System.Text;
-  using Vido.Capture.Interfaces;
+  using Vido.Capture;
   using Vido.Parking.Controls;
   using Vido.Parking.Enums;
   using Vido.Parking.Events;
-  using Vido.Parking.Interfaces;
   using Vido.Parking.Utilities;
 
   /// <summary>
@@ -19,7 +18,8 @@
   {
     #region Data Members
     private readonly IParking parking = null;
-    private readonly ICaptureFactory captureFactory = null;
+    private readonly ICardManagement card = null;
+    private readonly IFactory captureFactory = null;
     private readonly IUidDeviceList inputDevices = null;
     private readonly ICollection<Lane> lanes = new List<Lane>();
     #endregion
@@ -33,7 +33,14 @@
     public ICollection<LaneConfigs> LaneConfigs { get; set; }
     public bool EncodeData { get; set; }
 
+    /// <summary>
+    /// Chuỗi quy ước tên ảnh chụp phương tiện ra.
+    /// </summary>
     public string InFormat { get; set; }
+
+    /// <summary>
+    /// Chuỗi quy ước tên ảnh chụp phương tiện ra.
+    /// </summary>
     public string OutFormat { get; set; }
 
     /// <summary>
@@ -70,21 +77,26 @@
     #endregion
 
     #region Public Constructors
-    public Controller(IParking parking, IUidDeviceList inputDevices, ICaptureFactory captureFactory)
+    public Controller(IParking parking, ICardManagement card, IUidDeviceList inputDevices, IFactory captureFactory)
     {
       if (parking == null)
       {
         throw new ArgumentNullException("parking");
       }
 
-      if (captureFactory == null)
+      if (card == null)
       {
-        throw new ArgumentNullException("captureFactory");
+        throw new ArgumentNullException("card");
       }
 
       if (inputDevices == null)
       {
         throw new ArgumentNullException("inputDevices");
+      }
+
+      if (captureFactory == null)
+      {
+        throw new ArgumentNullException("captureFactory");
       }
 
       this.parking = parking;
@@ -141,41 +153,76 @@
     #endregion
 
     #region Event Handlers
-    private void lane_Entry(object sender, EntryEventArgs e)
+    private void lane_Entry(object sender, EventArgs e)
     {
       var lane = sender as Lane;
-      if (lane != null)
+      var args = e as EntryEventArgs;
+
+      if (lane != null && args != null)
       {
+        var data = Encode.GetDataString(args.DataIn.Data, args.DataIn.Printable);
+
+        if (card.IsExistAndUsing(data))
+        {
+          /// TODO: Địa phương hóa chuỗi thông báo.
+          lane.RaiseNewMessage("Không thể dùng thẻ này.");
+          args.Allow = false;
+          return;
+        }
+
         var inOut = new InOutArgs()
         {
           Time = DateTime.Now,
-          Data = e.Data,
-          LaneCode = lane.LaneCode,
-          PlateNumber = e.PlateNumber
+          Data = data,
+          Lane = lane.Code,
+          PlateNumber = args.PlateNumber
         };
 
         switch (lane.Direction)
         {
           case Direction.In:
-            if (parking.CanIn(e.Data, e.PlateNumber) &&
-              SaveImages(e.BackImage, e.FrontImage, InFormat, ref inOut))
+            if (parking.IsFull)
             {
-              parking.In(inOut);
+              /// TODO: Địa phương hóa chuỗi thông báo.
+              lane.RaiseNewMessage("Bãi đã đầy, vui lòng chờ phương tiện RA.");
             }
             else
             {
-              e.Allow = false;
+              if (parking.CanIn(data, args.PlateNumber) &&
+                SaveImages(args.BackImage, args.FrontImage, InFormat, ref inOut))
+              {
+                parking.In(inOut);
+              }
+              else
+              {
+                args.Allow = false;
+              }
             }
             break;
           case Direction.Out:
-            if (parking.CanOut(e.Data, e.PlateNumber) &&
-              SaveImages(e.BackImage, e.FrontImage, OutFormat, ref inOut))
             {
-              parking.Out(inOut);
-            }
-            else
-            {
-              e.Allow = false;
+              string inBackImage = string.Empty;
+              string inFrontImage = string.Empty;
+
+              if (parking.CanOut(data, args.PlateNumber, ref inBackImage, ref inFrontImage) &&
+                SaveImages(args.BackImage, args.FrontImage, OutFormat, ref inOut))
+              {
+                parking.Out(inOut);
+
+                if (File.Exists(RootImageDirectoryName + inBackImage))
+                {
+                  args.BackImage = Bitmap.FromFile(RootImageDirectoryName + inBackImage);
+                }
+
+                if (File.Exists(RootImageDirectoryName + inFrontImage))
+                {
+                  args.FrontImage = Bitmap.FromFile(RootImageDirectoryName + inFrontImage);
+                }
+              }
+              else
+              {
+                args.Allow = false;
+              }
             }
             break;
           default:
@@ -202,9 +249,6 @@
           string.Format(DailyDirectoryFormat, @"\\") :
           string.Format(DailyDirectoryFormat, Path.DirectorySeparatorChar));
 
-        var encodeData = EncodeData ? Encode.EncodeData(inOutArgs.Data) :
-          Encoding.ASCII.GetString(inOutArgs.Data);
-
         var timeString = inOutArgs.Time.ToString("HHmmss");
 
         CreateDirectoryIfNotExists(RootImageDirectoryName + dailyDirectory);
@@ -213,7 +257,7 @@
         if (back != null)
         {
           inOutArgs.BackImage = dailyDirectory + string.Format(BackImageNameFormat,
-            timeString, inOutFormat, encodeData, inOutArgs.PlateNumber);
+            timeString, inOutFormat, inOutArgs.Data, inOutArgs.PlateNumber);
 
           back.Save(RootImageDirectoryName + inOutArgs.BackImage);
         }
@@ -221,7 +265,7 @@
         if (front != null)
         {
           inOutArgs.FrontImage = dailyDirectory + string.Format(FrontImageNameFormat,
-            timeString, inOutFormat, encodeData, inOutArgs.PlateNumber);
+            timeString, inOutFormat, inOutArgs.Data, inOutArgs.PlateNumber);
 
           front.Save(RootImageDirectoryName + inOutArgs.FrontImage);
         }

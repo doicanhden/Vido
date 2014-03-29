@@ -7,7 +7,7 @@
   using System.Net;
   using System.Threading;
   using Vido.Capture.Events;
-  using Vido.Capture.Interfaces;
+  using Vido.Capture;
 
   public class JpegStream : ICapture
   {
@@ -23,12 +23,20 @@
     private int framesReceived = 0;
     #endregion
 
-    #region Events
-    public event NewFrameEventHandler NewFrame;
+    #region Public Events
+    /// <summary>
+    /// Sự kiện kích hoạt khi có khung hình mới từ thiết bị.
+    /// </summary>
+    public event EventHandler NewFrame;
+
+    /// <summary>
+    /// Sự kiện kích hoại khi có lỗi xảy ra với thiết bị.
+    /// </summary>
+    public event EventHandler ErrorOccurred;
     #endregion
 
     #region Properties
-    public ICaptureConfigs Configs { get; set; }
+    public IConfigs Configs { get; set; }
     public int FramesReceived
     {
       get { return (framesReceived); }
@@ -85,6 +93,14 @@
     #endregion
 
     #region Private Methods
+    private void RaiseErrorOccurred(int code, string message)
+    {
+      if (ErrorOccurred != null)
+      {
+        ErrorOccurred(this, new ErrorOccurredEventArgs(code, message));
+      }
+    }
+
     private void WorkerThread()
     {
       byte[] buffer = new byte[bufSize];
