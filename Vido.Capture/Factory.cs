@@ -1,7 +1,7 @@
 ﻿namespace Vido.Capture
 {
   using Vido.Capture.Enums;
-  using Vido.Capture;
+
   public class Factory : IFactory
   {
     #region Public Methods

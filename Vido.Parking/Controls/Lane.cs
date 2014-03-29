@@ -134,9 +134,6 @@
         }
       }
 
-      // TODO: Kiểm tra xem có thể dùng Thread ở đây không.
-      // Do tốn nhiều thời gian xử lý OCR để lấy biển số.
-
       var plateNumber = Ocr.GetPlateNumber(frontImage);
       var entryArg = new EntryEventArgs(args, plateNumber, frontImage, backImage);
 
@@ -156,7 +153,7 @@
       }
       else
       {
-        // TODO: Fix Hard-Code.
+        /// TODO: Fix Hard-Code.
         var message = string.Format("Phương tiện {0}, KHÔNG ĐƯỢC PHÉP ", plateNumber);
 
         if (Direction == Enums.Direction.In)

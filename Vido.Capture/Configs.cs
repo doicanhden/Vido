@@ -1,7 +1,6 @@
 ﻿namespace Vido.Capture
 {
   using Vido.Capture.Enums;
-  using Vido.Capture;
 
   public class Configs : IConfigs
   {

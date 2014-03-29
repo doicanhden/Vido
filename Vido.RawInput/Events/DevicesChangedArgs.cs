@@ -4,8 +4,6 @@
   using System.Collections.Generic;
   using Vido.RawInput;
 
-  public delegate void DevicesChangedEventHandler(object sender, DevicesChangedEventArgs e);
-
   public class DevicesChangedEventArgs : EventArgs
   {
     public IList<IKeyboard> OldDevices { get; private set; }

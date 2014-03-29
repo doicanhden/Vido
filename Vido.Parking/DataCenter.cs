@@ -71,18 +71,18 @@
     /// <summary>
     /// Kiểm tra xem phương tiện có thể Vào bãi hay không.
     /// </summary>
-    /// <param name="data">Dữ liệu Uid</param>
+    /// <param name="uniqueId">Dữ liệu Uid</param>
     /// <param name="plateNumber">Biển số phương tiện</param>
     /// <returns>true - Nếu phương tiện có thể Vào bãi, ngược lại: false</returns>
-    bool IParking.CanIn(string data, string plateNumber)
+    bool IParking.CanIn(string uniqueId, string plateNumber)
     {
-      // TODO: Trả về vị trí Phương tiện có thể Đỗ.
-      // TODO: Thêm Kiểm tra trạng thái thẻ (Bảng Card).
+      /// TODO: Trả về vị trí Phương tiện có thể Đỗ.
+
       try
       {
         var inRecords = from Records in entities.InOutRecord
                         where
-                          Records.CardId == data &&
+                          Records.CardId == uniqueId &&
                           Records.OutEmployeeId == null &&
                           Records.OutLaneCode == null &&
                           Records.OutTime == null &&
@@ -94,7 +94,7 @@
       }
       catch
       {
-        // TODO: Địa phương hóa chuỗi thông báo.
+        /// TODO: Địa phương hóa chuỗi thông báo.
         RaiseNewMessage("IParking.CanIn: Lỗi truy xuất dữ liệu.");
         return (false);
       }
@@ -137,7 +137,7 @@
       }
       catch
       {
-        // TODO: Địa phương hóa chuỗi thông báo.
+        /// TODO: Địa phương hóa chuỗi thông báo.
         RaiseNewMessage("IParking.In: Lỗi truy xuất dữ liệu.");
       }
     }
@@ -145,17 +145,17 @@
     /// <summary>
     /// Kiểm tra xem phương tiện có thể Ra bãi hay không.
     /// </summary>
-    /// <param name="data">Dữ liệu Uid</param>
+    /// <param name="uniqueId">Dữ liệu Uid</param>
     /// <param name="plateNumber">Biển số phương tiện</param>
     /// <returns>true - Nếu phương tiện có thể Ra bãi, ngược lại: false</returns>
-    bool IParking.CanOut(string data, string plateNumber, ref string inBackImage, ref string inFrontImage)
+    bool IParking.CanOut(string uniqueId, string plateNumber, ref string inBackImage, ref string inFrontImage)
     {
       try
       {
         var inRecords = from Records in entities.InOutRecord
                         where
                           Records.UserData == plateNumber &&
-                          Records.CardId == data &&
+                          Records.CardId == uniqueId &&
                           Records.OutEmployeeId == null &&
                           Records.OutLaneCode == null &&
                           Records.OutTime == null &&
@@ -175,7 +175,7 @@
       }
       catch
       {
-        // TODO: Địa phương hóa chuỗi thông báo.
+        /// TODO: Địa phương hóa chuỗi thông báo.
         RaiseNewMessage("IParking.CanOut: Lỗi truy xuất dữ liệu.");
         return (false);
       }
@@ -219,18 +219,18 @@
           /// Cập nhật dữ liệu vào Database.
           entities.SaveChanges();
 
-          // Đặt lại trạng thái Bãi chưa đầy.
+          /// Đặt lại trạng thái Bãi chưa đầy.
           (this as IParking).IsFull = false;
         }
         else
         {
-          // TODO: Địa phương hóa chuỗi thông báo.
+          /// TODO: Địa phương hóa chuỗi thông báo.
           RaiseNewMessage("IParking.Out: Lỗi CSDL, không có hoặc có nhiều hơn một thông tin phương tiện vào.");
         }
       }
       catch
       {
-        // TODO: Địa phương hóa chuỗi thông báo.
+        /// TODO: Địa phương hóa chuỗi thông báo.
         RaiseNewMessage("IParking.Out: Lỗi truy xuất dữ liệu.");
       }
     }

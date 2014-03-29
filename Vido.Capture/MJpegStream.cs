@@ -8,7 +8,6 @@
   using System.Text;
   using System.Threading;
   using Vido.Capture.Events;
-  using Vido.Capture;
 
   public class MJpegStream : ICapture
   {

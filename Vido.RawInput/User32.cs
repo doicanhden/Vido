@@ -57,7 +57,7 @@
   internal struct RAWINPUTDEVICE
   {
     internal HidUsagePage UsagePage;
-    internal HidUsage Usage;
+    internal HidUsageId Usage;
     internal RawInputDeviceFlags Flags;
     internal IntPtr Target;
   }

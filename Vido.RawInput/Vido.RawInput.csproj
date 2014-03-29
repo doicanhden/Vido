@@ -45,8 +45,8 @@
     <Compile Include="Enums\HidUsage.cs" />
     <Compile Include="Enums\HidUsagePage.cs" />
     <Compile Include="Enums\RawInputDeviceFlags.cs" />
-    <Compile Include="Events\DevicesChanged.cs" />
-    <Compile Include="Events\Key.cs" />
+    <Compile Include="Events\DevicesChangedArgs.cs" />
+    <Compile Include="Events\KeyArgs.cs" />
     <Compile Include="IKeyboard.cs" />
     <Compile Include="IRawKeyboard.cs" />
     <Compile Include="Keyboard.cs" />

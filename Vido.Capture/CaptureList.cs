@@ -2,7 +2,6 @@
 {
   using System;
   using System.Collections.Generic;
-  using Vido.Capture;
 
   public class CaptureList : ICaptureList, IDisposable
   {

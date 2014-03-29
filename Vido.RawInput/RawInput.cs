@@ -4,7 +4,6 @@ namespace Vido.RawInput
   using System;
   using System.Runtime.InteropServices;
   using System.Windows.Forms;
-  using Vido.RawInput;
   using Vido.RawInput.User32;
 
   public class RawInput : NativeWindow

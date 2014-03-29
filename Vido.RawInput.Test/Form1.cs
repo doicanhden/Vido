@@ -17,20 +17,21 @@
       rawInput.Keyboard.EnumerateDevices();
     }
 
-    private void Keyboards_DevicesChanged(object s, DevicesChangedEventArgs e)
+    private void Keyboards_DevicesChanged(object s, EventArgs e)
     {
+      var args = e as DevicesChangedEventArgs;
       listBox1.Items.Add("Devices Changed");
-      if (e.OldDevices != null)
+      if (args.OldDevices != null)
       {
-        foreach (var keyboard in e.OldDevices)
+        foreach (var keyboard in args.OldDevices)
         {
           keyboard.KeyDown -= keyboard_KeyDown;
           keyboard.KeyUp -= keyboard_KeyUp;
         }
       }
-      if (e.NewDevices != null)
+      if (args.NewDevices != null)
       {
-        foreach (var keyboard in e.NewDevices)
+        foreach (var keyboard in args.NewDevices)
         {
           keyboard.KeyDown += keyboard_KeyDown;
           keyboard.KeyUp += keyboard_KeyUp;

@@ -7,7 +7,6 @@
   using System.Net;
   using System.Threading;
   using Vido.Capture.Events;
-  using Vido.Capture;
 
   public class JpegStream : ICapture
   {

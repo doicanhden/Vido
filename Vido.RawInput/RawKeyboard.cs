@@ -8,7 +8,6 @@
   using System.Runtime.InteropServices;
   using Vido.RawInput.Enums;
   using Vido.RawInput.Events;
-  using Vido.RawInput;
   using Vido.RawInput.User32;
 
   [StructLayout(LayoutKind.Explicit)]
@@ -37,7 +36,7 @@
     private List<IKeyboard> devices = new List<IKeyboard>();
     private static InputData rawBuffer;
 
-    public event DevicesChangedEventHandler DevicesChanged;
+    public event EventHandler DevicesChanged;
 
     public ICollection<IKeyboard> Devices
     {
@@ -49,7 +48,7 @@
       var rid = new RAWINPUTDEVICE[1];
 
       rid[0].UsagePage = HidUsagePage.GENERIC;
-      rid[0].Usage = HidUsage.Keyboard;
+      rid[0].Usage = HidUsageId.Keyboard;
       rid[0].Flags = RawInputDeviceFlags.INPUTSINK;
       rid[0].Target = hwnd;
 

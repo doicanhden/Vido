@@ -74,7 +74,7 @@
       <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>
     <Compile Include="ICardManagement.cs" />
-    <Compile Include="Events\InOutArgs.cs" />
+    <Compile Include="InOutArgs.cs" />
     <Compile Include="IParking.cs" />
     <Compile Include="ISettingsProvider.cs" />
     <Compile Include="IUidDevice.cs" />

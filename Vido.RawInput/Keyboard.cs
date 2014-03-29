@@ -2,27 +2,28 @@
 {
   using System;
   using Vido.RawInput.Events;
-  using Vido.RawInput;
 
   public class Keyboard : IKeyboard
   {
-    #region Events
+    #region Public Events
     public event EventHandler KeyUp;
     public event EventHandler KeyDown;
     #endregion
 
-    #region Properties
+    #region Public Properties
     public IntPtr Handle { get; set; }
     public string Name { get; set; }
     public string Type { get; set; }
     public string Description { get; set; }
     #endregion
 
+    #region Public Constructors
     public Keyboard()
     {
     }
+    #endregion
 
-    #region Methods
+    #region Internal Methods
     internal void RaiseKeyDown(int keyValue)
     {
       if (KeyDown != null)

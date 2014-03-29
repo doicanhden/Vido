@@ -274,7 +274,7 @@
       }
       catch
       {
-        // TODO: Thêm xử lý exception ở đây.
+        /// TODO: Thêm xử lý exception ở đây.
         throw;
       }
     }

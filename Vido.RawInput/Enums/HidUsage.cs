@@ -1,6 +1,6 @@
 ﻿namespace Vido.RawInput.Enums
 {
-  public enum HidUsage : ushort
+  public enum HidUsageId : ushort
   {
     /// <summary>Unknown usage.</summary>
     Undefined = 0x00,

@@ -3,8 +3,6 @@
   using System;
   using Vido.RawInput;
 
-  public delegate void KeyEventHandler(object sender, KeyEventArgs e);
-
   public class KeyEventArgs : EventArgs
   {
     private int keyValue;
