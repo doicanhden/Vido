@@ -31,7 +31,6 @@
     }
 
     public ICollection<LaneConfigs> LaneConfigs { get; set; }
-    public bool EncodeData { get; set; }
 
     /// <summary>
     /// Chuỗi quy ước tên ảnh chụp phương tiện ra.
@@ -46,18 +45,20 @@
     /// <summary>
     /// Chuỗi định dạng tên tệp tin ảnh chụp Biển số phương tiện.
     /// {0} - Time,
-    /// {1} - In/Out,
-    /// {2} - Plate number,
-    /// {3} - Uid data,
+    /// {1} - Uid data,
+    /// {2} - In/Out,
+    /// {3} - Lane code,
+    /// {4} - Plate number
     /// </summary>
     public string BackImageNameFormat { get; set; }
 
     /// <summary>
-    /// Chuỗi định dạng tên tệp tin ảnh chụp Người điều khiển.
+    /// Chuỗi định dạng tên tệp tin ảnh chụp Người điều khiển phương tiện.
     /// {0} - Time,
-    /// {1} - In/Out,
-    /// {2} - Plate number,
-    /// {3} - Uid data,
+    /// {1} - Uid data,
+    /// {2} - In/Out,
+    /// {3} - Lane code,
+    /// {4} - Plate number
     /// </summary>
     public string FrontImageNameFormat { get; set; }
 
@@ -164,7 +165,7 @@
       {
         var data = Encode.GetDataString(args.DataIn.Data, args.DataIn.Printable);
 
-        if (card.IsExistAndUsing(data))
+        if (!card.IsExistAndUsing(data))
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
           lane.RaiseNewMessage("Không thể dùng thẻ này.");
@@ -259,7 +260,7 @@
         if (back != null)
         {
           inOutArgs.BackImage = dailyDirectory + string.Format(BackImageNameFormat,
-            timeString, inOutArgs.Lane, inOutFormat, inOutArgs.Data, inOutArgs.PlateNumber);
+            timeString, inOutArgs.Data, inOutFormat, inOutArgs.Lane, inOutArgs.PlateNumber);
 
           back.Save(RootImageDirectoryName + inOutArgs.BackImage);
         }
@@ -267,7 +268,7 @@
         if (front != null)
         {
           inOutArgs.FrontImage = dailyDirectory + string.Format(FrontImageNameFormat,
-            timeString, inOutArgs.Lane, inOutFormat, inOutArgs.Data, inOutArgs.PlateNumber);
+            timeString, inOutArgs.Data, inOutFormat, inOutArgs.Lane, inOutArgs.PlateNumber);
 
           front.Save(RootImageDirectoryName + inOutArgs.FrontImage);
         }

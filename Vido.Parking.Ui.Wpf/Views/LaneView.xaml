@@ -4,47 +4,52 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  xmlns:Controls ="clr-namespace:Vido.Parking.Ui.Wpf.Controls"
   mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" MinWidth="346" MinHeight="364" MaxWidth="666" MaxHeight="604">
   <Border BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
     <Grid DataContext="{Binding}">
       <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
         <RowDefinition Height="*"/>
         <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
         <ColumnDefinition/>
         <ColumnDefinition/>
       </Grid.ColumnDefinitions>
-      
-      <!-- Lane Name & Id number-->
-      <Grid Grid.ColumnSpan="2">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="2*"/>
-          <ColumnDefinition Width="4*"/>
-          <ColumnDefinition Width="4*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Margin="2" TextWrapping="WrapWithOverflow" Text="{Binding LaneCode}" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center"/>
-        <StackPanel Grid.Column="1">
-          <TextBlock Text="Card ID" TextAlignment="Center"/>
-          <TextBox Margin="4,0,4,2" Text="{Binding CardID}"/>
-        </StackPanel>
-        <StackPanel Grid.Column="2">
-          <TextBlock Text="User Data" TextAlignment="Center"/>
-          <TextBox Margin="4,0,4,2" Text="{Binding UserData}"/>
-        </StackPanel>
-      </Grid>
-      
+
       <!-- Videos -->
+      <Grid Grid.Column="0" Grid.Row="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding FrontCamText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+          <Image Source="{Binding FrontImageCamera}" Stretch="Uniform" MinWidth="160" MinHeight="120"/>
+        </Border>
+      </Grid>
+      <Grid Grid.Column="2" Grid.Row="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding BackCamText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+          <Image Source="{Binding BackImageCamera}" MinWidth="160" MinHeight="120"/>
+        </Border>
+      </Grid>
+
+      <!-- Images -->
       <Grid Grid.Column="0" Grid.Row="1">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Front Cam" TextAlignment="Center"/>
+        <TextBlock Grid.Row="0" Text="{Binding FrontImgText}" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding FrontImageCamera}" Stretch="Uniform" MinWidth="160" MinHeight="120"/>
+          <Image Source="{Binding FrontImageSaved}" Stretch="Uniform" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
       <Grid Grid.Column="2" Grid.Row="1">
@@ -52,45 +57,54 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Back Cam" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding BackImageCamera}" MinWidth="160" MinHeight="120"/>
-        </Border>
-      </Grid>
-
-      <!-- Message & Buttons -->
-      <Grid Grid.Row="2" Grid.ColumnSpan="2">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="8*"/>
-          <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Margin="5" Text="{Binding Message}"/>
-        <Button Grid.Column="1" Margin="5" Content="Stop"
-                Command="{Binding StopCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
-      </Grid>
-      
-      <!-- Images -->
-      <Grid Grid.Column="0" Grid.Row="3">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Front Image Saved" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding FrontImageSaved}" Stretch="Uniform" MinWidth="160" MinHeight="120"/>
-        </Border>
-      </Grid>
-      <Grid Grid.Column="2" Grid.Row="3">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto"/>
-          <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Back Image Saved" TextAlignment="Center"/>
+        <TextBlock Grid.Row="0" Text="{Binding BackImgText}" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
           <Image Source="{Binding BackImageSaved}" Stretch="Uniform" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
+
+      <!-- Lane Name & Id number-->
+      <Grid Grid.Row="2" Grid.ColumnSpan="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="4*"/>
+          <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Margin="2" TextAlignment="Center" VerticalAlignment="Center"
+                   TextWrapping="WrapWithOverflow" Text="{Binding LaneCode}"
+                   Foreground="Green" FontWeight="Bold"/>
+
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="{Binding UniqueIdText}" TextAlignment="Center"/>
+          <TextBox Margin="4,0,4,2" Text="{Binding UniqueId}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+          <TextBlock Text="{Binding UserDataText}" TextAlignment="Center"/>
+          <TextBox Margin="4,0,4,2" Text="{Binding UserData}"/>
+        </StackPanel>
+      </Grid>
+
+      <!-- Message & Buttons -->
+      <Grid Grid.Row="3" Grid.ColumnSpan="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="8*"/>
+          <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Margin="5" ItemsSource="{Binding Messages}"
+                 Height="{Binding ElementName=Stop, Path=ActualWidth}"
+                 BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                 BorderThickness="1"
+                 IsSynchronizedWithCurrentItem="True"
+                 Controls:ListBoxExtenders.AutoScrollToCurrentItem="True"/>
+
+        <Button x:Name="Stop" Grid.Column="1" Margin="5" Content="Stop"
+                Command="{Binding StopCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+      </Grid>
+
     </Grid>
   </Border>
 </UserControl>

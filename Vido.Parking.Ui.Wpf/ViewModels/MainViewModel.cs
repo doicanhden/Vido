@@ -1,76 +1,26 @@
-﻿
-namespace Vido.Parking.Ui.Wpf.ViewModels
+﻿namespace Vido.Parking.Ui.Wpf.ViewModels
 {
   using System;
+  using System.Linq;
+  using System.Drawing;
+  using System.Diagnostics;
   using System.Windows;
   using System.Windows.Interop;
   using System.Collections.ObjectModel;
   using Vido.Capture;
   using Vido.Capture.Enums;
   using Vido.Parking.Controls;
-  using System.Drawing;
-  using System.Diagnostics;
+
+
   public class MainViewModel : IDisposable
   {
-    private ISettingsProvider settings = null;
     private InputDeviceList inputDevices;
     private CaptureList captures;
     private DataCenter dataCenter;
     private Controller controller;
 
-
+    private readonly Settings settings = new Settings();
     private readonly ObservableCollection<LaneViewModel> laneViewModels;
-
-    public MainViewModel(IntPtr mainWindowsHandle)
-    {
-      settings = TestSetting(@"\settings.xml");
-      settings.Save();
-
-      inputDevices = InputDeviceList.GetInstance(mainWindowsHandle);
-      captures = new CaptureList(new Factory());
-      laneViewModels = new ObservableCollection<LaneViewModel>();
-
-      dataCenter = new DataCenter();
-
-      (dataCenter as IParking).MaximumSlots = 1000;
-
-      controller = new Controller(dataCenter, dataCenter, inputDevices, captures)
-      {
-        FrontImageNameFormat = settings.Query<string>(SettingKeys.FrontImageNameFormat),
-        BackImageNameFormat = settings.Query<string>(SettingKeys.BackImageNameFormat),
-
-        DailyDirectoryFormat = settings.Query<string>(SettingKeys.DailyDirectoryFormat),
-        InFormat = settings.Query<string>(SettingKeys.InFormat),
-        OutFormat = settings.Query<string>(SettingKeys.OutFormat),
-        LaneConfigs = settings.Query<LaneConfigs[]>(SettingKeys.Lanes),
-        RootImageDirectoryName = settings.Query<string>(SettingKeys.RootImageDirectoryName),
-
-        EncodeData = false
-      };
-
-      controller.GenerateLanes();
-
-      GenerateLaneViewModels();
-
-      foreach (var cap in captures.Captures)
-      {
-       cap.Start();
-      }
-    }
-
-
-    /// <summary>
-    /// Tạo ViewModel cho từng Lane.
-    /// </summary>
-    private void GenerateLaneViewModels()
-    {
-      laneViewModels.Clear();
-
-      foreach (var lane in controller.Lanes)
-      {
-        laneViewModels.Add(new LaneViewModel(lane));
-      }
-    }
 
     /// <summary>
     /// Danh sách các ViewModel của lane.
@@ -79,49 +29,48 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
     {
       get { return (laneViewModels); }
     }
-    private static ISettingsProvider TestSetting(string fileName)
+
+    public MainViewModel(IntPtr mainWindowsHandle)
     {
-      var settings = new Settings(fileName);
+      laneViewModels = new ObservableCollection<LaneViewModel>();
 
-      settings.Set(SettingKeys.RootImageDirectoryName, Environment.CurrentDirectory + @"\Images");
-      settings.Set(SettingKeys.DailyDirectoryFormat, "{0}yyyy{0}MM{0}dd");
-      settings.Set(SettingKeys.BackImageNameFormat , "IMG_{0}_{1}_{2}_{3}_{4}_B.jpg");
-      settings.Set(SettingKeys.FrontImageNameFormat, "IMG_{0}_{1}_{2}_{3}_{4}_F.jpg");
-      settings.Set(SettingKeys.InFormat, "I");
-      settings.Set(SettingKeys.OutFormat, "O");
+      inputDevices = new InputDeviceList(mainWindowsHandle);
+      captures = new CaptureList(new Factory());
 
-      settings.Set(SettingKeys.Lanes, new LaneConfigs[1]
+      dataCenter = new DataCenter();
+      controller = new Controller(dataCenter, dataCenter, inputDevices, captures);
+      dataCenter.CurrentUserId = "TEST";
+      settings.SetParking(dataCenter);
+      settings.SetController(controller);
+      settings.SetLaneConfigs(controller.LaneConfigs);
+
+      GenerateLaneViewModels();
+      StartAllCaptures();
+    }
+    private void StartAllCaptures()
+    {
+      foreach (var cap in captures.Captures)
       {
-        new LaneConfigs()
-        {
-          BackCamera = new Configs()
-          {
-            Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
-            Coding = Coding.MJpeg,
-            Username = "admin",
-            Password = "admin"
-          },
-          FrontCamera = new Configs()
-          {
-            Source = @"http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240",
-            Coding = Coding.MJpeg,
-            Username = "admin",
-            Password = "admin"
-          },
-          Code = "LANE1",
-          Direction = Enums.Direction.Out,
-          UidDeviceName = @"VID_0E6A&PID_030B",
-          NumberOfRetries = 3,
-          State = Enums.LaneState.Ready
-        }
-      });
-
-      return (settings);
+        cap.Start();
+      }
     }
 
-    private static IntPtr MainWindowsHandle
+    /// <summary>
+    /// Tạo ViewModel cho từng Lane.
+    /// </summary>
+    private void GenerateLaneViewModels()
     {
-      get { return (new WindowInteropHelper(Application.Current.MainWindow).Handle); }
+      laneViewModels.Clear();
+
+      controller.GenerateLanes();
+
+      if (controller.Lanes != null)
+      {
+        foreach (var lane in controller.Lanes)
+        {
+          laneViewModels.Add(new LaneViewModel(lane));
+        }
+      }
     }
 
     #region Implementation of IDisposable
@@ -131,6 +80,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       {
         // dispose managed resources
         captures.Dispose();
+        dataCenter.Dispose();
       }
       // free native resources
     }

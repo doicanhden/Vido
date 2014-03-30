@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MahApps.Metro">
-      <HintPath>..\packages\MahApps.Metro.0.13.0.95-ALPHA\lib\net40\MahApps.Metro.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -62,9 +59,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Controls\ListBoxExtenders.cs" />
+    <Compile Include="Datasets\Settings.cs">
+      <DependentUpon>Settings.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Datasets\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings.xsd</DependentUpon>
+    </Compile>
     <Compile Include="InputDeviceList.cs" />
-    <Compile Include="ISettingsProvider.cs" />
-    <Compile Include="SettingKeys.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities\NotificationObject.cs" />
     <Compile Include="ViewModels\LaneViewModel.cs" />
@@ -115,6 +120,17 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="App.Config" />
+    <None Include="Datasets\Settings.xsc">
+      <DependentUpon>Settings.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\Settings.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Datasets\Settings.xss">
+      <DependentUpon>Settings.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

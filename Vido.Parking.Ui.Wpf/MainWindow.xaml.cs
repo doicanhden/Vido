@@ -1,6 +1,5 @@
 ﻿namespace Vido.Parking.Ui.Wpf
 {
-  using MahApps.Metro.Controls;
   using System;
   using System.Windows;
   using System.Windows.Interop;
@@ -8,7 +7,7 @@
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class MainWindow : MetroWindow
+  public partial class MainWindow : Window
   {
     public MainWindow()
     {

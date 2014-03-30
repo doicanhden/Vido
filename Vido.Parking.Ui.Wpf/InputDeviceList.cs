@@ -46,24 +46,6 @@
 
   public class InputDeviceList : IUidDeviceList
   {
-    #region Thread-Safe Singleton
-    private static volatile InputDeviceList instance = null;
-    private static object syncRoot = new Object();
-    public static InputDeviceList GetInstance(IntPtr handle)
-    {
-      if (instance == null)
-      {
-        lock (syncRoot)
-        {
-          if (instance == null)
-            instance = new InputDeviceList(handle);
-        }
-      }
-
-      return (instance);
-    }
-    #endregion
-
     #region Data Members
     private readonly object objLock = new object();
     private readonly List<KeyDownBuffer> registered = null;
@@ -72,7 +54,7 @@
     #endregion
 
     #region Private Constructors
-    private InputDeviceList(IntPtr handle)
+    public InputDeviceList(IntPtr handle)
     {
       registered = new List<KeyDownBuffer>();
 

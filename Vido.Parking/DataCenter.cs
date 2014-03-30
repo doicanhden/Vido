@@ -7,7 +7,7 @@
   using Vido.Parking;
   using Vido.Parking.Utilities;
 
-  public class DataCenter : IParking, ICardManagement
+  public class DataCenter : IParking, ICardManagement, IDisposable
   {
     #region Data Members
     private VidoParkingEntities entities = null;
@@ -24,15 +24,6 @@
     public DataCenter()
     {
       this.entities = new VidoParkingEntities();
-    }
-    public DataCenter(VidoParkingEntities entities)
-    {
-      if (entities == null)
-      {
-        throw new System.ArgumentNullException("entities");
-      }
-
-      this.entities = entities;
     }
     #endregion
 
@@ -59,12 +50,12 @@
     /// <summary>
     /// Số lượng chỗ đỗ tối đa của Bãi.
     /// </summary>
-    int  IParking.MaximumSlots { get; set; }
+    public int  MaximumSlots { get; set; }
 
     /// <summary>
     /// Trạng thái Bãi đầy.
     /// </summary>
-    bool IParking.IsFull { get; set; }
+    public bool IsFull { get; set; }
     #endregion
 
     #region Public Methods
@@ -74,7 +65,7 @@
     /// <param name="uniqueId">Dữ liệu Uid</param>
     /// <param name="plateNumber">Biển số phương tiện</param>
     /// <returns>true - Nếu phương tiện có thể Vào bãi, ngược lại: false</returns>
-    bool IParking.CanIn(string uniqueId, string plateNumber)
+    public bool CanIn(string uniqueId, string plateNumber)
     {
       /// TODO: Trả về vị trí Phương tiện có thể Đỗ.
 
@@ -95,7 +86,7 @@
       catch
       {
         /// TODO: Địa phương hóa chuỗi thông báo.
-        RaiseNewMessage("IParking.CanIn: Lỗi truy xuất dữ liệu.");
+        RaiseNewMessage("CanIn: Lỗi truy xuất dữ liệu.");
         return (false);
       }
     }
@@ -104,7 +95,7 @@
     /// Xử lý phương tiện Vào bãi.
     /// </summary>
     /// <param name="inArgs">Thông tin phương tiện vào bãi.</param>
-    void IParking.In(InOutArgs inArgs)
+    public void In(InOutArgs inArgs)
     {
       var parking = this as IParking;
       try
@@ -138,7 +129,8 @@
       catch
       {
         /// TODO: Địa phương hóa chuỗi thông báo.
-        RaiseNewMessage("IParking.In: Lỗi truy xuất dữ liệu.");
+        RaiseNewMessage("In: Lỗi truy xuất dữ liệu.");
+        throw;
       }
     }
 
@@ -148,7 +140,7 @@
     /// <param name="uniqueId">Dữ liệu Uid</param>
     /// <param name="plateNumber">Biển số phương tiện</param>
     /// <returns>true - Nếu phương tiện có thể Ra bãi, ngược lại: false</returns>
-    bool IParking.CanOut(string uniqueId, string plateNumber, ref string inBackImage, ref string inFrontImage)
+    public bool CanOut(string uniqueId, string plateNumber, ref string inBackImage, ref string inFrontImage)
     {
       try
       {
@@ -165,8 +157,8 @@
 
         if (inRecords.Count() == 1)
         {
-          inBackImage = inRecords.ElementAt(0).InBackImg;
-          inFrontImage = inRecords.ElementAt(0).InFrontImg;
+          inBackImage = inRecords.ToArray()[0].InBackImg;
+          inFrontImage = inRecords.ToArray()[0].InFrontImg;
 
           return (true);
         }
@@ -176,7 +168,7 @@
       catch
       {
         /// TODO: Địa phương hóa chuỗi thông báo.
-        RaiseNewMessage("IParking.CanOut: Lỗi truy xuất dữ liệu.");
+        RaiseNewMessage("CanOut: Lỗi truy xuất dữ liệu.");
         return (false);
       }
     }
@@ -185,7 +177,7 @@
     /// Xử lý phương tiện Ra bãi.
     /// </summary>
     /// <param name="outArgs">Thông tin phương tiện ra.</param>
-    void IParking.Out(InOutArgs outArgs)
+    public void Out(InOutArgs outArgs)
     {
       try
       {
@@ -207,7 +199,7 @@
         /// => Xuất thông báo lỗi Database.
         if (inRecords.Count() == 1)
         {
-          var record = inRecords.ElementAt(0);
+          var record = inRecords.ToArray()[0];
 
           /// Thêm thông tin phương tiện RA.
           record.OutEmployeeId = CurrentUserId;
@@ -225,13 +217,13 @@
         else
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.Out: Lỗi CSDL, không có hoặc có nhiều hơn một thông tin phương tiện vào.");
+          RaiseNewMessage("Out: Lỗi CSDL, không có hoặc có nhiều hơn một thông tin phương tiện vào.");
         }
       }
       catch
       {
         /// TODO: Địa phương hóa chuỗi thông báo.
-        RaiseNewMessage("IParking.Out: Lỗi truy xuất dữ liệu.");
+        RaiseNewMessage("Out: Lỗi truy xuất dữ liệu.");
       }
     }
     #endregion
@@ -246,14 +238,37 @@
     /// </summary>
     /// <param name="cardId">Dữ liệu thẻ</param>
     /// <returns></returns>
-    bool ICardManagement.IsExistAndUsing(string cardId)
+    public bool IsExistAndUsing(string cardId)
     {
       var cards = from Cards in entities.Card
                   where
                     Cards.CardId == cardId
                   select Cards;
 
-      return (cards.Count() == 1 && cards.ElementAt(0).State == 0);
+      return (cards.Count() == 1 && cards.ToArray()[0].State == 0);
+    }
+    #endregion
+
+    #endregion
+
+    #region Implementation of IDisposable
+
+    #region Protected Methods
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        // dispose managed resources
+        entities.Dispose();
+      }
+    }
+    #endregion
+
+    #region Public Methods
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
     }
     #endregion
 
