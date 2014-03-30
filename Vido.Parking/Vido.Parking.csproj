@@ -76,7 +76,6 @@
     <Compile Include="ICardManagement.cs" />
     <Compile Include="InOutArgs.cs" />
     <Compile Include="IParking.cs" />
-    <Compile Include="ISettingsProvider.cs" />
     <Compile Include="IUidDevice.cs" />
     <Compile Include="Enums\LaneState.cs" />
     <Compile Include="IUidDeviceList.cs" />
@@ -84,8 +83,6 @@
     <Compile Include="Controls\Lane.cs" />
     <Compile Include="LaneConfigs.cs" />
     <Compile Include="DataCenter.cs" />
-    <Compile Include="SettingKeys.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="Utilities\Ocr.cs" />
     <Compile Include="Utilities\PasswordHash.cs" />
     <Compile Include="Utilities\Encode.cs" />

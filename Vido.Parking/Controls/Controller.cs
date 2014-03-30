@@ -100,6 +100,7 @@
       }
 
       this.parking = parking;
+      this.card = card;
       this.captureFactory = captureFactory;
       this.inputDevices = inputDevices;
 
