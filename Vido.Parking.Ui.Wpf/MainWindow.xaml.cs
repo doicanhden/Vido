@@ -1,8 +1,7 @@
 ﻿namespace Vido.Parking.Ui.Wpf
 {
-  using System;
   using System.Windows;
-  using System.Windows.Interop;
+  using Vido.Parking.Ui.Wpf.ViewModels;
 
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -16,9 +15,7 @@
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-      IntPtr handle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
-      this.DataContext = new ViewModels.MainViewModel(handle);
+      this.DataContext = new MainViewModel(this);
     }
-
   }
 }

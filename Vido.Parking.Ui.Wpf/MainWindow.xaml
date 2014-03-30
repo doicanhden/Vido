@@ -4,20 +4,36 @@
   xmlns:Views="clr-namespace:Vido.Parking.Ui.Wpf.Views"
   xmlns:ViewModels="clr-namespace:Vido.Parking.Ui.Wpf.ViewModels"
   x:Class="Vido.Parking.Ui.Wpf.MainWindow" Loaded="Window_Loaded"
-  Title="MainWindow" Height="633" Width="961">
+  Title="Bãi xe Vido" Height="633" Width="961">
   <Window.Resources>
     <DataTemplate DataType="{x:Type ViewModels:LaneViewModel}">
-      <Views:LaneView DataContext="{Binding}"/>
+      <Views:LaneView DataContext="{Binding}" FontSize="20" FontFamily="Consola"/>
     </DataTemplate>
+
+    <Style TargetType="{x:Type Control}" x:Key="baseStyle">
+      <Setter Property="FontSize" Value="40" />
+    </Style>
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource baseStyle}"></Style>
+    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource baseStyle}"></Style>
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource baseStyle}"></Style>
+    <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource baseStyle}"></Style>
+    <!-- ComboBox, RadioButton, CheckBox, etc... -->
   </Window.Resources>
 
   <Grid>
-    <ListBox ItemsSource="{Binding Lanes}" Margin="0,40,0,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <ListBox Margin="0,40,0,0" ItemsSource="{Binding Lanes}">
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
           <WrapPanel IsItemsHost="True"/>
         </ItemsPanelTemplate>
       </ListBox.ItemsPanel>
     </ListBox>
+    <StatusBar Grid.Row="1" Height="20">
+      <TextBlock Text="{Binding Status}"/>
+    </StatusBar>
   </Grid>
 </Window>

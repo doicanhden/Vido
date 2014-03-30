@@ -6,10 +6,16 @@
   public class EntryEventArgs : EventArgs
   {
     #region Public Properties
+
     /// <summary>
     /// Dữ liệu từ Thiết bị Uid.
     /// </summary>
     public DataInEventArgs DataIn { get; private set; }
+
+    /// <summary>
+    /// Thời gian phương tiện vào làn.
+    /// </summary>
+    public DateTime Time { get; private set; }
 
     /// <summary>
     /// Biển số phương tiện.
@@ -30,16 +36,23 @@
     /// Cho phép phương tiện ra khỏi làn.
     /// </summary>
     public bool Allow { get; set; }
+
+    /// <summary>
+    /// Thông báo
+    /// </summary>
+    public string Message { get; set; }
     #endregion
 
     #region Public Constructors
-    public EntryEventArgs(DataInEventArgs dataIn, string plateNumber, Image frontImage, Image backImage)
+    public EntryEventArgs(DataInEventArgs dataIn, DateTime time,
+      string plateNumber, Image backImage, Image frontImage)
     {
       this.DataIn = dataIn;
+      this.Time = time;
       this.PlateNumber = plateNumber;
-      this.FrontImage = frontImage;
       this.BackImage = backImage;
-      this.Allow = true;
+      this.FrontImage = frontImage;
+      this.Allow = false;
     }
     #endregion
   }

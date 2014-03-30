@@ -91,16 +91,18 @@
     public event EventHandler NewMessage;
     #endregion
 
-    #region Public Methods
+    #region Private Methods
+
     /// <summary>
-    /// Kích hoạt sự kiện Thông báo mới.
+    /// Kích hoạt sự kiện Thông báo mới với thời gian ở đầu thông báo.
     /// </summary>
+    /// <param name="time">Thời gian</param>
     /// <param name="message">Thông báo</param>
-    public void RaiseNewMessage(string message)
+    private void RaiseNewMessage(DateTime time, string message)
     {
       if (NewMessage != null)
       {
-        NewMessage(this, new NewMessageEventArgs(message));
+        NewMessage(this, new NewMessageEventArgs(time.ToString("HH:mm - ") + message));
       }
     }
     #endregion
@@ -110,59 +112,83 @@
     {
       var args = e as DataInEventArgs;
 
-      if (args.Data == null || Entry == null || LaneState == LaneState.Stop)
+      if (args == null || LaneState == LaneState.Stop)
       {
         return;
       }
 
-      Image backImage = TryCapture(BackCamera);
-      if (backImage == null)
+      if (Entry != null)
       {
-        RaiseNewMessage("Không thể chụp ảnh từ camera. Vui lòng kiểm tra thiết bị");
-        return;
-      }
+        var entryTime = DateTime.Now;
 
-      Image frontImage = null;
-      // Có thể không thiết lập camera chụp Người điều khiển.
-      if (FrontCamera != null)
-      {
-        frontImage = TryCapture(FrontCamera);
-        if (frontImage == null)
+        Image backImage = TryCapture(BackCamera);
+        if (backImage == null)
         {
-          RaiseNewMessage("Không thể chụp ảnh từ camera. Vui lòng kiểm tra thiết bị");
+          /// TODO: Địa phương hóa chuỗi thông báo.
+          RaiseNewMessage(entryTime, "Không thể chụp ảnh từ camera.");
           return;
         }
-      }
 
-      var plateNumber = Ocr.GetPlateNumber(frontImage);
-      var entryArg = new EntryEventArgs(args, plateNumber, frontImage, backImage);
-
-      Entry(this, entryArg);
-
-      if (entryArg.Allow)
-      {
-        if (EntryAllowed != null)
+        Image frontImage = null;
+        if (FrontCamera != null)
         {
-          EntryAllowed(this, new EntryAllowedEventArgs(entryArg.PlateNumber));
+          frontImage = TryCapture(FrontCamera);
+          if (frontImage == null)
+          {
+            /// TODO: Địa phương hóa chuỗi thông báo.
+            RaiseNewMessage(entryTime, "Không thể chụp ảnh từ camera.");
+            return;
+          }
         }
 
-        if (SavedImages != null)
-        {
-          SavedImages(this, new SavedImagesEventArgs(frontImage, backImage));
-        }
-      }
-      else
-      {
-        /// TODO: Fix Hard-Code.
-        var message = string.Format("Phương tiện {0}, KHÔNG ĐƯỢC PHÉP ", plateNumber);
+        var plateNumber = Ocr.GetPlateNumber(backImage);
+        var entryArgs = new EntryEventArgs(args, entryTime, plateNumber, backImage, frontImage);
 
-        if (Direction == Enums.Direction.In)
+        Entry(this, entryArgs);
+
+        if (entryArgs.Allow)
         {
-          RaiseNewMessage(message + " VÀO bãi.");
+          if (Direction == Enums.Direction.In)
+          {
+            /// TODO: Địa phương hóa chuỗi thông báo.
+            RaiseNewMessage(entryTime, "Mời xe VÀO bãi.");
+          }
+          else if (Direction == Enums.Direction.Out)
+          {
+            /// TODO: Địa phương hóa chuỗi thông báo.
+            RaiseNewMessage(entryTime, "Mời xe RA bãi.");
+          }
+
+          if (SavedImages != null)
+          {
+            SavedImages(this, new SavedImagesEventArgs(frontImage, backImage));
+          }
+
+          if (EntryAllowed != null)
+          {
+            EntryAllowed(this, new EntryAllowedEventArgs(entryArgs.PlateNumber,
+              entryArgs.Time));
+          }
         }
-        else if (Direction == Enums.Direction.Out)
+        else
         {
-          RaiseNewMessage(message + " RA bãi.");
+          if (string.IsNullOrWhiteSpace(entryArgs.Message))
+          {
+            if (Direction == Enums.Direction.In)
+            {
+              /// TODO: Địa phương hóa chuỗi thông báo.
+              RaiseNewMessage(entryTime, "Xe KHÔNG ĐƯỢC PHÉP VÀO bãi.");
+            }
+            else if (Direction == Enums.Direction.Out)
+            {
+              /// TODO: Địa phương hóa chuỗi thông báo.
+              RaiseNewMessage(entryTime, "Xe KHÔNG ĐƯỢC PHÉP RA bãi.");
+            }
+          }
+          else
+          {
+            RaiseNewMessage(entryTime, entryArgs.Message);
+          }
         }
       }
     }
@@ -187,8 +213,8 @@
             return (image);
           }
 
-          // Chờ 0.25s cho lần chụp kế tiếp.
-          Thread.Sleep(250);
+          // Chờ 0.15s cho lần chụp kế tiếp.
+          Thread.Sleep(150);
         }
       }
 

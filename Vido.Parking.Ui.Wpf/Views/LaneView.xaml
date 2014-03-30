@@ -5,8 +5,17 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
   xmlns:Controls ="clr-namespace:Vido.Parking.Ui.Wpf.Controls"
-  mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" MinWidth="346" MinHeight="364" MaxWidth="666" MaxHeight="604">
-  <Border BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+  mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" MinWidth="346" MinHeight="364">
+  <UserControl.Resources>
+    <BitmapImage x:Key='defaultImage' UriSource='/Vido.Parking.Ui.Wpf;component/Images/imageBackground.png' />
+
+    <Style TargetType="Border">
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+    </Style>
+  </UserControl.Resources>
+  
+  <Border>
     <Grid DataContext="{Binding}">
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
@@ -25,9 +34,9 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding FrontCamText}" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding FrontImageCamera}" Stretch="Uniform" MinWidth="160" MinHeight="120"/>
+        <TextBlock Grid.Row="0" Margin="5" Text="{Binding FrontCamText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5">
+          <Image Source="{Binding FrontImageCamera, TargetNullValue={StaticResource defaultImage}}" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
       <Grid Grid.Column="2" Grid.Row="0">
@@ -35,9 +44,9 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding BackCamText}" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding BackImageCamera}" MinWidth="160" MinHeight="120"/>
+        <TextBlock Grid.Row="0" Margin="5" Text="{Binding BackCamText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5">
+          <Image Source="{Binding BackImageCamera, TargetNullValue={StaticResource defaultImage}}" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
 
@@ -47,9 +56,10 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding FrontImgText}" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding FrontImageSaved}" Stretch="Uniform" MinWidth="160" MinHeight="120"/>
+        <TextBlock Grid.Row="0" Margin="5" Text="{Binding FrontImgText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5">
+          <Image Source="{Binding FrontImageSaved, TargetNullValue={StaticResource defaultImage}}" MinWidth="160" MinHeight="120">
+          </Image>
         </Border>
       </Grid>
       <Grid Grid.Column="2" Grid.Row="1">
@@ -57,9 +67,9 @@
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding BackImgText}" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-          <Image Source="{Binding BackImageSaved}" Stretch="Uniform" MinWidth="160" MinHeight="120"/>
+        <TextBlock Grid.Row="0" Margin="5" Text="{Binding BackImgText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5">
+          <Image Source="{Binding BackImageSaved, TargetNullValue={StaticResource defaultImage}}" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
 
@@ -67,8 +77,8 @@
       <Grid Grid.Row="2" Grid.ColumnSpan="2">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="2*"/>
-          <ColumnDefinition Width="4*"/>
-          <ColumnDefinition Width="4*"/>
+          <ColumnDefinition Width="5*"/>
+          <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Margin="2" TextAlignment="Center" VerticalAlignment="Center"
@@ -93,14 +103,10 @@
           <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <ListBox Margin="5" ItemsSource="{Binding Messages}"
-                 Height="{Binding ElementName=Stop, Path=ActualWidth}"
-                 BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
-                 BorderThickness="1"
-                 IsSynchronizedWithCurrentItem="True"
-                 Controls:ListBoxExtenders.AutoScrollToCurrentItem="True"/>
-
-        <Button x:Name="Stop" Grid.Column="1" Margin="5" Content="Stop"
+        <Border Margin="5">
+          <TextBlock Text="{Binding Message}" FontWeight="ExtraBlack" Foreground="Green" VerticalAlignment="Center"/>
+        </Border>
+        <Button Grid.Column="1" Margin="5" Content="Stop"
                 Command="{Binding StopCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
       </Grid>

@@ -26,6 +26,7 @@
 
     private readonly Lane lane = null;
 
+    private string message = null;
     private string laneCode = null;
     private string uniqueId = null;
     private string userData = null;
@@ -35,14 +36,16 @@
     private BitmapSource backImageCamera = null;
 
     private ICommand stopCommand = null;
-
-
-    private ObservableCollection<string> messages = null;
     #endregion
 
-    public ObservableCollection<string> Messages
+    public string Message
     {
-      get { return (messages ?? (messages = new ObservableCollection<string>())); }
+      get { return (message); }
+      set
+      {
+        message = value;
+        RaisePropertyChanged(() => Message);
+      }
     }
 
     public string UniqueIdText
@@ -172,7 +175,6 @@
 
       this.lane = lane;
       this.lane.Entry += lane_Entry;
-      this.lane.EntryAllowed += lane_EntryAllowed;
       this.lane.SavedImages += lane_LastImages;
       this.lane.NewMessage += lane_NewMessage;
 
@@ -188,28 +190,28 @@
         this.lane.FrontCamera.NewFrame += FrontCamera_NewFrame;
       }
 
+      /// TODO: Địa phương hóa chuỗi thông báo.
       UniqueIdText = "Thẻ xe";
       UserDataText = "Biển số";
       
-      BackCamText = "Camera sau";
-      FrontCamText = "Camera trước";
+      BackCamText = "Camera phía sau";
+      FrontCamText = "Camera phía trước";
 
       BackImgText = "Ảnh chụp phía sau";
       FrontImgText = "Ảnh chụp phía sau";
+
       if (this.lane.Direction == Enums.Direction.In)
       {
-        this.LaneCode += " - Vào";
+        this.LaneCode += " \nVào";
       }
       else
       {
         this.BackImgText += " - Lúc VÀO";
         this.FrontImgText += " - Lúc VÀO";
 
-        this.LaneCode += " - Ra";
+        this.LaneCode += " \nRa";
       }
     }
-
-
     #endregion
 
 
@@ -221,22 +223,14 @@
       this.UniqueId = Encode.GetDataString(args.DataIn.Data, args.DataIn.Printable);
       this.UserData = args.PlateNumber;
 
+      /// Xóa thông báo hiện tại trên View.
+      this.Message = string.Empty;
     }
 
-    void lane_EntryAllowed(object sender, EventArgs e)
-    {
-      if (this.lane.Direction == Enums.Direction.In)
-      {
-        this.Messages.Add("Mời phương tiện VÀO bãi.");
-      }
-      else
-      {
-        this.Messages.Add("Mời phương tiện RA bãi");
-      }
-    }
     private void lane_LastImages(object sender, EventArgs e)
     {
       var args = e as Events.SavedImagesEventArgs;
+
       if (args.Back != null)
       {
         this.BackImageSaved = ConvertToBitmapSource(args.Back);
@@ -250,7 +244,7 @@
 
     private void lane_NewMessage(object sender, EventArgs e)
     {
-      this.Messages.Add((e as Events.NewMessageEventArgs).Message);
+      this.Message = (e as Events.NewMessageEventArgs).Message;
     }
 
     private void BackCamera_NewFrame(object sender, EventArgs e)
@@ -276,7 +270,7 @@
     }
     private bool StopCanExecute(object obj)
     {
-      return (true);
+      return (false);
     }
     private void StopExecute(object obj)
     {

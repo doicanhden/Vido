@@ -86,7 +86,7 @@
       catch
       {
         /// TODO: Địa phương hóa chuỗi thông báo.
-        RaiseNewMessage("CanIn: Lỗi truy xuất dữ liệu.");
+        RaiseNewMessage("IParking.CanIn: Lỗi truy xuất dữ liệu.");
         return (false);
       }
     }
@@ -129,8 +129,7 @@
       catch
       {
         /// TODO: Địa phương hóa chuỗi thông báo.
-        RaiseNewMessage("In: Lỗi truy xuất dữ liệu.");
-        throw;
+        RaiseNewMessage("IParking.In: Lỗi truy xuất dữ liệu.");
       }
     }
 
@@ -168,7 +167,7 @@
       catch
       {
         /// TODO: Địa phương hóa chuỗi thông báo.
-        RaiseNewMessage("CanOut: Lỗi truy xuất dữ liệu.");
+        RaiseNewMessage("IParking.CanOut: Lỗi truy xuất dữ liệu.");
         return (false);
       }
     }
@@ -217,13 +216,13 @@
         else
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("Out: Lỗi CSDL, không có hoặc có nhiều hơn một thông tin phương tiện vào.");
+          RaiseNewMessage("IParking.Out: Lỗi CSDL, không có hoặc có nhiều hơn một thông tin phương tiện vào.");
         }
       }
       catch
       {
         /// TODO: Địa phương hóa chuỗi thông báo.
-        RaiseNewMessage("Out: Lỗi truy xuất dữ liệu.");
+        RaiseNewMessage("IParking.Out: Lỗi truy xuất dữ liệu.");
       }
     }
     #endregion
@@ -240,12 +239,21 @@
     /// <returns></returns>
     public bool IsExistAndUsing(string cardId)
     {
-      var cards = from Cards in entities.Card
-                  where
-                    Cards.CardId == cardId
-                  select Cards;
+      try
+      {
+        var cards = from Cards in entities.Card
+                    where
+                      Cards.CardId == cardId
+                    select Cards;
 
-      return (cards.Count() == 1 && cards.ToArray()[0].State == 0);
+        return (cards.Count() == 1 && cards.ToArray()[0].State == 0);
+      }
+      catch
+      {
+        /// TODO: Địa phương hóa chuỗi thông báo.
+        RaiseNewMessage("ICardManagement.IsExistAndUsing: Lỗi truy xuất dữ liệu.");
+        return (false);
+      }
     }
     #endregion
 

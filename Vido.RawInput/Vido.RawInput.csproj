@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\HidUsage.cs" />
+    <Compile Include="Enums\HidUsageId.cs" />
     <Compile Include="Enums\HidUsagePage.cs" />
     <Compile Include="Enums\RawInputDeviceFlags.cs" />
     <Compile Include="Events\DevicesChangedArgs.cs" />

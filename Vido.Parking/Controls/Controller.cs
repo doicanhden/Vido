@@ -4,9 +4,7 @@
   using System.Collections.Generic;
   using System.Drawing;
   using System.IO;
-  using System.Text;
   using Vido.Capture;
-  using Vido.Parking.Controls;
   using Vido.Parking.Enums;
   using Vido.Parking.Events;
   using Vido.Parking.Utilities;
@@ -168,14 +166,13 @@
         if (!card.IsExistAndUsing(data))
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          lane.RaiseNewMessage("Không thể dùng thẻ này.");
-          args.Allow = false;
+          args.Message = "Không thể dùng thẻ này.";
           return;
         }
 
         var inOut = new InOutArgs()
         {
-          Time = DateTime.Now,
+          Time = args.Time,
           Data = data,
           Lane = lane.Code,
           PlateNumber = args.PlateNumber
@@ -187,7 +184,7 @@
             if (parking.IsFull)
             {
               /// TODO: Địa phương hóa chuỗi thông báo.
-              lane.RaiseNewMessage("Bãi đã đầy, vui lòng chờ phương tiện RA.");
+              args.Message = "Bãi đã đầy.";
             }
             else
             {
@@ -195,10 +192,7 @@
                 SaveImages(args.BackImage, args.FrontImage, InFormat, ref inOut))
               {
                 parking.In(inOut);
-              }
-              else
-              {
-                args.Allow = false;
+                args.Allow = true;
               }
             }
             break;
@@ -211,6 +205,7 @@
                 SaveImages(args.BackImage, args.FrontImage, OutFormat, ref inOut))
               {
                 parking.Out(inOut);
+                args.Allow = true;
 
                 if (File.Exists(RootImageDirectoryName + inBackImage))
                 {
@@ -221,10 +216,6 @@
                 {
                   args.FrontImage = Bitmap.FromFile(RootImageDirectoryName + inFrontImage);
                 }
-              }
-              else
-              {
-                args.Allow = false;
               }
             }
             break;
