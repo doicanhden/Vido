@@ -142,53 +142,30 @@
         }
 
         var plateNumber = Ocr.GetPlateNumber(backImage);
-        var entryArgs = new EntryEventArgs(args, entryTime, plateNumber, backImage, frontImage);
+        var entryArgs = new EntryEventArgs(args, entryTime, plateNumber,
+          backImage, frontImage);
 
         Entry(this, entryArgs);
 
         if (entryArgs.Allow)
         {
-          if (Direction == Enums.Direction.In)
-          {
-            /// TODO: Địa phương hóa chuỗi thông báo.
-            RaiseNewMessage(entryTime, "Mời xe VÀO bãi.");
-          }
-          else if (Direction == Enums.Direction.Out)
-          {
-            /// TODO: Địa phương hóa chuỗi thông báo.
-            RaiseNewMessage(entryTime, "Mời xe RA bãi.");
-          }
+          RaiseNewMessage(entryTime, entryArgs.Message);
 
           if (SavedImages != null)
           {
-            SavedImages(this, new SavedImagesEventArgs(frontImage, backImage));
+            SavedImages(this, new SavedImagesEventArgs(
+              entryArgs.BackImage, entryArgs.FrontImage));
           }
 
           if (EntryAllowed != null)
           {
-            EntryAllowed(this, new EntryAllowedEventArgs(entryArgs.PlateNumber,
-              entryArgs.Time));
+            EntryAllowed(this, new EntryAllowedEventArgs(
+              entryArgs.PlateNumber, entryArgs.Time));
           }
         }
         else
         {
-          if (string.IsNullOrWhiteSpace(entryArgs.Message))
-          {
-            if (Direction == Enums.Direction.In)
-            {
-              /// TODO: Địa phương hóa chuỗi thông báo.
-              RaiseNewMessage(entryTime, "Xe KHÔNG ĐƯỢC PHÉP VÀO bãi.");
-            }
-            else if (Direction == Enums.Direction.Out)
-            {
-              /// TODO: Địa phương hóa chuỗi thông báo.
-              RaiseNewMessage(entryTime, "Xe KHÔNG ĐƯỢC PHÉP RA bãi.");
-            }
-          }
-          else
-          {
-            RaiseNewMessage(entryTime, entryArgs.Message);
-          }
+          RaiseNewMessage(entryTime, entryArgs.Message);
         }
       }
     }

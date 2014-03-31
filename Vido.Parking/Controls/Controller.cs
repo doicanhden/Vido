@@ -151,6 +151,7 @@
         }
       }
     }
+
     #endregion
 
     #region Event Handlers
@@ -166,7 +167,7 @@
         if (!card.IsExistAndUsing(data))
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          args.Message = "Không thể dùng thẻ này.";
+          args.Message = "Thẻ không hợp lệ.";
           return;
         }
 
@@ -188,12 +189,24 @@
             }
             else
             {
-              if (parking.CanIn(data, args.PlateNumber) &&
-                SaveImages(args.BackImage, args.FrontImage, InFormat, ref inOut))
+              if (!parking.CanIn(data, args.PlateNumber))
               {
-                parking.In(inOut);
-                args.Allow = true;
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Xe KHÔNG ĐƯỢC PHÉP VÀO bãi.";
+                return;
               }
+
+              if (!SaveImages(args.BackImage, args.FrontImage, InFormat, ref inOut))
+              {
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Không lưu được ảnh.";
+              }
+
+              parking.In(inOut);
+
+              /// TODO: Địa phương hóa chuỗi thông báo.
+              args.Message = "Mời xe VÀO Bãi.";
+              args.Allow = true;
             }
             break;
           case Direction.Out:
@@ -201,22 +214,47 @@
               string inBackImage = string.Empty;
               string inFrontImage = string.Empty;
 
-              if (parking.CanOut(data, args.PlateNumber, ref inBackImage, ref inFrontImage) &&
-                SaveImages(args.BackImage, args.FrontImage, OutFormat, ref inOut))
+              if (!parking.CanOut(data, args.PlateNumber, ref inBackImage, ref inFrontImage))
               {
-                parking.Out(inOut);
-                args.Allow = true;
-
-                if (File.Exists(RootImageDirectoryName + inBackImage))
-                {
-                  args.BackImage = Bitmap.FromFile(RootImageDirectoryName + inBackImage);
-                }
-
-                if (File.Exists(RootImageDirectoryName + inFrontImage))
-                {
-                  args.FrontImage = Bitmap.FromFile(RootImageDirectoryName + inFrontImage);
-                }
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Xe KHÔNG ĐƯỢC PHÉP RA Bãi.";
+                return;
               }
+
+              if (!SaveImages(args.BackImage, args.FrontImage, OutFormat, ref inOut))
+              {
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Không lưu được ảnh.";
+                return;
+              }
+
+              parking.Out(inOut);
+
+              if (File.Exists(RootImageDirectoryName + inBackImage))
+              {
+                args.BackImage = Bitmap.FromFile(RootImageDirectoryName + inBackImage);
+              }
+              else
+              {
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Không tìm thấy ảnh chụp biển số.";
+                args.BackImage = null;
+                return;
+              }
+
+              if (File.Exists(RootImageDirectoryName + inFrontImage))
+              {
+                args.FrontImage = Bitmap.FromFile(RootImageDirectoryName + inFrontImage);
+              }
+              else
+              {
+                /// TODO: Xử lý trường hợp Lane vào không chụp ảnh Người điều khiển.
+                /// Kiểm tra config của Lane đó trong settings dựa vào LaneCode.
+                args.FrontImage = null;
+              }
+
+              args.Message = "Mời xe RA Bãi";
+              args.Allow = true;
             }
             break;
           default:
@@ -269,7 +307,7 @@
       catch
       {
         /// TODO: Thêm xử lý exception ở đây.
-        throw;
+        return (false);
       }
     }
 

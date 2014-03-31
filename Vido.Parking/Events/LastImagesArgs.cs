@@ -18,10 +18,10 @@
     #endregion
 
     #region Public Constructors
-    public SavedImagesEventArgs(Image front, Image back)
+    public SavedImagesEventArgs(Image back, Image front)
     {
-      this.Front = front;
       this.Back = back;
+      this.Front = front;
     }
     #endregion
   }

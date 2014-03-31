@@ -7,7 +7,7 @@
   xmlns:Controls ="clr-namespace:Vido.Parking.Ui.Wpf.Controls"
   mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" MinWidth="346" MinHeight="364">
   <UserControl.Resources>
-    <BitmapImage x:Key='defaultImage' UriSource='/Vido.Parking.Ui.Wpf;component/Images/imageBackground.png' />
+    <BitmapImage x:Key='imageNotFound' UriSource='/Vido.Parking.Ui.Wpf;component/Images/imageNotFound.png' />
 
     <Style TargetType="Border">
       <Setter Property="BorderThickness" Value="1"/>
@@ -36,7 +36,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Margin="5" Text="{Binding FrontCamText}" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5">
-          <Image Source="{Binding FrontImageCamera, TargetNullValue={StaticResource defaultImage}}" MinWidth="160" MinHeight="120"/>
+          <Image Source="{Binding FrontImageCamera, TargetNullValue={StaticResource imageNotFound}}" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
       <Grid Grid.Column="2" Grid.Row="0">
@@ -46,7 +46,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Margin="5" Text="{Binding BackCamText}" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5">
-          <Image Source="{Binding BackImageCamera, TargetNullValue={StaticResource defaultImage}}" MinWidth="160" MinHeight="120"/>
+          <Image Source="{Binding BackImageCamera, TargetNullValue={StaticResource imageNotFound}}" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
 
@@ -58,7 +58,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Margin="5" Text="{Binding FrontImgText}" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5">
-          <Image Source="{Binding FrontImageSaved, TargetNullValue={StaticResource defaultImage}}" MinWidth="160" MinHeight="120">
+          <Image Source="{Binding FrontImageSaved, TargetNullValue={StaticResource imageNotFound}}" MinWidth="160" MinHeight="120">
           </Image>
         </Border>
       </Grid>
@@ -69,7 +69,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Margin="5" Text="{Binding BackImgText}" TextAlignment="Center"/>
         <Border Grid.Row="1" Margin="5">
-          <Image Source="{Binding BackImageSaved, TargetNullValue={StaticResource defaultImage}}" MinWidth="160" MinHeight="120"/>
+          <Image Source="{Binding BackImageSaved, TargetNullValue={StaticResource imageNotFound}}" MinWidth="160" MinHeight="120"/>
         </Border>
       </Grid>
 

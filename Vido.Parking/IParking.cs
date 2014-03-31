@@ -1,4 +1,5 @@
-﻿namespace Vido.Parking
+﻿using System;
+namespace Vido.Parking
 {
   public interface IParking
   {
@@ -11,7 +12,7 @@
     /// <summary>
     /// Trạng thái Bãi đầy.
     /// </summary>
-    bool IsFull { get; set; }
+    bool IsFull { get; }
     #endregion
 
     #region Public Methods

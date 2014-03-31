@@ -55,7 +55,30 @@
     /// <summary>
     /// Trạng thái Bãi đầy.
     /// </summary>
-    public bool IsFull { get; set; }
+    public bool IsFull
+    {
+      get
+      {
+        try
+        {
+          /// Kiểm tra trạng thái Bãi.
+          /// Đếm số phương tiện chưa RA Bãi
+          /// và so sánh với số lượng vị trí tối đa.
+          return (MaximumSlots <= entities.InOutRecord.Count(r =>
+            r.OutEmployeeId == null &&
+            r.OutLaneCode == null &&
+            r.OutTime == null &&
+            r.OutBackImg == null &&
+            r.OutFrontImg == null));
+        }
+        catch
+        {
+          /// TODO: Địa phương hóa chuỗi thông báo.
+          RaiseNewMessage("IParking.IsFull: Lỗi truy xuất dữ liệu.");
+          return (true);
+        }
+      }
+    }
     #endregion
 
     #region Public Methods
@@ -115,16 +138,6 @@
 
         /// Cập nhật thông tin vào DB.
         entities.SaveChanges();
-
-        /// Kiểm tra trạng thái Bãi.
-        /// Đếm số phương tiện chưa RA Bãi
-        /// và so sánh với số lượng vị trí tối đa.
-        parking.IsFull = parking.MaximumSlots <= entities.InOutRecord.Count(r =>
-          r.OutEmployeeId == null &&
-          r.OutLaneCode == null &&
-          r.OutTime == null &&
-          r.OutBackImg == null &&
-          r.OutFrontImg == null);
       }
       catch
       {
@@ -209,9 +222,6 @@
 
           /// Cập nhật dữ liệu vào Database.
           entities.SaveChanges();
-
-          /// Đặt lại trạng thái Bãi chưa đầy.
-          (this as IParking).IsFull = false;
         }
         else
         {
