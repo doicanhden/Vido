@@ -4,7 +4,7 @@
   using System.Collections.Generic;
   using Vido.Parking.Events;
 
-  class KeyDownBuffer : IUidDevice
+  class KeyDownBuffer : IUniqueIdDevice
   {
     #region Data Members
     private readonly List<byte> buffer = new List<byte>();
@@ -44,13 +44,13 @@
     #endregion
   }
 
-  public class InputDeviceList : IUidDeviceList
+  public class InputDeviceList : IUniqueIdDeviceList
   {
     #region Data Members
     private readonly object objLock = new object();
     private readonly List<KeyDownBuffer> registered = null;
     private RawInput.RawInput rawInput = null;
-    private List<IUidDevice> devices = null;
+    private List<IUniqueIdDevice> devices = null;
     #endregion
 
     #region Private Constructors
@@ -84,7 +84,7 @@
 
         if (args.NewDevices != null)
         {
-          devices = new List<IUidDevice>();
+          devices = new List<IUniqueIdDevice>();
           foreach (var keyboard in args.NewDevices)
           {
             devices.Add(new KeyDownBuffer() { Name = keyboard.Name });
@@ -117,7 +117,7 @@
     #region Implementation of IUidDevicesEnumerator
     public event EventHandler DevicesChanged;
 
-    public ICollection<IUidDevice> Devices
+    public ICollection<IUniqueIdDevice> Devices
     {
       get
       {
@@ -128,12 +128,12 @@
       }
     }
 
-    public IUidDevice Register(string deviceName)
+    public IUniqueIdDevice Register(string deviceName)
     {
       return (Register(deviceName, 13)); // 13 - Enter Key.
     }
 
-    public IUidDevice Register(string deviceName, byte endKey)
+    public IUniqueIdDevice Register(string deviceName, byte endKey)
     {
       if (!string.IsNullOrEmpty(deviceName))
       {
@@ -150,7 +150,7 @@
       return (null);
     }
 
-    public void Unregister(IUidDevice device)
+    public void Unregister(IUniqueIdDevice device)
     {
       if (device != null)
       {

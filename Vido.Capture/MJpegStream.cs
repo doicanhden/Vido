@@ -8,6 +8,7 @@
   using System.Text;
   using System.Threading;
   using Vido.Capture.Events;
+  using Vido.Desktop;
 
   public class MJpegStream : ICapture
   {
@@ -15,14 +16,13 @@
     private const int readSize = 1024;
     private const int bufSize = 512 * 1024;
 
-    private readonly object objLock = new object();
     private readonly ManualResetEvent stopEvent = new ManualResetEvent(false);
     private readonly ManualResetEvent reloadEvent = new ManualResetEvent(false);
     private Thread thread = null;
 
-    private Image currentFrame = null;
+    private IImageHolder currentFrame = null;
     private int framesReceived = 0;
-    private IConfigs configs = null;
+    private Configuration configs = null;
     #endregion
 
     #region Public Events
@@ -38,7 +38,7 @@
     #endregion
 
     #region Public Properties
-    public IConfigs Configs
+    public Configuration Configuration
     {
       get { return (configs); }
       set
@@ -65,13 +65,14 @@
     #region Public Constructors
     public MJpegStream()
     {
+      currentFrame = new ImageHolder();
     }
     #endregion
 
     #region Public Methods
     public bool Start()
     {
-      if (Configs != null && thread == null)
+      if (Configuration != null && thread == null)
       {
         framesReceived = 0;
 
@@ -79,7 +80,7 @@
         stopEvent.Reset();
 
         thread = new Thread(new ThreadStart(WorkerThread));
-        thread.Name = Configs.Source;
+        thread.Name = Configuration.Source;
         thread.IsBackground = true;
         thread.Start();
 
@@ -103,15 +104,9 @@
       }
     }
 
-    public Image Take()
+    public IImageHolder Take()
     {
-      lock (objLock)
-      {
-        if (currentFrame != null)
-          return (new Bitmap(currentFrame));
-
-        return (null);
-      }
+      return (currentFrame.Copy());
     }
     #endregion
 
@@ -147,10 +142,10 @@
         //  2 = searching for image end
         try
         {
-          request = (HttpWebRequest) WebRequest.Create(Configs.Source);
+          request = (HttpWebRequest) WebRequest.Create(Configuration.Source);
 
-          if (!string.IsNullOrEmpty(Configs.Username) && Configs.Password != null)
-            request.Credentials = new NetworkCredential(Configs.Username, Configs.Password);
+          if (!string.IsNullOrEmpty(Configuration.Username) && Configuration.Password != null)
+            request.Credentials = new NetworkCredential(Configuration.Username, Configuration.Password);
 
           response = request.GetResponse();
 
@@ -247,14 +242,14 @@
                 // increment frames counter
                 ++framesReceived;
 
-                lock (objLock)
+                using (Stream memoryStream = new MemoryStream(buffer, start, stop - start))
                 {
-                  currentFrame = Bitmap.FromStream(new MemoryStream(buffer, start, stop - start));
+                  currentFrame.Load(memoryStream);
                 }
 
                 if (NewFrame != null)
                 {
-                  NewFrame(this, new NewFrameEventArgs(currentFrame as Bitmap));
+                  NewFrame(this, new NewFrameEventArgs(currentFrame));
                 }
 
                 // shift array

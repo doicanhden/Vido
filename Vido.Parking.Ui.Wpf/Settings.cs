@@ -1,10 +1,9 @@
 ﻿namespace Vido.Parking.Ui.Wpf
 {
   using System;
-using System.Collections.Generic;
-using System.IO;
-using Vido.Capture;
-using Vido.Parking.Controls;
+  using System.Collections.Generic;
+  using System.IO;
+  using Vido.Capture;
 
   public class Settings
   {
@@ -93,7 +92,7 @@ using Vido.Parking.Controls;
         }
       }
     }
-    
+
     public void SetController(Controller controller, int id = 0)
     {
       foreach (Datasets.Settings.ControllerConfigsRow cfg in controllerCfgs.Rows)
@@ -126,7 +125,7 @@ using Vido.Parking.Controls;
           NumberOfRetries = cfg.NumberOfRetries,
           UidDeviceName = cfg.UIdDeviceName,
 
-          BackCamera = new Configs()
+          BackCamera = new Configuration()
           {
             Source = cfg.BackCamSource,
             Coding = (Capture.Enums.Coding)cfg.BackCamCoding,
@@ -134,7 +133,7 @@ using Vido.Parking.Controls;
             Password = cfg.BackCamPassword,
             FrameInterval = 100
           },
-          FrontCamera = new Configs()
+          FrontCamera = new Configuration()
           {
             Source = cfg.FrontCamSource,
             Coding = (Capture.Enums.Coding)cfg.FrontCamCoding,

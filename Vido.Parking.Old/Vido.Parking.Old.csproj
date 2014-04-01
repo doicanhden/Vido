@@ -59,33 +59,14 @@
     <Compile Include="Card.cs">
       <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Controller.cs" />
     <Compile Include="Employee.cs">
       <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>
-    <Compile Include="Events\DataInArgs.cs" />
-    <Compile Include="Events\DevicesChangedArgs.cs" />
-    <Compile Include="Events\EntryAllowedArgs.cs" />
-    <Compile Include="Events\EntryArgs.cs" />
-    <Compile Include="Events\NewMessageArgs.cs" />
-    <Compile Include="Events\LastImagesArgs.cs" />
-    <Compile Include="Events\SettingChangedArgs.cs" />
     <Compile Include="InOutRecord.cs">
       <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>
-    <Compile Include="ICardManagement.cs" />
-    <Compile Include="InOutArgs.cs" />
-    <Compile Include="IParking.cs" />
-    <Compile Include="IUidDevice.cs" />
-    <Compile Include="Enums\LaneState.cs" />
-    <Compile Include="IUidDeviceList.cs" />
-    <Compile Include="Enums\Direction.cs" />
-    <Compile Include="Controls\Lane.cs" />
     <Compile Include="LaneConfigs.cs" />
     <Compile Include="DataCenter.cs" />
-    <Compile Include="Utilities\Ocr.cs" />
-    <Compile Include="Utilities\PasswordHash.cs" />
-    <Compile Include="Utilities\Encode.cs" />
     <Compile Include="VidoParking.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -128,9 +109,21 @@
       <Project>{cce14edc-a03f-4056-ab9d-1ea235f392d5}</Project>
       <Name>Vido.Capture</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vido.Parking.Desktop\Vido.Parking.Desktop.csproj">
+      <Project>{16373e64-6b64-4230-a575-70032e4b04d7}</Project>
+      <Name>Vido.Parking.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vido.Parking\Vido.Parking.csproj">
+      <Project>{d72ec123-fadf-4b34-932e-663c5209cbe3}</Project>
+      <Name>Vido.Parking</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Vido.RawInput\Vido.RawInput.csproj">
       <Project>{d3edee2b-4d2a-4395-80aa-60fe75549e19}</Project>
       <Name>Vido.RawInput</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vido\Vido.csproj">
+      <Project>{7cf77cbb-8bbc-41f9-8f26-48095e1b6759}</Project>
+      <Name>Vido</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

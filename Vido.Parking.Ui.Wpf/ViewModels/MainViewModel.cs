@@ -9,7 +9,6 @@
   using System.Collections.ObjectModel;
   using Vido.Capture;
   using Vido.Capture.Enums;
-  using Vido.Parking.Controls;
 
   public class MainViewModel : Utilities.NotificationObject, IDisposable
   {
@@ -60,12 +59,10 @@
       laneViewModels = new ObservableCollection<LaneViewModel>();
 
       inputDevices = new InputDeviceList(MainWindowHandle());
-      captures = new CaptureList(new Factory());
+      captures = new CaptureList(new CaptureFactory());
 
-      dataCenter = new DataCenter();
       dataCenter.NewMessage += dataCenter_NewMessage;
 
-      controller = new Controller(dataCenter, dataCenter, inputDevices, captures);
       dataCenter.CurrentUserId = "TEST";
       settings.SetParking(dataCenter);
       settings.SetController(controller);

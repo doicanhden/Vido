@@ -7,7 +7,7 @@
   using Vido.Parking;
   using Vido.Parking.Utilities;
 
-  public class DataCenter : IParking, ICardManagement, IDisposable
+  public class DataCenter : IDataCenter, IDisposable
   {
     #region Data Members
     private VidoParkingEntities entities = null;

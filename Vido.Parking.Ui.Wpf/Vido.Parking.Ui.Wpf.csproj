@@ -35,9 +35,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -144,13 +150,30 @@
       <Project>{cce14edc-a03f-4056-ab9d-1ea235f392d5}</Project>
       <Name>Vido.Capture</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vido.Desktop\Vido.Desktop.csproj">
+      <Project>{6365eaa0-d898-4827-8450-ca06ebfbe1e6}</Project>
+      <Name>Vido.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vido.Parking.Desktop\Vido.Parking.Desktop.csproj">
+      <Project>{16373e64-6b64-4230-a575-70032e4b04d7}</Project>
+      <Name>Vido.Parking.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vido.Parking\Vido.Parking.csproj">
+      <Project>{d72ec123-fadf-4b34-932e-663c5209cbe3}</Project>
+      <Name>Vido.Parking</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Vido.RawInput\Vido.RawInput.csproj">
       <Project>{d3edee2b-4d2a-4395-80aa-60fe75549e19}</Project>
       <Name>Vido.RawInput</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vido\Vido.csproj">
+      <Project>{7cf77cbb-8bbc-41f9-8f26-48095e1b6759}</Project>
+      <Name>Vido</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converters\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\imageNotFound.png" />

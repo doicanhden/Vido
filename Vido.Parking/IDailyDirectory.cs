@@ -3,11 +3,10 @@
   using System;
   using System.IO;
 
-  public interface IDailyDirectory
+  public interface IDailyDirectory : IFileStorage
   {
-    public string FormatString { get; set; }
-    public string RootDirectoryName { get; set; }
-    bool Create(DateTime time);
-    Stream NewFile(string name);
+    string RootDirectoryName { get; set; }
+    
+    Stream FileNew(DateTime time, string name, out string fileName);
   }
 }

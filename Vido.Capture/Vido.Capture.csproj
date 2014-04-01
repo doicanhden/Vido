@@ -42,21 +42,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteArrayUtils.cs" />
-    <Compile Include="Configs.cs" />
-    <Compile Include="Factory.cs" />
-    <Compile Include="CaptureList.cs" />
-    <Compile Include="Enums\Coding.cs" />
-    <Compile Include="Events\ErrorOccurredEvent.cs" />
-    <Compile Include="Events\NewFrameEvent.cs" />
-    <Compile Include="ICapture.cs" />
-    <Compile Include="IConfigs.cs" />
-    <Compile Include="IFactory.cs" />
-    <Compile Include="ICaptureList.cs" />
+    <Compile Include="CaptureFactory.cs" />
     <Compile Include="JpegStream.cs" />
     <Compile Include="MJpegStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Vido.Desktop\Vido.Desktop.csproj">
+      <Project>{6365eaa0-d898-4827-8450-ca06ebfbe1e6}</Project>
+      <Name>Vido.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vido\Vido.csproj">
+      <Project>{7cf77cbb-8bbc-41f9-8f26-48095e1b6759}</Project>
+      <Name>Vido</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

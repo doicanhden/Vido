@@ -7,6 +7,7 @@
   using System.Net;
   using System.Threading;
   using Vido.Capture.Events;
+  using Vido.Desktop;
 
   public class JpegStream : ICapture
   {
@@ -14,11 +15,10 @@
     private const int readSize = 1024;
     private const int bufSize = 512 * 1024;
 
-    private readonly object objLock = new object();
     private readonly ManualResetEvent stopEvent = new ManualResetEvent(false);
     private Thread thread = null;
 
-    private Image currentFrame = null;
+    private IImageHolder currentFrame = null;
     private int framesReceived = 0;
     #endregion
 
@@ -35,7 +35,7 @@
     #endregion
 
     #region Properties
-    public IConfigs Configs { get; set; }
+    public Configuration Configuration { get; set; }
     public int FramesReceived
     {
       get { return (framesReceived); }
@@ -45,20 +45,21 @@
     #region Constructors
     public JpegStream()
     {
+      currentFrame = new ImageHolder();
     }
     #endregion
 
     #region Public Methods
     public bool Start()
     {
-      if (Configs != null && thread == null)
+      if (Configuration != null && thread == null)
       {
         framesReceived = 0;
 
         stopEvent.Reset();
 
         thread = new Thread(new ThreadStart(WorkerThread));
-        thread.Name = Configs.Source;
+        thread.Name = Configuration.Source;
         thread.IsBackground = true;
         thread.Start();
 
@@ -81,13 +82,10 @@
         thread = null;
       }
     }
-
-    public Image Take()
+    
+    public IImageHolder Take()
     {
-      lock (objLock)
-      {
-        return (new Bitmap(currentFrame));
-      }
+      return (currentFrame.Copy());
     }
     #endregion
 
@@ -119,10 +117,10 @@
           start = DateTime.Now;
 
           request = (HttpWebRequest)WebRequest.Create(
-            Configs.Source + ((Configs.Source.IndexOf('?') == -1) ? '?' : '&') + "fake=" + rnd.Next().ToString());
+            Configuration.Source + ((Configuration.Source.IndexOf('?') == -1) ? '?' : '&') + "fake=" + rnd.Next().ToString());
 
-          if (!string.IsNullOrEmpty(Configs.Username) && Configs.Password != null)
-            request.Credentials = new NetworkCredential(Configs.Username, Configs.Password);
+          if (!string.IsNullOrEmpty(Configuration.Username) && Configuration.Password != null)
+            request.Credentials = new NetworkCredential(Configuration.Username, Configuration.Password);
 
           response = request.GetResponse();
 
@@ -144,20 +142,20 @@
           {
             ++framesReceived;
 
-            lock (objLock)
+            using (Stream memoryStream = new MemoryStream(buffer, 0, total))
             {
-              currentFrame = Bitmap.FromStream(new MemoryStream(buffer, 0, total));
+              currentFrame.Load(memoryStream);
             }
 
             if (NewFrame != null)
             {
-              NewFrame(this, new NewFrameEventArgs(currentFrame as Bitmap));
+              NewFrame(this, new NewFrameEventArgs(currentFrame));
             }
           }
 
-          if (Configs.FrameInterval > 0)
+          if (Configuration.FrameInterval > 0)
           {
-            int msec = Configs.FrameInterval - (int)DateTime.Now.Subtract(start).TotalMilliseconds;
+            int msec = Configuration.FrameInterval - (int)DateTime.Now.Subtract(start).TotalMilliseconds;
 
             while ((msec > 0) && (stopEvent.WaitOne(0, true) == false))
             {

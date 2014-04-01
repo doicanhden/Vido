@@ -8,7 +8,6 @@
   using System.Windows.Input;
   using System.Windows.Media.Imaging;
   using Vido.Capture.Events;
-  using Vido.Parking.Controls;
   using Vido.Parking.Utilities;
 
   public class LaneViewModel : Utilities.NotificationObject
@@ -250,13 +249,13 @@
     private void BackCamera_NewFrame(object sender, EventArgs e)
     {
       var args = e as NewFrameEventArgs;
-      this.BackImageCamera = ConvertToBitmapSource(args.Bitmap);
+      this.BackImageCamera = ConvertToBitmapSource(args.Image);
     }
 
     private void FrontCamera_NewFrame(object sender, EventArgs e)
     {
       var args = e as NewFrameEventArgs;
-      this.FrontImageCamera = ConvertToBitmapSource(args.Bitmap);
+      this.FrontImageCamera = ConvertToBitmapSource(args.Image);
     }
     #endregion
 
@@ -278,12 +277,12 @@
     #endregion
 
     #region Utilities
-    private static BitmapSource ConvertToBitmapSource(Image image)
+    private static BitmapSource ConvertToBitmapSource(IImageHolder image)
     {
       if (image != null)
       {
         MemoryStream ms = new MemoryStream();
-        image.Save(ms, ImageFormat.Jpeg);
+        image.Save(ms);
         ms.Seek(0, SeekOrigin.Begin);
 
         BitmapImage bi = new BitmapImage();

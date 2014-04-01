@@ -80,6 +80,10 @@
       <Project>{cce14edc-a03f-4056-ab9d-1ea235f392d5}</Project>
       <Name>Vido.Capture</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vido\Vido.csproj">
+      <Project>{7cf77cbb-8bbc-41f9-8f26-48095e1b6759}</Project>
+      <Name>Vido</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
