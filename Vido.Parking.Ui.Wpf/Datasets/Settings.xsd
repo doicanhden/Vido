@@ -12,7 +12,7 @@
   <xs:element name="Settings" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="Settings" msprop:Generator_UserDSName="Settings">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="LaneConfigs" msprop:Generator_TableClassName="LaneConfigsDataTable" msprop:Generator_TableVarName="tableLaneConfigs" msprop:Generator_TablePropName="LaneConfigs" msprop:Generator_RowDeletingName="LaneConfigsRowDeleting" msprop:Generator_RowChangingName="LaneConfigsRowChanging" msprop:Generator_RowEvHandlerName="LaneConfigsRowChangeEventHandler" msprop:Generator_RowDeletedName="LaneConfigsRowDeleted" msprop:Generator_UserTableName="LaneConfigs" msprop:Generator_RowChangedName="LaneConfigsRowChanged" msprop:Generator_RowEvArgName="LaneConfigsRowChangeEvent" msprop:Generator_RowClassName="LaneConfigsRow">
+        <xs:element name="LaneConfigs" msprop:Generator_TableClassName="LaneConfigsDataTable" msprop:Generator_TableVarName="tableLaneConfigs" msprop:Generator_RowChangedName="LaneConfigsRowChanged" msprop:Generator_TablePropName="LaneConfigs" msprop:Generator_RowDeletingName="LaneConfigsRowDeleting" msprop:Generator_RowChangingName="LaneConfigsRowChanging" msprop:Generator_RowEvHandlerName="LaneConfigsRowChangeEventHandler" msprop:Generator_RowDeletedName="LaneConfigsRowDeleted" msprop:Generator_RowClassName="LaneConfigsRow" msprop:Generator_UserTableName="LaneConfigs" msprop:Generator_RowEvArgName="LaneConfigsRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Code" msprop:Generator_ColumnVarNameInTable="columnCode" msprop:Generator_ColumnPropNameInRow="Code" msprop:Generator_ColumnPropNameInTable="CodeColumn" msprop:Generator_UserColumnName="Code" type="xs:string" minOccurs="0" />
@@ -31,7 +31,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="ParkingConfigs" msprop:Generator_TableClassName="ParkingConfigsDataTable" msprop:Generator_TableVarName="tableParkingConfigs" msprop:Generator_TablePropName="ParkingConfigs" msprop:Generator_RowDeletingName="ParkingConfigsRowDeleting" msprop:Generator_RowChangingName="ParkingConfigsRowChanging" msprop:Generator_RowEvHandlerName="ParkingConfigsRowChangeEventHandler" msprop:Generator_RowDeletedName="ParkingConfigsRowDeleted" msprop:Generator_UserTableName="ParkingConfigs" msprop:Generator_RowChangedName="ParkingConfigsRowChanged" msprop:Generator_RowEvArgName="ParkingConfigsRowChangeEvent" msprop:Generator_RowClassName="ParkingConfigsRow">
+        <xs:element name="ParkingConfigs" msprop:Generator_TableClassName="ParkingConfigsDataTable" msprop:Generator_TableVarName="tableParkingConfigs" msprop:Generator_RowChangedName="ParkingConfigsRowChanged" msprop:Generator_TablePropName="ParkingConfigs" msprop:Generator_RowDeletingName="ParkingConfigsRowDeleting" msprop:Generator_RowChangingName="ParkingConfigsRowChanging" msprop:Generator_RowEvHandlerName="ParkingConfigsRowChangeEventHandler" msprop:Generator_RowDeletedName="ParkingConfigsRowDeleted" msprop:Generator_RowClassName="ParkingConfigsRow" msprop:Generator_UserTableName="ParkingConfigs" msprop:Generator_RowEvArgName="ParkingConfigsRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Level" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnLevel" msprop:Generator_ColumnPropNameInRow="Level" msprop:Generator_ColumnPropNameInTable="LevelColumn" msprop:Generator_UserColumnName="Level" type="xs:int" minOccurs="0" />
@@ -39,7 +39,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="ControllerConfigs" msprop:Generator_TableClassName="ControllerConfigsDataTable" msprop:Generator_TableVarName="tableControllerConfigs" msprop:Generator_TablePropName="ControllerConfigs" msprop:Generator_RowDeletingName="ControllerConfigsRowDeleting" msprop:Generator_RowChangingName="ControllerConfigsRowChanging" msprop:Generator_RowEvHandlerName="ControllerConfigsRowChangeEventHandler" msprop:Generator_RowDeletedName="ControllerConfigsRowDeleted" msprop:Generator_UserTableName="ControllerConfigs" msprop:Generator_RowChangedName="ControllerConfigsRowChanged" msprop:Generator_RowEvArgName="ControllerConfigsRowChangeEvent" msprop:Generator_RowClassName="ControllerConfigsRow">
+        <xs:element name="ControllerConfigs" msprop:Generator_TableClassName="ControllerConfigsDataTable" msprop:Generator_TableVarName="tableControllerConfigs" msprop:Generator_RowChangedName="ControllerConfigsRowChanged" msprop:Generator_TablePropName="ControllerConfigs" msprop:Generator_RowDeletingName="ControllerConfigsRowDeleting" msprop:Generator_RowChangingName="ControllerConfigsRowChanging" msprop:Generator_RowEvHandlerName="ControllerConfigsRowChangeEventHandler" msprop:Generator_RowDeletedName="ControllerConfigsRowDeleted" msprop:Generator_RowClassName="ControllerConfigsRow" msprop:Generator_UserTableName="ControllerConfigs" msprop:Generator_RowEvArgName="ControllerConfigsRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Id" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
@@ -49,6 +49,7 @@
               <xs:element name="FrontImageNameFormat" msprop:Generator_ColumnVarNameInTable="columnFrontImageNameFormat" msprop:Generator_ColumnPropNameInRow="FrontImageNameFormat" msprop:Generator_ColumnPropNameInTable="FrontImageNameFormatColumn" msprop:Generator_UserColumnName="FrontImageNameFormat" type="xs:string" minOccurs="0" />
               <xs:element name="InFormat" msprop:Generator_ColumnVarNameInTable="columnInFormat" msprop:Generator_ColumnPropNameInRow="InFormat" msprop:Generator_ColumnPropNameInTable="InFormatColumn" msprop:Generator_UserColumnName="InFormat" type="xs:string" minOccurs="0" />
               <xs:element name="OutFormat" msprop:Generator_ColumnVarNameInTable="columnOutFormat" msprop:Generator_ColumnPropNameInRow="OutFormat" msprop:Generator_ColumnPropNameInTable="OutFormatColumn" msprop:Generator_UserColumnName="OutFormat" type="xs:string" minOccurs="0" />
+              <xs:element name="EntryRequestTimeout" msprop:Generator_ColumnVarNameInTable="columnEntryRequestTimeout" msprop:Generator_ColumnPropNameInRow="EntryRequestTimeout" msprop:Generator_ColumnPropNameInTable="EntryRequestTimeoutColumn" msprop:Generator_UserColumnName="EntryRequestTimeout" type="xs:int" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

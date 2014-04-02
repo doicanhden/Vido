@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+  <ControllerConfigs>
+    <Id>0</Id>
+    <RootImageDirectoryName>F:\Github\Vido\Vido.Parking.Ui.Wpf\bin\Debug\Images</RootImageDirectoryName>
+    <DailyDirectoryFormat>{0}yyyy{0}MM{0}dd</DailyDirectoryFormat>
+    <BackImageNameFormat>IMG_{0}_{1}_{2}{3}_B{4}.jpg</BackImageNameFormat>
+    <FrontImageNameFormat>IMG_{0}_{1}_{2}{3}_F{4}.jpg</FrontImageNameFormat>
+    <InFormat>I</InFormat>
+    <OutFormat>O</OutFormat>
+    <EntryRequestTimeout>3000</EntryRequestTimeout>
+  </ControllerConfigs>
+</DocumentElement>

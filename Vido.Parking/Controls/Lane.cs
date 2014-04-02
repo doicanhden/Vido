@@ -13,6 +13,7 @@
     #region Data Members
     private IUidDevice uidDevice = null;
     #endregion
+    internal EventWaitHandle Stopped { get; private set; }
 
     #region Public Properties
 
@@ -91,6 +92,20 @@
     public event EventHandler NewMessage;
     #endregion
 
+    #region Public Constructors
+    public Lane()
+    {
+      this.Stopped = new AutoResetEvent(false);
+    }
+    #endregion
+
+    #region Public Methods
+    public void StopEntry()
+    {
+      Stopped.Set();
+    }
+    #endregion
+
     #region Private Methods
 
     /// <summary>
@@ -98,11 +113,11 @@
     /// </summary>
     /// <param name="time">Thời gian</param>
     /// <param name="message">Thông báo</param>
-    private void RaiseNewMessage(DateTime time, string message)
+    internal void RaiseNewMessage(DateTime time, string message)
     {
       if (NewMessage != null)
       {
-        NewMessage(this, new NewMessageEventArgs(time.ToString("HH:mm - ") + message));
+        NewMessage(this, new NewMessageEventArgs(time.ToString("HH:mm:ss - ") + message));
       }
     }
     #endregion

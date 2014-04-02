@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+  <ParkingConfigs>
+    <Level>0</Level>
+    <MaximumSlots>100000</MaximumSlots>
+  </ParkingConfigs>
+</DocumentElement>

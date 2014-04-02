@@ -157,7 +157,12 @@
     <Folder Include="Converters\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\imageNotFound.png" />
+    <Resource Include="bin\Debug\Settings\Controllers.xml" />
+    <Resource Include="bin\Debug\Settings\Lanes.xml" />
+    <Resource Include="bin\Debug\Settings\Parkings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\no-image.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

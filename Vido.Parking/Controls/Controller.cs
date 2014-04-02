@@ -2,8 +2,10 @@
 {
   using System;
   using System.Collections.Generic;
+  using System.Collections.Concurrent;
   using System.Drawing;
   using System.IO;
+  using System.Threading.Tasks;
   using Vido.Capture;
   using Vido.Parking.Enums;
   using Vido.Parking.Events;
@@ -30,6 +32,7 @@
 
     public ICollection<LaneConfigs> LaneConfigs { get; set; }
 
+    public int EntryRequestTimeout { get; set; }
     /// <summary>
     /// Chuỗi quy ước tên ảnh chụp phương tiện ra.
     /// </summary>
@@ -152,119 +155,38 @@
       }
     }
 
-    #endregion
-
-    #region Event Handlers
-    private void lane_Entry(object sender, EventArgs e)
+    private void TaskHandlerIn(object obj)
     {
-      var lane = sender as Lane;
-      var args = e as EntryEventArgs;
-
-      if (lane != null && args != null)
+      object[] arr = obj as object[];
+      var lane = arr[0] as Lane;
+      var args = arr[1] as InOutArgs;
+      if (!lane.Stopped.WaitOne(EntryRequestTimeout))
       {
-        var data = Encode.GetDataString(args.DataIn.Data, args.DataIn.Printable);
-
-        if (!card.IsExistAndUsing(data))
-        {
-          /// TODO: Địa phương hóa chuỗi thông báo.
-          args.Message = "Thẻ không hợp lệ.";
-          return;
-        }
-
-        var inOut = new InOutArgs()
-        {
-          Time = args.Time,
-          Data = data,
-          Lane = lane.Code,
-          PlateNumber = args.PlateNumber
-        };
-
-        switch (lane.Direction)
-        {
-          case Direction.In:
-            if (parking.IsFull)
-            {
-              /// TODO: Địa phương hóa chuỗi thông báo.
-              args.Message = "Bãi đã đầy.";
-            }
-            else
-            {
-              if (!parking.CanIn(data, args.PlateNumber))
-              {
-                /// TODO: Địa phương hóa chuỗi thông báo.
-                args.Message = "Xe KHÔNG ĐƯỢC PHÉP VÀO bãi.";
-                return;
-              }
-
-              if (!SaveImages(args.BackImage, args.FrontImage, InFormat, ref inOut))
-              {
-                /// TODO: Địa phương hóa chuỗi thông báo.
-                args.Message = "Không lưu được ảnh.";
-              }
-
-              parking.In(inOut);
-
-              /// TODO: Địa phương hóa chuỗi thông báo.
-              args.Message = "Mời xe VÀO Bãi.";
-              args.Allow = true;
-            }
-            break;
-          case Direction.Out:
-            {
-              string inBackImage = string.Empty;
-              string inFrontImage = string.Empty;
-
-              if (!parking.CanOut(data, args.PlateNumber, ref inBackImage, ref inFrontImage))
-              {
-                /// TODO: Địa phương hóa chuỗi thông báo.
-                args.Message = "Xe KHÔNG ĐƯỢC PHÉP RA Bãi.";
-                return;
-              }
-
-              if (!SaveImages(args.BackImage, args.FrontImage, OutFormat, ref inOut))
-              {
-                /// TODO: Địa phương hóa chuỗi thông báo.
-                args.Message = "Không lưu được ảnh.";
-                return;
-              }
-
-              parking.Out(inOut);
-
-              if (File.Exists(RootImageDirectoryName + inBackImage))
-              {
-                args.BackImage = Bitmap.FromFile(RootImageDirectoryName + inBackImage);
-              }
-              else
-              {
-                /// TODO: Địa phương hóa chuỗi thông báo.
-                args.Message = "Không tìm thấy ảnh chụp biển số.";
-                args.BackImage = null;
-                return;
-              }
-
-              if (File.Exists(RootImageDirectoryName + inFrontImage))
-              {
-                args.FrontImage = Bitmap.FromFile(RootImageDirectoryName + inFrontImage);
-              }
-              else
-              {
-                /// TODO: Xử lý trường hợp Lane vào không chụp ảnh Người điều khiển.
-                /// Kiểm tra config của Lane đó trong settings dựa vào LaneCode.
-                args.FrontImage = null;
-              }
-
-              args.Message = "Mời xe RA Bãi";
-              args.Allow = true;
-            }
-            break;
-          default:
-            break;
-        }
+        parking.In(args);
+      }
+      else
+      {
+        /// TODO: Địa phương hóa chuỗi thông báo.
+        lane.RaiseNewMessage(DateTime.Now, "Xe KHÔNG ĐƯỢC PHÉP VÀO Bãi.");
       }
     }
-    #endregion
 
-    #region Private Methods
+    private void TaskHandlerOut(object obj)
+    {
+      object[] arr = obj as object[];
+      var lane = arr[0] as Lane;
+      var args = arr[1] as InOutArgs;
+      if (!lane.Stopped.WaitOne(EntryRequestTimeout))
+      {
+        parking.Out(args);
+      }
+      else
+      {
+        /// TODO: Địa phương hóa chuỗi thông báo.
+        lane.RaiseNewMessage(DateTime.Now, "Xe KHÔNG ĐƯỢC PHÉP RA Bãi.");
+      }
+    }
+
     /// <summary>
     /// Lưu ảnh Biển số và Người điều khiển xuống thư mục RootImage.
     /// </summary>
@@ -320,6 +242,118 @@
       if (!Directory.Exists(directoryName))
       {
         Directory.CreateDirectory(directoryName);
+      }
+    }
+    #endregion
+
+    #region Event Handlers
+    private void lane_Entry(object sender, EventArgs e)
+    {
+      var lane = sender as Lane;
+      var args = e as EntryEventArgs;
+
+      if (lane != null && args != null)
+      {
+        var data = Encode.GetDataString(args.DataIn.Data, args.DataIn.Printable);
+
+        if (!card.IsExistAndUsing(data))
+        {
+          /// TODO: Địa phương hóa chuỗi thông báo.
+          args.Message = "Thẻ không hợp lệ.";
+          return;
+        }
+
+        var inOut = new InOutArgs()
+        {
+          Time = args.Time,
+          Data = data,
+          Lane = lane.Code,
+          PlateNumber = args.PlateNumber
+        };
+
+        switch (lane.Direction)
+        {
+          case Direction.In:
+            if (parking.IsFull)
+            {
+              /// TODO: Địa phương hóa chuỗi thông báo.
+              args.Message = "Bãi đã đầy.";
+            }
+            else
+            {
+              if (!parking.CanIn(data, args.PlateNumber))
+              {
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Xe KHÔNG ĐƯỢC PHÉP VÀO bãi.";
+                return;
+              }
+
+              if (!SaveImages(args.BackImage, args.FrontImage, InFormat, ref inOut))
+              {
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Không lưu được ảnh.";
+              }
+
+              new Task((x) => TaskHandlerIn(x),
+                new object[2] {lane, args}).Start();
+
+              /// TODO: Địa phương hóa chuỗi thông báo.
+              args.Message = "Mời xe VÀO Bãi.";
+              args.Allow = true;
+            }
+            break;
+          case Direction.Out:
+            {
+              string inBackImage = string.Empty;
+              string inFrontImage = string.Empty;
+
+              if (!parking.CanOut(data, args.PlateNumber, ref inBackImage, ref inFrontImage))
+              {
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Xe KHÔNG ĐƯỢC PHÉP RA Bãi.";
+                return;
+              }
+
+              if (!SaveImages(args.BackImage, args.FrontImage, OutFormat, ref inOut))
+              {
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Không lưu được ảnh.";
+                return;
+              }
+
+              if (File.Exists(RootImageDirectoryName + inBackImage))
+              {
+                args.BackImage = Bitmap.FromFile(RootImageDirectoryName + inBackImage);
+              }
+              else
+              {
+                /// TODO: Địa phương hóa chuỗi thông báo.
+                args.Message = "Không tìm thấy ảnh chụp biển số.";
+                args.BackImage = null;
+                return;
+              }
+
+              if (File.Exists(RootImageDirectoryName + inFrontImage))
+              {
+                args.FrontImage = Bitmap.FromFile(RootImageDirectoryName + inFrontImage);
+              }
+              else
+              {
+                /// TODO: Xử lý trường hợp Lane vào không chụp ảnh Người điều khiển.
+                /// Kiểm tra config của Lane đó trong settings dựa vào LaneCode.
+                args.FrontImage = null;
+              }
+
+              new Task((x) => TaskHandlerOut(x),
+                new object[2] {lane, args}).Start();
+
+              args.Message = "Mời xe RA Bãi";
+              args.Allow = true;
+            }
+            break;
+          default:
+            break;
+        }
       }
     }
     #endregion

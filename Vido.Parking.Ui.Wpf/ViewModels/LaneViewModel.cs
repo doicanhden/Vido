@@ -197,19 +197,17 @@
       BackCamText = "Camera phía sau";
       FrontCamText = "Camera phía trước";
 
-      BackImgText = "Ảnh chụp phía sau";
-      FrontImgText = "Ảnh chụp phía sau";
-
       if (this.lane.Direction == Enums.Direction.In)
       {
-        this.LaneCode += " \nVào";
+        LaneCode += " \nVào";
+        BackImgText = "Ảnh phía sau";
+        FrontImgText = "Ảnh phía trước";
       }
       else
       {
-        this.BackImgText += " - Lúc VÀO";
-        this.FrontImgText += " - Lúc VÀO";
-
-        this.LaneCode += " \nRa";
+        LaneCode += " \nRa";
+        BackImgText = "Ảnh lúc VÀO phía sau";
+        FrontImgText = "Ảnh lúc VÀO phía trước";
       }
     }
     #endregion
@@ -270,10 +268,11 @@
     }
     private bool StopCanExecute(object obj)
     {
-      return (false);
+      return (true);
     }
     private void StopExecute(object obj)
     {
+      lane.StopEntry();
     }
     #endregion
 

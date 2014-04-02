@@ -6,6 +6,7 @@
   using Vido.Parking.Events;
   using Vido.Parking;
   using Vido.Parking.Utilities;
+  using System.Threading.Tasks;
 
   public class DataCenter : IParking, ICardManagement, IDisposable
   {
@@ -126,31 +127,29 @@
     /// <param name="inArgs">Thông tin phương tiện vào bãi.</param>
     public void In(InOutArgs inArgs)
     {
-      lock (locker)
+      try
       {
-        try
+        var entities = new VidoParkingEntities();
+        /// Thêm thông tin phương tiện VÀO.
+        entities.InOutRecord.Add(new InOutRecord()
         {
-          /// Thêm thông tin phương tiện VÀO.
-          entities.InOutRecord.Add(new InOutRecord()
-          {
-            CardId = inArgs.Data,
-            UserData = inArgs.PlateNumber,
+          CardId = inArgs.Data,
+          UserData = inArgs.PlateNumber,
 
-            InEmployeeId = CurrentUserId,
-            InLaneCode = inArgs.Lane,
-            InTime = inArgs.Time.ToString(ISO8601DateTimeFormat),
-            InBackImg = inArgs.BackImage,
-            InFrontImg = inArgs.FrontImage
-          });
+          InEmployeeId = CurrentUserId,
+          InLaneCode = inArgs.Lane,
+          InTime = inArgs.Time.ToString(ISO8601DateTimeFormat),
+          InBackImg = inArgs.BackImage,
+          InFrontImg = inArgs.FrontImage
+        });
 
-          /// Cập nhật thông tin vào DB.
-          entities.SaveChanges();
-        }
-        catch
-        {
-          /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.In: Lỗi truy xuất dữ liệu.");
-        }
+        /// Cập nhật thông tin vào DB.
+        entities.SaveChanges();
+      }
+      catch
+      {
+        /// TODO: Địa phương hóa chuỗi thông báo.
+        RaiseNewMessage("IParking.In: Lỗi truy xuất dữ liệu.");
       }
     }
 
@@ -202,51 +201,49 @@
     /// <param name="outArgs">Thông tin phương tiện ra.</param>
     public void Out(InOutArgs outArgs)
     {
-      lock (locker)
+      try
       {
-        try
+        var entities = new VidoParkingEntities();
+        /// Lấy những bản ghi có CardId và PlateNumber khớp,
+        /// và chưa có thông tin Ra.
+        var inRecords = from Records in entities.InOutRecord
+                        where
+                          Records.CardId == outArgs.Data &&
+                          Records.UserData == outArgs.PlateNumber &&
+                          Records.OutEmployeeId == null &&
+                          Records.OutLaneCode == null &&
+                          Records.OutTime == null &&
+                          Records.OutBackImg == null &&
+                          Records.OutFrontImg == null
+                        select Records;
+
+        /// Chỉ có duy nhất 1 bảng ghi khớp,
+        /// Nếu có nhiều hơn hoặc không có bản ghi nào 
+        /// => Xuất thông báo lỗi Database.
+        if (inRecords.Count() == 1)
         {
-          /// Lấy những bản ghi có CardId và PlateNumber khớp,
-          /// và chưa có thông tin Ra.
-          var inRecords = from Records in entities.InOutRecord
-                          where
-                            Records.CardId == outArgs.Data &&
-                            Records.UserData == outArgs.PlateNumber &&
-                            Records.OutEmployeeId == null &&
-                            Records.OutLaneCode == null &&
-                            Records.OutTime == null &&
-                            Records.OutBackImg == null &&
-                            Records.OutFrontImg == null
-                          select Records;
+          var record = inRecords.ToArray()[0];
 
-          /// Chỉ có duy nhất 1 bảng ghi khớp,
-          /// Nếu có nhiều hơn hoặc không có bản ghi nào 
-          /// => Xuất thông báo lỗi Database.
-          if (inRecords.Count() == 1)
-          {
-            var record = inRecords.ToArray()[0];
+          /// Thêm thông tin phương tiện RA.
+          record.OutEmployeeId = CurrentUserId;
+          record.OutLaneCode = outArgs.Lane;
+          record.OutTime = outArgs.Time.ToString(ISO8601DateTimeFormat);
+          record.OutBackImg = outArgs.BackImage;
+          record.OutFrontImg = outArgs.FrontImage;
 
-            /// Thêm thông tin phương tiện RA.
-            record.OutEmployeeId = CurrentUserId;
-            record.OutLaneCode = outArgs.Lane;
-            record.OutTime = outArgs.Time.ToString(ISO8601DateTimeFormat);
-            record.OutBackImg = outArgs.BackImage;
-            record.OutFrontImg = outArgs.FrontImage;
-
-            /// Cập nhật dữ liệu vào Database.
-            entities.SaveChanges();
-          }
-          else
-          {
-            /// TODO: Địa phương hóa chuỗi thông báo.
-            RaiseNewMessage("IParking.Out: Lỗi CSDL, không có hoặc có nhiều hơn một thông tin phương tiện vào.");
-          }
+          /// Cập nhật dữ liệu vào Database.
+          entities.SaveChanges();
         }
-        catch
+        else
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.Out: Lỗi truy xuất dữ liệu.");
+          RaiseNewMessage("IParking.Out: Lỗi CSDL, không có hoặc có nhiều hơn một thông tin phương tiện vào.");
         }
+      }
+      catch
+      {
+        /// TODO: Địa phương hóa chuỗi thông báo.
+        RaiseNewMessage("IParking.Out: Lỗi truy xuất dữ liệu.");
       }
     }
     #endregion

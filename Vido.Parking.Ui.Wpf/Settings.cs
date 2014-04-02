@@ -93,7 +93,6 @@ using Vido.Parking.Controls;
         }
       }
     }
-    
     public void SetController(Controller controller, int id = 0)
     {
       foreach (Datasets.Settings.ControllerConfigsRow cfg in controllerCfgs.Rows)
@@ -108,7 +107,7 @@ using Vido.Parking.Controls;
 
           controller.InFormat = cfg.InFormat;
           controller.OutFormat = cfg.OutFormat;
-
+          controller.EntryRequestTimeout = cfg.EntryRequestTimeout;
           controller.LaneConfigs = new List<LaneConfigs>();
           break;
         }
@@ -189,7 +188,6 @@ using Vido.Parking.Controls;
 
       laneCfgs.Rows.Add(newRow2);
     }
-
     private void DefaultControllerConfigs()
     {
       var newRow = controllerCfgs.NewRow() as Datasets.Settings.ControllerConfigsRow;
@@ -204,7 +202,6 @@ using Vido.Parking.Controls;
 
       controllerCfgs.Rows.Add(newRow);
     }
-
     private void DefaultParkingConfigs()
     {
       var newRow = parkingCfgs.NewRow() as Datasets.Settings.ParkingConfigsRow;

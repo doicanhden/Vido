@@ -1041,6 +1041,8 @@ namespace Vido.Parking.Ui.Wpf.Datasets {
             
             private global::System.Data.DataColumn columnOutFormat;
             
+            private global::System.Data.DataColumn columnEntryRequestTimeout;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ControllerConfigsDataTable() {
@@ -1132,6 +1134,14 @@ namespace Vido.Parking.Ui.Wpf.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EntryRequestTimeoutColumn {
+                get {
+                    return this.columnEntryRequestTimeout;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1167,7 +1177,7 @@ namespace Vido.Parking.Ui.Wpf.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ControllerConfigsRow AddControllerConfigsRow(string RootImageDirectoryName, string DailyDirectoryFormat, string BackImageNameFormat, string FrontImageNameFormat, string InFormat, string OutFormat) {
+            public ControllerConfigsRow AddControllerConfigsRow(string RootImageDirectoryName, string DailyDirectoryFormat, string BackImageNameFormat, string FrontImageNameFormat, string InFormat, string OutFormat, int EntryRequestTimeout) {
                 ControllerConfigsRow rowControllerConfigsRow = ((ControllerConfigsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -1176,7 +1186,8 @@ namespace Vido.Parking.Ui.Wpf.Datasets {
                         BackImageNameFormat,
                         FrontImageNameFormat,
                         InFormat,
-                        OutFormat};
+                        OutFormat,
+                        EntryRequestTimeout};
                 rowControllerConfigsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowControllerConfigsRow);
                 return rowControllerConfigsRow;
@@ -1213,6 +1224,7 @@ namespace Vido.Parking.Ui.Wpf.Datasets {
                 this.columnFrontImageNameFormat = base.Columns["FrontImageNameFormat"];
                 this.columnInFormat = base.Columns["InFormat"];
                 this.columnOutFormat = base.Columns["OutFormat"];
+                this.columnEntryRequestTimeout = base.Columns["EntryRequestTimeout"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1232,6 +1244,8 @@ namespace Vido.Parking.Ui.Wpf.Datasets {
                 base.Columns.Add(this.columnInFormat);
                 this.columnOutFormat = new global::System.Data.DataColumn("OutFormat", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOutFormat);
+                this.columnEntryRequestTimeout = new global::System.Data.DataColumn("EntryRequestTimeout", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEntryRequestTimeout);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("ControllerConfigsKey1", new global::System.Data.DataColumn[] {
                                 this.columnId}, true));
                 this.columnId.AutoIncrement = true;
@@ -1942,6 +1956,23 @@ namespace Vido.Parking.Ui.Wpf.Datasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int EntryRequestTimeout {
+                get {
+                    try {
+                        return ((int)(this[this.tableControllerConfigs.EntryRequestTimeoutColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EntryRequestTimeout\' in table \'ControllerConfigs\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableControllerConfigs.EntryRequestTimeoutColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsRootImageDirectoryNameNull() {
                 return this.IsNull(this.tableControllerConfigs.RootImageDirectoryNameColumn);
             }
@@ -2010,6 +2041,18 @@ namespace Vido.Parking.Ui.Wpf.Datasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetOutFormatNull() {
                 this[this.tableControllerConfigs.OutFormatColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEntryRequestTimeoutNull() {
+                return this.IsNull(this.tableControllerConfigs.EntryRequestTimeoutColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEntryRequestTimeoutNull() {
+                this[this.tableControllerConfigs.EntryRequestTimeoutColumn] = global::System.Convert.DBNull;
             }
         }
         
