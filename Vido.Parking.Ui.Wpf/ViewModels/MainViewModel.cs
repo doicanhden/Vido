@@ -10,6 +10,7 @@
   using Vido.Capture;
   using Vido.Capture.Enums;
   using Vido.Parking.Controls;
+  using System.Windows.Input;
 
   public class MainViewModel : Utilities.NotificationObject, IDisposable
   {
@@ -23,9 +24,11 @@
     private readonly ObservableCollection<LaneViewModel> laneViewModels;
     private string status = null;
     private Window mainWindow;
+
+    private ICommand showLaneConfigsCommand;
     #endregion
 
-    #region Public Properties
+    #region Public Properties for Binding
     /// <summary>
     /// Danh sách các ViewModel của lane.
     /// </summary>
@@ -46,7 +49,13 @@
         RaisePropertyChanged(() => Status);
       }
     }
+#endregion
 
+    #region Public Properties
+    public Settings Settings
+    {
+      get { return (settings); }
+    }
     public Window View
     {
       get { return (mainWindow); }
@@ -75,6 +84,21 @@
       StartAllCaptures();
     }
     #endregion
+
+    public ICommand ShowLaneConfigsCommand
+    {
+      get { return (showLaneConfigsCommand ?? (showLaneConfigsCommand = new Commands.RelayCommand(ShowLaneConfigsExecute))); }
+      
+    }
+
+    private void ShowLaneConfigsExecute(object obj)
+    {
+      new Views.LaneManagementView()
+      {
+        Owner = mainWindow,
+        DataContext = new LaneManagementViewModel(this)
+      }.ShowDialog();
+    }
 
     #region Event Handlers
     private void dataCenter_NewMessage(object sender, EventArgs e)

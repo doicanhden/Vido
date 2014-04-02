@@ -82,6 +82,11 @@ using Vido.Parking.Controls;
       }
     }
 
+    public Datasets.Settings.LaneConfigsDataTable LaneConfigs
+    {
+      get { return (laneCfgs); }
+    }
+
     public void SetParking(IParking parking, int level = 0)
     {
       foreach (Datasets.Settings.ParkingConfigsRow cfg in parkingCfgs.Rows)

@@ -7,27 +7,26 @@
   Title="Bãi xe Vido" MinHeight="633" MinWidth="961" WindowStartupLocation="CenterScreen">
   <Window.Resources>
     <DataTemplate DataType="{x:Type ViewModels:LaneViewModel}">
-      <Views:LaneView DataContext="{Binding}" FontSize="20"/>
+      <Views:LaneView BorderThickness="1" BorderBrush="Black" DataContext="{Binding}" FontSize="20"/>
     </DataTemplate>
   </Window.Resources>
 
   <Grid>
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <ListBox Margin="0,40,0,0" ItemsSource="{Binding Lanes}"
-             HorizontalContentAlignment="Stretch"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             VerticalContentAlignment="Stretch"
-             ScrollViewer.VerticalScrollBarVisibility="Disabled">
-      <ListBox.ItemsPanel>
+    <Button HorizontalAlignment="Left" Margin="2" Width="30" Height="30" Content="L" Command="{Binding ShowLaneConfigsCommand}"/>
+    <ItemsControl Grid.Row="1" Margin="0,0,0,0" ItemsSource="{Binding Lanes}">
+      <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-          <UniformGrid Columns="2" IsItemsHost="True"/>
+          <UniformGrid Rows="1" IsItemsHost="True"/>
         </ItemsPanelTemplate>
-      </ListBox.ItemsPanel>
-    </ListBox>
-    <StatusBar Grid.Row="1" Height="20">
+      </ItemsControl.ItemsPanel>
+    </ItemsControl>
+
+    <StatusBar Grid.Row="2" Height="20">
       <TextBlock Text="{Binding Status}"/>
     </StatusBar>
   </Grid>

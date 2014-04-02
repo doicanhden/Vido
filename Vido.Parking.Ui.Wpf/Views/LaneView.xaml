@@ -14,15 +14,13 @@
       <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
     </Style>
   </UserControl.Resources>
-  
-  <Border>
     <Grid DataContext="{Binding}">
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="Auto"/>
-      </Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
         <ColumnDefinition/>
         <ColumnDefinition/>
@@ -35,9 +33,7 @@
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Margin="5" Text="{Binding FrontCamText}" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5">
-          <Image Source="{Binding FrontImageCamera, TargetNullValue={StaticResource noImage}}" Stretch="Fill" MaxHeight="240" MaxWidth="320"/>
-        </Border>
+        <Image Grid.Row="1" Margin="5" Source="{Binding FrontImageCamera, TargetNullValue={StaticResource noImage}}" Stretch="Fill" MaxHeight="240" MaxWidth="320"/>
       </Grid>
       <Grid Grid.Column="2" Grid.Row="0">
         <Grid.RowDefinitions>
@@ -45,36 +41,29 @@
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Margin="5" Text="{Binding BackCamText}" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5">
-          <Image Source="{Binding BackImageCamera, TargetNullValue={StaticResource noImage}}" Stretch="Fill" MaxHeight="240" MaxWidth="320"/>
-        </Border>
+        <Image Grid.Row="1" Margin="5" Source="{Binding BackImageCamera, TargetNullValue={StaticResource noImage}}" Stretch="Fill" MaxHeight="240" MaxWidth="320"/>
       </Grid>
 
       <!-- Images -->
-      <Grid Grid.Column="0" Grid.Row="1">
+      <Grid Grid.Column="0" Grid.Row="3">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Margin="5" Text="{Binding FrontImgText}" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5">
-          <Image Source="{Binding FrontImageSaved, TargetNullValue={StaticResource noImage}}" Stretch="Fill" MaxHeight="240" MaxWidth="320">
-          </Image>
-        </Border>
+        <Image Grid.Row="1" Margin="5" Source="{Binding FrontImageSaved, TargetNullValue={StaticResource noImage}}" Stretch="Fill" MaxHeight="240" MaxWidth="320"/>
       </Grid>
-      <Grid Grid.Column="2" Grid.Row="1">
+      <Grid Grid.Column="2" Grid.Row="3">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Margin="5" Text="{Binding BackImgText}" TextAlignment="Center"/>
-        <Border Grid.Row="1" Margin="5">
-          <Image Source="{Binding BackImageSaved, TargetNullValue={StaticResource noImage}}" Stretch="Fill" MaxHeight="240" MaxWidth="320"/>
-        </Border>
+        <Image Grid.Row="1" Margin="5" Source="{Binding BackImageSaved, TargetNullValue={StaticResource noImage}}" Stretch="Fill" MaxHeight="240" MaxWidth="320"/>
       </Grid>
 
       <!-- Lane Name & Id number-->
-      <Grid Grid.Row="2" Grid.ColumnSpan="2">
+      <Grid Grid.Row="1" Grid.ColumnSpan="2">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="2*"/>
           <ColumnDefinition Width="5*"/>
@@ -97,20 +86,22 @@
       </Grid>
 
       <!-- Message & Buttons -->
-      <Grid Grid.Row="3" Grid.ColumnSpan="2">
+      <Grid Grid.Row="2" Grid.ColumnSpan="2">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="8*"/>
-          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Border Margin="5">
-          <TextBlock Text="{Binding Message}" FontWeight="ExtraBlack" Foreground="Green" TextWrapping="Wrap"/>
+          <TextBlock Text="{Binding Message}" VerticalAlignment="Center" FontWeight="ExtraBlack" Foreground="Green" TextWrapping="Wrap"/>
         </Border>
-        <Button Grid.Column="1" Margin="5" Content="Stop"
-                Command="{Binding StopCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
-      </Grid>
+      <Button Width="50" Grid.Column="1" Margin="5"
+              Background="White"
+              Command="{Binding StopCommand}"
+              CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+        <Path Fill="Red" Stretch="Uniform" UseLayoutRounding="False" Data="F1 M68.873398,59.4734 C77.143997,46.646702 75.166702,29.323999 63.464001,18.794701 C57.638699,13.552 50.121399,10.6667 42.292,10.6667 C35.022701,10.6667 28.009399,13.176 22.418699,17.6733 L68.873398,59.4734 z M21.096001,65.882698 C26.921301,71.125397 34.439999,74.010696 42.268002,74.010696 C49.344002,74.010696 56.172001,71.626701 61.683998,67.354698 L15.3534,25.6653 C11.9614,31.117399 10.3067,37.459999 10.652,44.006699 C11.0974,52.4547 14.8067,60.224098 21.096001,65.882698 z M70.599998,10.8641 C87.954597,26.48 89.369301,53.304001 73.753304,70.658699 C65.736,79.5681 54.261299,84.677399 42.268002,84.677399 C31.799999,84.677399 21.747999,80.818703 13.96,73.811996 C5.55334,66.248001 0.59600103,55.862701 0,44.569302 C-0.59600103,33.2761 3.2413299,22.426701 10.8067,14.0201 C18.822701,5.1093798 30.299999,6.10352E-05 42.292,6.10352E-05 C52.759998,6.10352E-05 62.812,3.8587 70.599998,10.8641 z" />
+      </Button>
+    </Grid>
 
     </Grid>
-  </Border>
 </UserControl>
