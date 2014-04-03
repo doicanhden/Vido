@@ -31,7 +31,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
           {
             AddAndSaveOneConnectionStringSettings(
               ConfigurationManager.OpenExeConfiguration(System.Reflection.Assembly.GetExecutingAssembly().Location),
-              new ConnectionStringSettings("VidoParkingEntities", ConnectionString));
+              new ConnectionStringSettings("VidoParkingEntities", ConnectionString, "System.Data.EntityClient"));
 
             var view = x as Window;
             if (view != null)
