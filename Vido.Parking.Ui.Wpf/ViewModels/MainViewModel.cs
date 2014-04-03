@@ -26,6 +26,7 @@
     private Window mainWindow;
 
     private ICommand showLaneConfigsCommand;
+    private ICommand showConnectionStringEditCommand;
     #endregion
 
     #region Public Properties for Binding
@@ -90,7 +91,20 @@
       get { return (showLaneConfigsCommand ?? (showLaneConfigsCommand = new Commands.RelayCommand(ShowLaneConfigsExecute))); }
       
     }
+    public ICommand ShowConnectionStringEditCommand
+    {
+      get { return (showConnectionStringEditCommand ?? (showConnectionStringEditCommand = new Commands.RelayCommand(ShowConnectionStringEditExecute))); }
+      
+    }
 
+    private void ShowConnectionStringEditExecute(object obj)
+    {
+      new Views.ConnectionStringEditView()
+      {
+        Owner = mainWindow,
+        DataContext = new ConnectionStringEditViewModel()
+      }.ShowDialog();
+    }
     private void ShowLaneConfigsExecute(object obj)
     {
       new Views.LaneManagementView()

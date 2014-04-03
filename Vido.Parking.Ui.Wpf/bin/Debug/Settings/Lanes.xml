@@ -17,47 +17,32 @@
   </LaneConfigs>
   <LaneConfigs>
     <Code>LANE2</Code>
-    <Direction>0</Direction>
+    <Direction>1</Direction>
     <State>0</State>
     <NumberOfRetries>3</NumberOfRetries>
-    <UIdDeviceName>VID_0E6A&amp;PID_030B</UIdDeviceName>
-    <BackCamSource>http://pasteldth.dyndns.org/cgi-bin/net_jpeg.cgi?ch=1</BackCamSource>
-    <BackCamCoding>1</BackCamCoding>
+    <UIdDeviceName>PNP0303</UIdDeviceName>
+    <BackCamSource>http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240</BackCamSource>
+    <BackCamCoding>2</BackCamCoding>
     <BackCamUsername>admin</BackCamUsername>
-    <BackCamPassword>123456</BackCamPassword>
-    <FrontCamSource>http://pasteldth.dyndns.org/cgi-bin/net_jpeg.cgi?ch=2</FrontCamSource>
-    <FrontCamCoding>1</FrontCamCoding>
+    <BackCamPassword>admin</BackCamPassword>
+    <FrontCamSource>http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240</FrontCamSource>
+    <FrontCamCoding>2</FrontCamCoding>
     <FrontCamUsername>admin</FrontCamUsername>
-    <FrontCamPassword>123456</FrontCamPassword>
+    <FrontCamPassword>admin</FrontCamPassword>
   </LaneConfigs>
   <LaneConfigs>
     <Code>LANE3</Code>
     <Direction>1</Direction>
     <State>0</State>
     <NumberOfRetries>3</NumberOfRetries>
-    <UIdDeviceName>PNP0303</UIdDeviceName>
-    <BackCamSource>http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240</BackCamSource>
-    <BackCamCoding>2</BackCamCoding>
-    <BackCamUsername>admin</BackCamUsername>
-    <BackCamPassword>admin</BackCamPassword>
-    <FrontCamSource>http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240</FrontCamSource>
-    <FrontCamCoding>2</FrontCamCoding>
-    <FrontCamUsername>admin</FrontCamUsername>
-    <FrontCamPassword>admin</FrontCamPassword>
-  </LaneConfigs>
-  <LaneConfigs>
-    <Code>LANE4</Code>
-    <Direction>1</Direction>
-    <State>0</State>
-    <NumberOfRetries>3</NumberOfRetries>
-    <UIdDeviceName>PNP0303</UIdDeviceName>
-    <BackCamSource>http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240</BackCamSource>
-    <BackCamCoding>2</BackCamCoding>
-    <BackCamUsername>admin</BackCamUsername>
-    <BackCamPassword>admin</BackCamPassword>
-    <FrontCamSource>http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240</FrontCamSource>
-    <FrontCamCoding>2</FrontCamCoding>
-    <FrontCamUsername>admin</FrontCamUsername>
-    <FrontCamPassword>admin</FrontCamPassword>
+    <UIdDeviceName>123</UIdDeviceName>
+    <BackCamSource>123</BackCamSource>
+    <BackCamCoding>1</BackCamCoding>
+    <BackCamUsername>1</BackCamUsername>
+    <BackCamPassword>1</BackCamPassword>
+    <FrontCamSource>1</FrontCamSource>
+    <FrontCamCoding>1</FrontCamCoding>
+    <FrontCamUsername>1</FrontCamUsername>
+    <FrontCamPassword>1</FrontCamPassword>
   </LaneConfigs>
 </DocumentElement>

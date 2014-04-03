@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -74,17 +75,18 @@
     <Compile Include="InputDeviceList.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities\NotificationObject.cs" />
+    <Compile Include="ViewModels\ConnectionStringEditViewModel.cs" />
     <Compile Include="ViewModels\LaneManagementViewModel.cs" />
     <Compile Include="ViewModels\LaneViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\ConnectionStringEditView.xaml.cs">
+      <DependentUpon>ConnectionStringEditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LaneManagementView.xaml.cs">
       <DependentUpon>LaneManagementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LaneView.xaml.cs">
       <DependentUpon>LaneView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -98,15 +100,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ConnectionStringEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LaneManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LaneView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

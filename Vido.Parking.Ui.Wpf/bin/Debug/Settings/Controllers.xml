@@ -8,6 +8,6 @@
     <FrontImageNameFormat>IMG_{0}_{1}_{2}{3}_F{4}.jpg</FrontImageNameFormat>
     <InFormat>I</InFormat>
     <OutFormat>O</OutFormat>
-    <EntryRequestTimeout>3000</EntryRequestTimeout>
+    <EntryRequestTimeout>10000</EntryRequestTimeout>
   </ControllerConfigs>
 </DocumentElement>

@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System.Configuration;
+using System.Data;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 namespace Vido.Parking.Ui.Wpf.ViewModels
@@ -30,7 +32,16 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
       this.mainViewModel.Settings.Save();
 
       var view = obj as Window;
-      view.Close();
+      if (view != null)
+      {
+        view.Close();
+      }
+      /// TODO: Địa phương hóa chuỗi thông báo.
+      MessageBox.Show("Khởi động lại ứng dụng để áp dụng thay đổi.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+
+      /// TODO: Khởi động lại ứng dụng.
+      Process.Start(Application.ResourceAssembly.Location);
+      Application.Current.Shutdown();
     }
 
     private bool SaveCanExecute(object obj)
