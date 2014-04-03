@@ -4,7 +4,7 @@
   using System.Drawing;
   using System.IO;
 
-  public class ImageHolder : IImageHolder
+  public class BitmapImageHolder : IImageHolder
   {
     #region Data Members
     private readonly object locker = new object();
@@ -12,21 +12,28 @@
     #endregion
 
     #region Public Constructors
-    public ImageHolder()
+    public BitmapImageHolder()
     {
       this.image = null;
-      this.Available = false;
     }
 
-    public ImageHolder(Image image)
+    public BitmapImageHolder(Image image)
     {
       this.image = image;
-      this.Available = (this.image != null);
     }
     #endregion
 
     #region Public Properties
-    public bool Available { get; set; }
+    public bool Available
+    {
+      get
+      {
+        lock (locker)
+        {
+          return (this.image != null);
+        }
+      }
+    }
     #endregion
 
     #region Public Methods
@@ -34,12 +41,27 @@
     {
       lock (locker)
       {
-        if (Available)
+        if (image != null)
         {
-          return (new ImageHolder(new Bitmap(image)));
+          return (new BitmapImageHolder(new Bitmap(image)));
         }
 
         return (null);
+      }
+    }
+
+    public bool Load(IFileStorage storage, string fileName)
+    {
+      using (var stream = storage.Open(fileName))
+      {
+        return (Load(stream));
+      }
+    }
+    public bool Save(IFileStorage storage, string fileName)
+    {
+      using (var stream = storage.Open(fileName))
+      {
+        return (Save(stream));
       }
     }
 
@@ -49,18 +71,16 @@
       {
         try
         {
-          Available = (image = Bitmap.FromStream(stream)) != null;
+          image = Bitmap.FromStream(stream);
           return (true);
         }
         catch
         {
           image = null;
-          Available = false;
           return (false);
         }
       }
     }
-
     public bool Save(Stream stream)
     {
       lock (locker)

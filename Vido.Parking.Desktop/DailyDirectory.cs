@@ -6,36 +6,58 @@
 
   public class DailyDirectory : IDailyDirectory
   {
+    #region Data Members
     private string formatString;
+    #endregion
 
+    #region Public Constructors
+    public DailyDirectory(string formatString = @"yyyy\MM\dd")
+    {
+      if (Path.DirectorySeparatorChar == '\\')
+      {
+        this.formatString = formatString.Replace(@"\", @"\\");
+      }
+      else
+      {
+        this.formatString = formatString;
+      }
+    }
+    #endregion
+
+    #region Implementation of IDailyDirectory
     public string RootDirectoryName { get; set; }
 
-    public DailyDirectory(string formatString = @"yyyy{0}MM{0}dd")
+    public string GetFullPath(DateTime time, string name)
     {
-      this.formatString = string.Format(formatString,
-        Path.DirectorySeparatorChar != '\\',
-        Path.DirectorySeparatorChar, @"\\");
+      var directoryName = time.ToString(formatString);
+
+      CreateDirectory(Path.Combine(RootDirectoryName, directoryName));
+
+      return (Path.Combine(directoryName, name));
+    }
+    #endregion
+
+    #region Implementation of IFileStorage
+    public Stream Open(string fileName)
+    {
+      var path = Path.Combine(RootDirectoryName, fileName);
+      return (File.Open(path, FileMode.OpenOrCreate));
     }
 
-    public Stream FileNew(DateTime time, string name, out string fileName)
+    public bool Exists(string fileName)
     {
-      var sb = new StringBuilder();
-      Path.Combine(RootDirectoryName, name);
-      sb.Append(Path.DirectorySeparatorChar);
-      sb.Append(time.ToString(formatString));
-
-      if (CreateDirectory(RootDirectoryName + sb.ToString()))
-      {
-        sb.Append(Path.DirectorySeparatorChar);
-        sb.Append(name);
-        fileName = sb.ToString();
-
-        return (new FileStream(RootDirectoryName + fileName, FileMode.CreateNew));
-      }
-      fileName = string.Empty;
-      return (null);
+      var path = Path.Combine(RootDirectoryName, fileName);
+      return (File.Exists(path));
     }
 
+    public void Delete(string fileName)
+    {
+      var path = Path.Combine(RootDirectoryName, fileName);
+      File.Delete(path);
+    }
+    #endregion
+
+    #region Private Methods
     private bool CreateDirectory(string directoryName)
     {
       try
@@ -52,20 +74,6 @@
         return (false);
       }
     }
-
-    public Stream Open(string fileName)
-    {
-      return (File.Open(Path.Combine(RootDirectoryName, fileName), FileMode.Open));
-    }
-
-    public bool Exists(string fileName)
-    {
-      return (File.Exists(Path.Combine(RootDirectoryName, fileName)));
-    }
-
-    public void Delete(string fileName)
-    {
-      File.Delete(Path.Combine(RootDirectoryName, fileName));
-    }
+    #endregion
   }
 }

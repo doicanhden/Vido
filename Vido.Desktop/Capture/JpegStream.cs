@@ -45,7 +45,7 @@
     #region Constructors
     public JpegStream()
     {
-      currentFrame = new ImageHolder();
+      currentFrame = new BitmapImageHolder();
     }
     #endregion
 
@@ -207,6 +207,7 @@
       {
         // dispose managed resources
         stopEvent.Dispose();
+        currentFrame.Dispose();
       }
       // free native resources
     }

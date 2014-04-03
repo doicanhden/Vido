@@ -207,10 +207,7 @@
 
               if (services.DailyDirectory.Exists(inBackImage))
               {
-                using (var fileStream = services.DailyDirectory.Open(RootImageDirectoryName + inBackImage))
-                {
-                  args.BackImage.Load(fileStream);
-                }
+                args.BackImage.Load(services.DailyDirectory, inBackImage);
               }
               else
               {
@@ -222,7 +219,7 @@
 
               if (services.DailyDirectory.Exists(inFrontImage))
               {
-                args.FrontImage.Load(services.DailyDirectory.Open(inFrontImage));
+                args.FrontImage.Load(services.DailyDirectory, inFrontImage);
               }
               else
               {
@@ -259,35 +256,26 @@
 
         if (back != null)
         {
-          string fileName;
-          using (var file = services.DailyDirectory.FileNew(inOutArgs.Time, string.Format(BackImageNameFormat,
-            timeString, inOutArgs.Data, inOutFormat, inOutArgs.Lane, inOutArgs.PlateNumber), out fileName))
+          var path = services.DailyDirectory.GetFullPath(inOutArgs.Time, string.Format(
+            BackImageNameFormat, timeString, inOutArgs.Data,
+            inOutFormat, inOutArgs.Lane, inOutArgs.PlateNumber));
+
+          if (back.Save(services.DailyDirectory, path))
           {
-            if (back.Save(file))
-            {
-              inOutArgs.BackImage = fileName;
-            }
-            else
-            {
-              inOutArgs.BackImage = null;
-            }
+            inOutArgs.BackImage = path;
           }
         }
 
         if (front != null)
         {
-          string fileName;
-          using (var file = services.DailyDirectory.FileNew(inOutArgs.Time, string.Format(FrontImageNameFormat,
-            timeString, inOutArgs.Data, inOutFormat, inOutArgs.Lane, inOutArgs.PlateNumber), out fileName))
+         
+          var path = services.DailyDirectory.GetFullPath(inOutArgs.Time, string.Format(
+            FrontImageNameFormat, timeString, inOutArgs.Data,
+            inOutFormat, inOutArgs.Lane, inOutArgs.PlateNumber));
+
+          if (front.Save(services.DailyDirectory, path))
           {
-            if (front.Save(file))
-            {
-              inOutArgs.FrontImage = fileName;
-            }
-            else
-            {
-              inOutArgs.FrontImage = null;
-            }
+            inOutArgs.FrontImage = path;
           }
         }
 

@@ -76,10 +76,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Vido.Parking\Vido.Parking.csproj">
-      <Project>{d72ec123-fadf-4b34-932e-663c5209cbe3}</Project>
-      <Name>Vido.Parking</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vido\Vido.csproj">
       <Project>{7cf77cbb-8bbc-41f9-8f26-48095e1b6759}</Project>
       <Name>Vido</Name>

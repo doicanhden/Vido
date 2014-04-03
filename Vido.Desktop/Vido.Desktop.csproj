@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Capture\ByteArrayUtils.cs" />
+    <Compile Include="Capture\CaptureFactory.cs" />
+    <Compile Include="Capture\JpegStream.cs" />
+    <Compile Include="Capture\MJpegStream.cs" />
     <Compile Include="FileStorage.cs" />
-    <Compile Include="ImageHolder.cs" />
+    <Compile Include="BitmapImageHolder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +53,9 @@
       <Project>{7cf77cbb-8bbc-41f9-8f26-48095e1b6759}</Project>
       <Name>Vido</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Parking\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

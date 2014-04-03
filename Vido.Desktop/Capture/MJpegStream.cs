@@ -65,7 +65,7 @@
     #region Public Constructors
     public MJpegStream()
     {
-      currentFrame = new ImageHolder();
+      currentFrame = new BitmapImageHolder();
     }
     #endregion
 
@@ -321,6 +321,7 @@
         // dispose managed resources
         stopEvent.Dispose();
         reloadEvent.Dispose();
+        currentFrame.Dispose();
       }
       // free native resources
     }

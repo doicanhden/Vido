@@ -6,7 +6,6 @@
   public interface IDailyDirectory : IFileStorage
   {
     string RootDirectoryName { get; set; }
-    
-    Stream FileNew(DateTime time, string name, out string fileName);
+    string GetFullPath(DateTime time, string name);
   }
 }
