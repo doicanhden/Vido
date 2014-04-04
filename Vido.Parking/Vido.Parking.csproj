@@ -83,6 +83,7 @@
     <Compile Include="Controls\Lane.cs" />
     <Compile Include="LaneConfigs.cs" />
     <Compile Include="DataCenter.cs" />
+    <Compile Include="Utilities\Helper.cs" />
     <Compile Include="Utilities\Ocr.cs" />
     <Compile Include="Utilities\PasswordHash.cs" />
     <Compile Include="Utilities\Encode.cs" />

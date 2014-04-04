@@ -67,6 +67,9 @@
     public MainViewModel(Window mainWindow)
     {
       this.mainWindow = mainWindow;
+
+      TestDatabaseConnection();
+
       laneViewModels = new ObservableCollection<LaneViewModel>();
 
       inputDevices = new InputDeviceList(MainWindowHandle());
@@ -122,6 +125,22 @@
     #endregion
 
     #region Private Methods
+    private void TestDatabaseConnection()
+    {
+      while (!Vido.Parking.Utilities.Helper.TestDBConnection())
+      {
+        if (false == new Views.ConnectionStringEditView()
+        {
+          Owner = mainWindow,
+          DataContext = new ConnectionStringEditViewModel(false)
+        }.ShowDialog())
+        {
+          Application.Current.Shutdown();
+          break;
+        }
+      }
+    }
+
     /// <summary>
     /// Bật toàn bộ các camera đang sử dụng.
     /// </summary>

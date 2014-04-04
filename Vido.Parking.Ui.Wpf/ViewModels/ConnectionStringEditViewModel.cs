@@ -7,6 +7,7 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
   public class ConnectionStringEditViewModel : Utilities.NotificationObject
   {
     private string connectionString = null;
+    private bool exitOnSave = true;
     private ICommand saveCommand = null;
     public string ConnectionString
     {
@@ -17,9 +18,10 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
         RaisePropertyChanged(() => ConnectionString);
       }
     }
-    public ConnectionStringEditViewModel()
+    public ConnectionStringEditViewModel(bool exitOnSave = true)
     {
       this.ConnectionString = ConfigurationManager.ConnectionStrings["VidoParkingEntities"].ConnectionString;
+      this.exitOnSave = exitOnSave;
     }
 
     public ICommand SaveCommand
@@ -36,15 +38,19 @@ namespace Vido.Parking.Ui.Wpf.ViewModels
             var view = x as Window;
             if (view != null)
             {
+              view.DialogResult = true;
               view.Close();
             }
 
-            /// TODO: Địa phương hóa chuỗi thông báo.
-            MessageBox.Show("Khởi động lại ứng dụng để áp dụng thay đổi.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (exitOnSave)
+            {
+              /// TODO: Địa phương hóa chuỗi thông báo.
+              MessageBox.Show("Khởi động lại ứng dụng để áp dụng thay đổi.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            /// TODO: Khởi động lại ứng dụng.
-            Process.Start(Application.ResourceAssembly.Location);
-            Application.Current.Shutdown();
+              /// TODO: Khởi động lại ứng dụng.
+              Process.Start(Application.ResourceAssembly.Location);
+              Application.Current.Shutdown();
+            }
           },
           (x) => (!string.IsNullOrWhiteSpace(ConnectionString))
         )));

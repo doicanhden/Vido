@@ -112,10 +112,10 @@
 
           return (inRecords.Count() == 0);
         }
-        catch
+        catch(Exception ex)
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.CanIn: Lỗi truy xuất dữ liệu.");
+          RaiseNewMessage("IParking.CanIn: Lỗi truy xuất dữ liệu." + ex.Message);
           return (false);
         }
       }
@@ -147,10 +147,10 @@
           /// Cập nhật thông tin vào DB.
           entities.SaveChanges();
         }
-        catch
+        catch(Exception ex)
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.In: Lỗi truy xuất dữ liệu.");
+          RaiseNewMessage("IParking.In: Lỗi truy xuất dữ liệu." + ex.Message);
         }
       }
     }
@@ -188,10 +188,10 @@
 
           return (false);
         }
-        catch
+        catch(Exception ex)
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.CanOut: Lỗi truy xuất dữ liệu.");
+          RaiseNewMessage("IParking.CanOut: Lỗi truy xuất dữ liệu." + ex.Message);
           return (false);
         }
       }
@@ -243,10 +243,10 @@
             RaiseNewMessage("IParking.Out: Lỗi CSDL, không có hoặc có nhiều hơn một thông tin phương tiện vào.");
           }
         }
-        catch
+        catch(Exception ex)
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.Out: Lỗi truy xuất dữ liệu.");
+          RaiseNewMessage("IParking.Out: Lỗi truy xuất dữ liệu." + ex.Message);
         }
       }
     }
@@ -275,10 +275,10 @@
 
           return (cards.Count() == 1 && cards.ToArray()[0].State == 0);
         }
-        catch
+        catch(Exception ex)
         {
           /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("ICardManagement.IsExistAndUsing: Lỗi truy xuất dữ liệu.");
+          RaiseNewMessage("ICardManagement.IsExistAndUsing: Lỗi truy xuất dữ liệu." + ex.Message);
           return (false);
         }
       }
