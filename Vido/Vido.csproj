@@ -11,7 +11,7 @@
     <RootNamespace>Vido</RootNamespace>
     <AssemblyName>Vido</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile136</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile5</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Capture\CaptureList.cs" />
     <Compile Include="Capture\Events\ErrorOccurredEvent.cs" />
     <Compile Include="Capture\Events\NewFrameEvent.cs" />
@@ -46,30 +43,44 @@
     <Compile Include="Capture\Enums\Coding.cs" />
     <Compile Include="IFileStorage.cs" />
     <Compile Include="IImageHolder.cs" />
-    <Compile Include="Parking\Controller.cs" />
-    <Compile Include="Parking\ControllerServices.cs" />
-    <Compile Include="Parking\Enums\Direction.cs" />
-    <Compile Include="Parking\Enums\LaneState.cs" />
-    <Compile Include="Parking\Events\DataInArgs.cs" />
-    <Compile Include="Parking\Events\DevicesChangedArgs.cs" />
-    <Compile Include="Parking\Events\EntryAllowedArgs.cs" />
-    <Compile Include="Parking\Events\EntryArgs.cs" />
-    <Compile Include="Parking\Events\NewMessageArgs.cs" />
-    <Compile Include="Parking\Events\SavedImagesArgs.cs" />
-    <Compile Include="Parking\ICardManagement.cs" />
-    <Compile Include="Parking\IDailyDirectory.cs" />
+    <Compile Include="IPrinter.cs" />
+    <Compile Include="NoopPrinter.cs" />
+    <Compile Include="Qms\Direction.cs" />
+    <Compile Include="Parking\Factories.cs" />
+    <Compile Include="DataInArgs.cs" />
+    <Compile Include="Qms\NewMessageArgs.cs" />
+    <Compile Include="Qms\SavedImagesArgs.cs" />
+    <Compile Include="Qms\EntryArgs.cs" />
+    <Compile Include="Qms\IEntryRecorder.cs" />
+    <Compile Include="Qms\GateState.cs" />
+    <Compile Include="Qms\IGate.cs" />
+    <Compile Include="Qms\IGateServices.cs" />
+    <Compile Include="Qms\IUniqueIdStorage.cs" />
+    <Compile Include="Qms\IDailyDirectory.cs" />
+    <Compile Include="Qms\IUniqueId.cs" />
     <Compile Include="Parking\IDataCenter.cs" />
-    <Compile Include="Parking\ILane.cs" />
-    <Compile Include="Parking\InOutArgs.cs" />
+    <Compile Include="ImagePair.cs" />
+    <Compile Include="Qms\IUserData.cs" />
+    <Compile Include="Qms\Entry.cs" />
     <Compile Include="Parking\IParking.cs" />
-    <Compile Include="Parking\IUniqueIdDevice.cs" />
-    <Compile Include="Parking\IUniqueIdDeviceList.cs" />
+    <Compile Include="IInputDevice.cs" />
+    <Compile Include="IInputDeviceList.cs" />
     <Compile Include="Parking\Lane.cs" />
-    <Compile Include="Parking\LaneConfigs.cs" />
-    <Compile Include="Parking\Utilities\Encode.cs" />
-    <Compile Include="Parking\Utilities\Requires.cs" />
+    <Compile Include="Qms\GateController.cs" />
+    <Compile Include="Qms\RandomUniqueIdStorage.cs" />
+    <Compile Include="Qms\UserData.cs" />
+    <Compile Include="Utilities\Requires.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.3.3.1\lib\portable-win+net40+sl50+wp8\Autofac.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

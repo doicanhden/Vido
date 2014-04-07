@@ -6,7 +6,7 @@
   {
     public Stream Open(string fileName)
     {
-      return (File.Open(fileName, FileMode.Open));
+      return (File.Open(fileName, FileMode.OpenOrCreate));
     }
 
     public bool Exists(string fileName)

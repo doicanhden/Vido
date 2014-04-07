@@ -1,196 +1,74 @@
-﻿namespace Vido.Parking
+﻿
+namespace Vido.Parking
 {
   using System;
   using System.Threading;
   using Vido.Capture;
-  using Vido.Parking.Enums;
-  using Vido.Parking.Events;
+  using Vido.Qms;
 
-  public class Lane
+  public class LaneController : IGate
   {
-    #region Data Members
-    private IUniqueIdDevice uidDevice = null;
-    #endregion
-
-    #region Public Properties
-
-    /// <summary>
-    /// Mã Làn.
-    /// </summary>
-    public string Code { get; set; }
-
-    /// <summary>
-    /// Trạng thái của Làn.
-    /// </summary>
-    public LaneState LaneState { get; set; }
-
-    /// <summary>
-    /// Hướng của Làn.
-    /// </summary>
+    public IInputDevice InputDevice { get; set; }
+    public IUserData UserData { get; set; }
+    public string Name { get; set; }
+    public GateState State { get; set; }
     public Direction Direction { get; set; }
+    public ICapture CameraBack { get; set; }
+    public ICapture CameraFront { get; set; }
+    public IPrinter Printer { get; set; }
 
-    /// <summary>
-    /// Số lần thử lại trước khi thông báo lỗi thiết bị.
-    /// </summary>
-    public int NumberOfRetries { get; set; }
+    public EventWaitHandle Allow { get; set; }
+    public EventWaitHandle Block { get; set; }
 
-    /// <summary>
-    /// Thiết bị sinh dữ liệu Uid.
-    /// </summary>
-    public IUniqueIdDevice UidDevice
+    public event EventHandler NewMessage;
+    public event EventHandler SavedImage;
+    public event EventHandler EntryAllowed;
+    public event EventHandler EntryBlocked;
+
+    public LaneController()
     {
-      get { return (uidDevice); }
-      set
+      Allow = new AutoResetEvent(false);
+      Block = new AutoResetEvent(false);
+      UserData = new UserData();
+    }
+
+    public void NewEntries(IUniqueId uniqueId, IUserData userData)
+    {
+      throw new System.NotImplementedException();
+    }
+
+    void IGate.RaiseSavedImage(IFileStorage fileStorage, string first, string second)
+    {
+      if (SavedImage != null)
       {
-        if (uidDevice != null)
+        SavedImage(this, new SavedImagesEventArgs()
         {
-          uidDevice.DataIn -= uidDevice_DataIn;
-        }
-
-        uidDevice = value;
-
-        if (uidDevice != null)
-        {
-          uidDevice.DataIn += uidDevice_DataIn;
-        }
+          FileStorage = fileStorage,
+          FirstImage = first,
+          SecondImage = second
+        });
       }
     }
 
-    /// <summary>
-    /// Camera Chụp ảnh Biển số phương tiện.
-    /// </summary>
-    public ICapture BackCamera { get; set; }
-
-    /// <summary>
-    /// Camera Chụp ảnh Người điều khiển.
-    /// </summary>
-    public ICapture FrontCamera { get; set; }
-    #endregion
-
-    #region Public Events
-    /// <summary>
-    /// Sự kiện kích hoạt khi phương tiện vào Làn.
-    /// </summary>
-    public event EventHandler Entry;
-
-    /// <summary>
-    /// Sự kiện kích hoạt khi phương tiện được phép di chuyển ra khỏi Làn.
-    /// </summary>
-    public event EventHandler EntryAllowed;
-
-    /// <summary>
-    /// Sự kiện kích hoạt khi có cập nhật mới về ảnh Biển số/Người điều khiển phương tiện.
-    /// </summary>
-    public event EventHandler SavedImages;
-
-    /// <summary>
-    /// Sự kiện kích hoạt khi có thông báo mời từ Làn.
-    /// </summary>
-    public event EventHandler NewMessage;
-    #endregion
-
-    #region Private Methods
-
-    /// <summary>
-    /// Kích hoạt sự kiện Thông báo mới với thời gian ở đầu thông báo.
-    /// </summary>
-    /// <param name="time">Thời gian</param>
-    /// <param name="message">Thông báo</param>
-    private void RaiseNewMessage(DateTime time, string message)
+    void IGate.RaiseNewMessage(string messages)
     {
       if (NewMessage != null)
       {
-        NewMessage(this, new NewMessageEventArgs(time.ToString("HH:mm - ") + message));
+        NewMessage(this, new NewMessageEventArgs()
+        {
+          Message = messages
+        });
       }
     }
-    #endregion
 
-    #region Event Handlers
-    private void uidDevice_DataIn(object sender, EventArgs e)
+    void IGate.RaiseEntryAllow(string userData)
     {
-      var args = e as DataInEventArgs;
-
-      if (args == null || LaneState == LaneState.Stop)
-      {
-        return;
-      }
-
-      if (Entry != null)
-      {
-        var entryTime = DateTime.Now;
-
-        IImageHolder backImage = TryCapture(BackCamera);
-        if (backImage != null)
-        {
-          /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage(entryTime, "Không thể chụp ảnh từ camera.");
-          return;
-        }
-
-        IImageHolder frontImage = null;
-        if (FrontCamera != null)
-        {
-          frontImage = TryCapture(FrontCamera);
-          if (frontImage == null)
-          {
-            /// TODO: Địa phương hóa chuỗi thông báo.
-            RaiseNewMessage(entryTime, "Không thể chụp ảnh từ camera.");
-            return;
-          }
-        }
-
-        var plateNumber = string.Empty;// Ocr.GetPlateNumber(backImage);
-        var entryArgs = new EntryEventArgs(args, entryTime, plateNumber,
-          backImage, frontImage);
-
-        Entry(this, entryArgs);
-
-        if (entryArgs.Allow)
-        {
-          RaiseNewMessage(entryTime, entryArgs.Message);
-
-          if (SavedImages != null)
-          {
-            SavedImages(this, new SavedImagesEventArgs(
-              entryArgs.BackImage, entryArgs.FrontImage));
-          }
-
-          if (EntryAllowed != null)
-          {
-            EntryAllowed(this, new EntryAllowedEventArgs(
-              entryArgs.PlateNumber, entryArgs.Time));
-          }
-        }
-        else
-        {
-          RaiseNewMessage(entryTime, entryArgs.Message);
-        }
-      }
+      throw new System.NotImplementedException();
     }
-    #endregion
 
-    #region Private Methods
-    /// <summary>
-    /// Chụp ảnh từ Camera
-    /// </summary>
-    /// <param name="capture">Camera cần chụp ảnh.</param>
-    /// <returns>Ảnh đã chụp từ camera.</returns>
-    private IImageHolder TryCapture(ICapture capture)
+    void IGate.RaiseEntryBlock(string userData)
     {
-      if (capture != null)
-      {
-        for (int i = 0; i < NumberOfRetries; ++i)
-        {
-          var image = capture.Take();
-          if (image != null && image.Available)
-          {
-            return (image);
-          }
-        }
-      }
-
-      return (null);
+      throw new System.NotImplementedException();
     }
-    #endregion
   }
 }

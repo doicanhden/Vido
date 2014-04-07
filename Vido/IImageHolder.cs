@@ -11,6 +11,7 @@
     bool Save(IFileStorage storage, string fileName);
     bool Load(Stream stream);
     bool Save(Stream stream);
+
     IImageHolder Copy();
   }
 }

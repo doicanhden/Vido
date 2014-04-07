@@ -93,7 +93,7 @@
       }
     }
 
-    public void SetController(Controller controller, int id = 0)
+    public void SetController(ParkingController controller, int id = 0)
     {
       foreach (Datasets.Settings.ControllerConfigsRow cfg in controllerCfgs.Rows)
       {

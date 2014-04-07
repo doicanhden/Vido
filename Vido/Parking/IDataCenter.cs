@@ -1,6 +1,7 @@
-﻿namespace Vido.Parking
+﻿using Vido.Qms;
+namespace Vido.Parking
 {
-  public interface IDataCenter : IParking, ICardManagement
+  public interface IDataCenter : IParking, IUniqueIdStorage
   {
   }
 }

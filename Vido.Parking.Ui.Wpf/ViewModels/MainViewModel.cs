@@ -16,7 +16,7 @@
     private InputDeviceList inputDevices;
     private CaptureList captures;
     private DataCenter dataCenter;
-    private Controller controller;
+    private ParkingController controller;
 
     private readonly Settings settings = new Settings();
     private readonly ObservableCollection<LaneViewModel> laneViewModels;

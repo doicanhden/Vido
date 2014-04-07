@@ -1,4 +1,4 @@
-﻿namespace Vido
+﻿namespace Vido.Desktop
 {
   using System;
   using System.Collections.Generic;

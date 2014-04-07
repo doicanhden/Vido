@@ -23,7 +23,7 @@
     private string frontImgText = null;
     #endregion
 
-    private readonly Lane lane = null;
+    private readonly LaneController lane = null;
 
     private string message = null;
     private string laneCode = null;
@@ -167,7 +167,7 @@
     }
 
     #region Public Construtors
-    public LaneViewModel(Lane lane)
+    public LaneViewModel(LaneController lane)
     {
       if (lane == null)
         throw new ArgumentNullException("lane");
@@ -217,9 +217,9 @@
     #region Event Handlers
     private void lane_Entry(object sender, EventArgs e)
     {
-      var args = e as Events.EntryEventArgs;
+      var args = e as Events.LaneEntryEventArgs;
 
-      this.UniqueId = Encode.GetDataString(args.DataIn.Data, args.DataIn.Printable);
+      this.UniqueId = Encode.GetDataString(args.UniqueId.Data, args.UniqueId.Printable);
       this.UserData = args.PlateNumber;
 
       /// Xóa thông báo hiện tại trên View.
@@ -230,15 +230,15 @@
     {
       var args = e as Events.SavedImagesEventArgs;
 
-      if (args.Back != null)
-      {
-        this.BackImageSaved = ConvertToBitmapSource(args.Back);
-      }
+      //if (args.Back != null)
+      //{
+      //  this.BackImageSaved = ConvertToBitmapSource(args.Back);
+      //}
 
-      if (args.Front != null)
-      {
-        this.FrontImageSaved = ConvertToBitmapSource(args.Front);
-      }
+      //if (args.Front != null)
+      //{
+      //  this.FrontImageSaved = ConvertToBitmapSource(args.Front);
+      //}
     }
 
     private void lane_NewMessage(object sender, EventArgs e)

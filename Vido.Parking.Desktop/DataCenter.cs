@@ -7,6 +7,7 @@
   using Vido.Parking;
   using Vido.Parking.Utilities;
   using Vido.Parking.Desktop;
+  using System.Collections;
 
   public class DataCenter : IDataCenter, IDisposable
   {
@@ -118,7 +119,7 @@
     /// <summary>
     /// Xử lý phương tiện Vào bãi.
     /// </summary>
-    /// <param name="inArgs">Thông tin phương tiện vào bãi.</param>
+    /// <param nameLaneEntryRecordRecordRecord>Thông tin phương tiện vào bãi.</param>
     public void In(InOutArgs inArgs)
     {
       var parking = this as IParking;
@@ -127,11 +128,11 @@
         /// Thêm thông tin phương tiện VÀO.
         entities.InOutRecord.Add(new InOutRecord()
         {
-          CardId = inArgs.Data,
-          UserData = inArgs.PlateNumber,
+          CardId = inArgs.UniqueId,
+          UserData = inArgs.UserData,
 
-          InEmployeeId = CurrentUserId,
-          InLaneCode = inArgs.Lane,
+          InEmployeeId = CurreEntryLaneerId,
+          InLaneCode = inAEntryTimeyTimeyTimeyTimeLane,
           InTime = inArgs.Time.ToString(ISO8601DateTimeFormat),
           InBackImg = inArgs.BackImage,
           InFrontImg = inArgs.FrontImage
@@ -189,7 +190,7 @@
     /// <summary>
     /// Xử lý phương tiện Ra bãi.
     /// </summary>
-    /// <param name="outArgs">Thông tin phương tiện ra.</param>
+    /// <param name=LaneEntryRecordRecordRecord>Thông tin phương tiện ra.</param>
     public void Out(InOutArgs outArgs)
     {
       try
@@ -198,8 +199,8 @@
         /// và chưa có thông tin Ra.
         var inRecords = from Records in entities.InOutRecord
                         where
-                          Records.CardId == outArgs.Data &&
-                          Records.UserData == outArgs.PlateNumber &&
+                          Records.CardId == outArgs.UniqueId &&
+                          Records.UserData == outArgs.UserData &&
                           Records.OutEmployeeId == null &&
                           Records.OutLaneCode == null &&
                           Records.OutTime == null &&
@@ -215,8 +216,8 @@
           var record = inRecords.ToArray()[0];
 
           /// Thêm thông tin phương tiện RA.
-          record.OutEmployeeId = CurrentUserId;
-          record.OutLaneCode = outArgs.Lane;
+          record.OutEmployeeId = CurrenEntryLanerId;
+          record.OutLaneCode = outAEntryTimeyTimeyTimeyTimeLane;
           record.OutTime = outArgs.Time.ToString(ISO8601DateTimeFormat);
           record.OutBackImg = outArgs.BackImage;
           record.OutFrontImg = outArgs.FrontImage;
@@ -248,7 +249,7 @@
     /// </summary>
     /// <param name="cardId">Dữ liệu thẻ</param>
     /// <returns></returns>
-    public bool IsExistAndUsing(string cardId)
+    public bool CanUse(string cardId)
     {
       try
       {
@@ -302,5 +303,22 @@
       get { return ("yyyy-MM-dd HH:mm:ss.fff"); }
     }
     #endregion
+
+    public bool Insert(string uniqueId)
+    {
+      throw new NotImplementedException();
+    }
+
+
+    public bool Remove(string uniqueId)
+    {
+      throw new NotImplementedException();
+    }
+
+
+    public UniqueIdState Status(string uniqueId)
+    {
+      throw new NotImplementedException();
+    }
   }
 }
