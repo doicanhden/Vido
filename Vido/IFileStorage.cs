@@ -1,4 +1,6 @@
-﻿namespace Vido
+﻿// Copyright (C) 2014 Vido's R&D.  All rights reserved.
+
+namespace Vido
 {
   using System.IO;
 

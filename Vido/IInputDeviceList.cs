@@ -1,4 +1,6 @@
-﻿namespace Vido
+﻿// Copyright (C) 2014 Vido's R&D.  All rights reserved.
+
+namespace Vido
 {
   using System;
   using System.Collections.Generic;
@@ -7,7 +9,7 @@
   {
     #region Methods
     ICollection<IInputDevice> AllDevices();
-    IDisposable Subscribe(IInputDevice device);
+    IDisposable Register(IInputDevice device);
     #endregion
   }
 }

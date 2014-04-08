@@ -50,6 +50,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Media\BitmapImageHolder.cs" />
+    <Compile Include="Media\Capture\ByteArrayUtils.cs" />
+    <Compile Include="Media\Capture\CaptureFactory.cs" />
+    <Compile Include="Media\Capture\JpegStream.cs" />
+    <Compile Include="Media\Capture\MJpegStream.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -76,10 +81,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Vido.Desktop\Vido.Desktop.csproj">
-      <Project>{6365eaa0-d898-4827-8450-ca06ebfbe1e6}</Project>
-      <Name>Vido.Desktop</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vido\Vido.csproj">
       <Project>{7cf77cbb-8bbc-41f9-8f26-48095e1b6759}</Project>
       <Name>Vido</Name>

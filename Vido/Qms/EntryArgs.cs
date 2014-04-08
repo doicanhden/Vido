@@ -2,6 +2,8 @@
 
 namespace Vido.Qms
 {
+  using Vido.Media;
+
   public class EntryArgs
   {
     #region Public Properties
@@ -11,13 +13,8 @@ namespace Vido.Qms
     public ImagePair Images { get; set; }
     #endregion
 
-    #region Public Constructors
-    public EntryArgs(IUniqueId uniqueId, IUserData userData, ImagePair images)
+    public EntryArgs()
     {
-      this.UniqueId = uniqueId;
-      this.UserData = userData;
-      this.Images = images;
     }
-    #endregion
   }
 }

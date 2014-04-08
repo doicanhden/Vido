@@ -2,8 +2,7 @@
 {
   using System.Diagnostics;
   using System.Windows.Forms;
-  using Vido.Capture.Events;
-  using Vido.Capture;
+  using Vido.Media.Capture;
   using System.IO;
   using System.Drawing;
 
@@ -21,11 +20,11 @@
       //capture = captureFactory.Create();
 
       var config = new Configuration();
-      config.Source = @"http://64.122.208.241:8000/axis-cgi/mjpg/video.cgi?resolution=320x240";
+      config.Source = @"http://pasteldth.dyndns.org/cgi-bin/net_jpeg.cgi?ch=2";
       config.Username = "admin";
       config.Password = "123456";
       config.FrameInterval = 0;
-      config.Coding = Enums.Coding.MJpeg;
+      config.Coding = Coding.Jpeg;
 
       var captureFactory = new CaptureFactory();
       capture = captureFactory.Create(config);
@@ -37,8 +36,10 @@
     {
       using (Stream stream = new MemoryStream())
       {
-        (e as NewFrameEventArgs).Image.Save(stream);
-        pictureBox1.Image = Bitmap.FromStream(stream);
+        if ((e as NewFrameEventArgs).Image.Save(stream))
+        {
+          pictureBox1.Image = Bitmap.FromStream(stream);
+        }
       }
     }
 

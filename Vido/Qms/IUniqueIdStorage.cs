@@ -6,7 +6,8 @@ namespace Vido.Qms
   {
     Using = 0,
     Error = 1,
-    Block = 2
+    Block = 2,
+    NotExist = 3
   }
 
   public interface IUniqueIdStorage

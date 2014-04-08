@@ -1,19 +1,14 @@
-﻿namespace Vido
+﻿// Copyright (C) 2014 Vido's R&D.  All rights reserved.
+
+namespace Vido
 {
   using System;
-  using Vido.Qms;
 
   public class DataInEventArgs : EventArgs
   {
     #region Public Properties
-    /// <summary>
-    /// Dữ liệu.
-    /// </summary>
     public byte[] Data { get; set; }
 
-    /// <summary>
-    /// Dữ liệu dạng 'Có thể in'?
-    /// </summary>
     public bool Printable { get; set; }
     #endregion
 

@@ -1,0 +1,115 @@
+﻿<UserControl
+  x:Class="Vido.Parking.Ui.Wpf.Views.LaneView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" MinWidth="346" MinHeight="364">
+  <UserControl.Resources>
+    <BitmapImage x:Key='imageNotFound' UriSource='/Vido.Parking.Ui;component/Parking/Ui/Images/imageNotFound.png' />
+
+    <Style TargetType="Border">
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+    </Style>
+  </UserControl.Resources>
+  
+  <Border>
+    <Grid DataContext="{Binding}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Videos -->
+      <Grid Grid.Column="0" Grid.Row="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Margin="5" Text="{Binding FrontCamText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5">
+          <Image Source="{Binding FrontImageCamera, TargetNullValue={StaticResource imageNotFound}}" MinWidth="160" MinHeight="120"/>
+        </Border>
+      </Grid>
+      <Grid Grid.Column="2" Grid.Row="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Margin="5" Text="{Binding BackCamText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5">
+          <Image Source="{Binding BackImageCamera, TargetNullValue={StaticResource imageNotFound}}" MinWidth="160" MinHeight="120"/>
+        </Border>
+      </Grid>
+
+      <!-- Images -->
+      <Grid Grid.Column="0" Grid.Row="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Margin="5" Text="{Binding FrontImgText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5">
+          <Image Source="{Binding FrontImageSaved, TargetNullValue={StaticResource imageNotFound}}" MinWidth="160" MinHeight="120">
+          </Image>
+        </Border>
+      </Grid>
+      <Grid Grid.Column="2" Grid.Row="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Margin="5" Text="{Binding BackImgText}" TextAlignment="Center"/>
+        <Border Grid.Row="1" Margin="5">
+          <Image Source="{Binding BackImageSaved, TargetNullValue={StaticResource imageNotFound}}" MinWidth="160" MinHeight="120"/>
+        </Border>
+      </Grid>
+
+      <!-- Lane Name & Id number-->
+      <Grid Grid.Row="2" Grid.ColumnSpan="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="5*"/>
+          <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Margin="2" TextAlignment="Center" VerticalAlignment="Center"
+                   TextWrapping="WrapWithOverflow" Text="{Binding LaneCode}"
+                   Foreground="Green" FontWeight="Bold"/>
+
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="{Binding UniqueIdText}" TextAlignment="Center"/>
+          <TextBox Margin="4,0,4,2" Text="{Binding UniqueId}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+          <TextBlock Text="{Binding UserDataText}" TextAlignment="Center"/>
+          <TextBox Margin="4,0,4,2" Text="{Binding UserData}"/>
+        </StackPanel>
+      </Grid>
+
+      <!-- Message & Buttons -->
+      <Grid Grid.Row="3" Grid.ColumnSpan="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="8*"/>
+          <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Margin="5">
+          <TextBlock Text="{Binding Message}" FontWeight="ExtraBlack" Foreground="Green" VerticalAlignment="Center"/>
+        </Border>
+        <Button Grid.Column="1" Margin="5" Content="Stop"
+                Command="{Binding StopCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+      </Grid>
+
+    </Grid>
+  </Border>
+</UserControl>

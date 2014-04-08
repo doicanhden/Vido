@@ -33,52 +33,44 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Capture\CaptureList.cs" />
-    <Compile Include="Capture\Events\ErrorOccurredEvent.cs" />
-    <Compile Include="Capture\Events\NewFrameEvent.cs" />
-    <Compile Include="Capture\ICapture.cs" />
-    <Compile Include="Capture\ICaptureList.cs" />
-    <Compile Include="Capture\Configuration.cs" />
-    <Compile Include="Capture\ICaptureFactory.cs" />
-    <Compile Include="Capture\Enums\Coding.cs" />
+    <Compile Include="Deregister.cs" />
+    <Compile Include="Media\Capture\CaptureList.cs" />
+    <Compile Include="Media\Capture\ErrorOccurredEvent.cs" />
+    <Compile Include="Media\Capture\NewFrameEvent.cs" />
+    <Compile Include="Media\Capture\ICapture.cs" />
+    <Compile Include="Media\Capture\ICaptureList.cs" />
+    <Compile Include="Media\Capture\Configuration.cs" />
+    <Compile Include="Media\Capture\ICaptureFactory.cs" />
+    <Compile Include="Media\Capture\Coding.cs" />
     <Compile Include="IFileStorage.cs" />
-    <Compile Include="IImageHolder.cs" />
+    <Compile Include="Media\IImageHolder.cs" />
     <Compile Include="IPrinter.cs" />
     <Compile Include="NoopPrinter.cs" />
     <Compile Include="Qms\Direction.cs" />
-    <Compile Include="Parking\Factories.cs" />
     <Compile Include="DataInArgs.cs" />
+    <Compile Include="Qms\IEntryReporter.cs" />
     <Compile Include="Qms\NewMessageArgs.cs" />
+    <Compile Include="Qms\ReporterServices.cs" />
     <Compile Include="Qms\SavedImagesArgs.cs" />
     <Compile Include="Qms\EntryArgs.cs" />
     <Compile Include="Qms\IEntryRecorder.cs" />
     <Compile Include="Qms\GateState.cs" />
     <Compile Include="Qms\IGate.cs" />
-    <Compile Include="Qms\IGateServices.cs" />
     <Compile Include="Qms\IUniqueIdStorage.cs" />
     <Compile Include="Qms\IDailyDirectory.cs" />
     <Compile Include="Qms\IUniqueId.cs" />
-    <Compile Include="Parking\IDataCenter.cs" />
-    <Compile Include="ImagePair.cs" />
+    <Compile Include="Media\ImagePair.cs" />
     <Compile Include="Qms\IUserData.cs" />
     <Compile Include="Qms\Entry.cs" />
-    <Compile Include="Parking\IParking.cs" />
     <Compile Include="IInputDevice.cs" />
     <Compile Include="IInputDeviceList.cs" />
-    <Compile Include="Parking\Lane.cs" />
-    <Compile Include="Qms\GateController.cs" />
+    <Compile Include="Qms\EntryReporter.cs" />
     <Compile Include="Qms\RandomUniqueIdStorage.cs" />
+    <Compile Include="Qms\TaskState.cs" />
+    <Compile Include="Qms\UniqueId.cs" />
     <Compile Include="Qms\UserData.cs" />
     <Compile Include="Utilities\Requires.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\packages\Autofac.3.3.1\lib\portable-win+net40+sl50+wp8\Autofac.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
