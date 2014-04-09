@@ -18,26 +18,17 @@ namespace Vido.Qms
     EventWaitHandle Block { get; set; }
 
     IInputDevice Input { get; set; }
-    ICapture CameraBack { get; set; }
-    ICapture CameraFront { get; set; }
+    ICapture CameraFirst { get; set; }
+    ICapture CameraSecond { get; set; }
     IPrinter Printer { get; set; }
     #endregion
 
-    #region Events
-    event EventHandler NewMessage;
-    event EventHandler SavedImage;
-    event EventHandler EntryAllowed;
-    event EventHandler EntryBlocked;
-    #endregion
-
     #region Methods
-    void RasieNewEntries(EntryArgs entryArgs);
-
-    void RaiseSavedImage(IFileStorage fileStorage, string first, string second);
-    void RaiseNewMessage(string messages);
-    void RaiseEntryAllow(string userData);
-    void RaiseEntryBlock(string userData);
-    void StartEntryRequest(int timeout);
+    void SavedImage(IFileStorage fileStorage, string firstPath, string secondPath);
+    void NewMessage(string messages);
+    void NewEntries(EntryArgs entryArgs);
+    void EntryAllow(string userData);
+    void EntryBlock(string userData);
     #endregion
   }
 
@@ -46,14 +37,14 @@ namespace Vido.Qms
     public static ImagePair CaptureImages(this IGate gate)
     {
       IImageHolder back = null, front = null;
-      if (gate.CameraBack != null)
+      if (gate.CameraFirst != null)
       {
-        back = gate.CameraBack.Take();
+        back = gate.CameraFirst.Take();
       }
 
-      if (gate.CameraFront != null)
+      if (gate.CameraSecond != null)
       {
-        front = gate.CameraFront.Take();
+        front = gate.CameraSecond.Take();
       }
 
       if (back != null && back.Available &&

@@ -33,12 +33,12 @@ namespace Vido.Qms
     /// <summary>
     /// Đường dẫn đến ảnh chụp phía Trước.
     /// </summary>
-    public string BackImage { get; set; }
+    public string FirstImage { get; set; }
 
     /// <summary>
     /// Đường dẫn đến ảnh chụp phía Sau.
     /// </summary>
-    public string FrontImage { get; set; }
+    public string SecondImage { get; set; }
     #endregion
 
     #region Public Constructors

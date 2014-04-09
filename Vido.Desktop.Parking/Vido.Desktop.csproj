@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -77,18 +77,26 @@
     </Compile>
     <Compile Include="Parking\CenterUnit.cs" />
     <Compile Include="Parking\EFEntryRecorder.cs" />
+    <Compile Include="Parking\Ui\Datasets\Settings.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Parking\Ui\Datasets\Settings.Designer.cs" />
+    <Compile Include="Parking\Ui\Datasets\Settings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Parking\Ui\Settings.cs" />
     <Compile Include="Qms\DailyDirectory.cs" />
     <Compile Include="Parking\EFUniqueIdStorage.cs" />
     <Compile Include="Parking\Employee.cs">
       <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>
-    <Compile Include="Parking\FileStorage.cs" />
     <Compile Include="Parking\InOutRecord.cs">
       <DependentUpon>VidoParking.tt</DependentUpon>
     </Compile>
     <Compile Include="InputDevice.cs" />
     <Compile Include="InputDeviceList.cs" />
-    <Compile Include="Parking\Lane.cs" />
     <Compile Include="Parking\Ui\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -155,6 +163,17 @@
     </EntityDeploy>
     <None Include="App.Config" />
     <None Include="packages.config" />
+    <None Include="Parking\Ui\Datasets\Settings.xsc">
+      <DependentUpon>Settings.xsd</DependentUpon>
+    </None>
+    <None Include="Parking\Ui\Datasets\Settings.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Parking\Ui\Datasets\Settings.xss">
+      <DependentUpon>Settings.xsd</DependentUpon>
+    </None>
     <None Include="Parking\VidoParking.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>VidoParking.edmx</DependentUpon>
@@ -185,10 +204,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Parking\Ui\Images\imageNotFound.png" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Resource Include="Parking\Ui\Images\export.png" />
+    <Resource Include="Parking\Ui\Images\import.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Parking\Ui\Images\no-image.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Release\Settings\Controllers.xml" />
+    <Resource Include="bin\Release\Settings\Lanes.xml" />
+    <Resource Include="bin\Release\Settings\Parkings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bin\Debug\Settings\Controllers.xml" />
+    <Resource Include="bin\Debug\Settings\Lanes.xml" />
+    <Resource Include="bin\Debug\Settings\Parkings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

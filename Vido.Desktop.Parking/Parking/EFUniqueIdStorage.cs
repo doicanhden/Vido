@@ -1,6 +1,7 @@
 ﻿namespace Vido.Parking
 {
   using System;
+  using System.Diagnostics;
   using System.Linq;
   using Vido.Qms;
 
@@ -56,10 +57,10 @@
 
         return (cards.Count() == 1 && cards.ToArray()[0].State == 0);
       }
-      catch
+      catch (Exception ex)
       {
-        /// TODO: Địa phương hóa chuỗi thông báo.
-        RaiseNewMessage("ICardManagement.IsExistAndUsing: Lỗi truy xuất dữ liệu.");
+        Debug.WriteLine("EFUniqueIdStorage.CanUse: " + ex.Message);
+        RaiseNewMessage("EFUniqueIdStorage.CanUse: " + ex.Message);
         return (false);
       }
     }

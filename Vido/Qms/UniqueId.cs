@@ -2,7 +2,7 @@
 
 namespace Vido.Qms
 {
-  class UniqueId : IUniqueId
+  public class UniqueId : IUniqueId
   {
     string IUniqueId.UniqueId { get; set; }
 

@@ -10,13 +10,14 @@
   using Vido.Media.Capture;
   using Vido.Qms;
 
-  public class MainViewModel : Utilities.NotificationObject, IDisposable
+  public class MainViewModel : Utilities.NotificationObject
   {
     #region Data Members
-    private CaptureList captures;
+    private readonly Settings settings = new Settings();
+    private readonly Window mainWindow;
+    private readonly CaptureFactory capFactory;
     private readonly ObservableCollection<LaneViewModel> laneViewModels;
-    private string status = null;
-    private Window mainWindow;
+    private string status;
     #endregion
 
     #region Public Properties
@@ -51,65 +52,89 @@
     public MainViewModel(Window mainWindow)
     {
       this.mainWindow = mainWindow;
-      laneViewModels = new ObservableCollection<LaneViewModel>();
+      this.capFactory = new CaptureFactory();
+      this.laneViewModels = new ObservableCollection<LaneViewModel>();
 
-      captures = new CaptureList(new CaptureFactory());
+      CenterUnit.Current.RegisterDependencies(GetHandle(mainWindow), capFactory);
 
-      GenerateLaneViewModels();
-      StartAllCaptures();
+      CenterUnit.Current.Recorder.NewMessage += UpdateStatus;
+      CenterUnit.Current.IdStorage.NewMessage += UpdateStatus;
+
+      BuildLane();
     }
-    #endregion
 
-    #region Event Handlers
-    private void dataCenter_NewMessage(object sender, EventArgs e)
-    {
-      Status = (e as NewMessageEventArgs).Message;
-    }
     #endregion
-
-    #region Private Methods
-    /// <summary>
-    /// Bật toàn bộ các camera đang sử dụng.
-    /// </summary>
-    private void StartAllCaptures()
+    private void BuildLane()
     {
-      foreach (var cap in captures.Captures)
+      foreach (Datasets.Settings.ParkingConfigsRow cfg in settings.Parking.Rows)
+      {
+        if (cfg.Level == 0)
+        {
+          CenterUnit.Current.Recorder.MaximumSlots = cfg.MaximumSlots;
+          CenterUnit.Current.Recorder.MinimumSlots = cfg.MinimumSlots;
+          break;
+        }
+      }
+
+      foreach (Datasets.Settings.ControllerConfigsRow cfg in settings.Controller.Rows)
+      {
+        if (cfg.Id == 0)
+        {
+          CenterUnit.Current.ImageRoot.RootDirectoryName = cfg.ImageRootDirectoryName;
+          break;
+        }
+      }
+
+      foreach (Datasets.Settings.LaneConfigsRow cfg in settings.LaneConfigs.Rows)
+      {
+        Lanes.Add(new LaneViewModel(new InputDevice()
+        {
+          Name = cfg.UIdDeviceName,
+          EndKey = 13
+        })
+        {
+          Name = cfg.Code,
+          Direction = (Direction)cfg.Direction,
+          State = (GateState)cfg.State,
+
+          CameraFirst = CenterUnit.Current.CaptureList.Create(new Configuration()
+          {
+            Source = cfg.BackCamSource,
+            Coding = (Coding)cfg.BackCamCoding,
+            Username = cfg.BackCamUsername,
+            Password = cfg.BackCamPassword,
+            FrameInterval = 100
+          }),
+          CameraSecond = CenterUnit.Current.CaptureList.Create(new Configuration()
+          {
+            Source = cfg.BackCamSource,
+            Coding = (Coding)cfg.BackCamCoding,
+            Username = cfg.BackCamUsername,
+            Password = cfg.BackCamPassword,
+            FrameInterval = 100
+          })
+        });
+      }
+
+      foreach (var cap in CenterUnit.Current.CaptureList.Captures)
       {
         cap.Start();
       }
     }
-
-    /// <summary>
-    /// Tạo ViewModel cho từng Lane.
-    /// </summary>
-    private void GenerateLaneViewModels()
+    private void UpdateStatus(object sender, EventArgs e)
     {
-      laneViewModels.Clear();
+      var args = e as NewMessageEventArgs;
+      Status = args.Message;
     }
 
-    private IntPtr MainWindowHandle()
+    private static IntPtr GetHandle(Window window)
     {
-      return (new WindowInteropHelper(mainWindow).Handle);
-    }
-
-    #endregion
-
-    #region Implementation of IDisposable
-    protected virtual void Dispose(bool disposing)
-    {
-      if (disposing)
+      if (window == null)
       {
-        // dispose managed resources
-        captures.Dispose();
+        return (IntPtr.Zero);
       }
-      // free native resources
-    }
 
-    public void Dispose()
-    {
-      Dispose(true);
-      GC.SuppressFinalize(this);
+      return (new WindowInteropHelper(window).Handle);
     }
-    #endregion
   }
 }

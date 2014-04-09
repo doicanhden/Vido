@@ -1,6 +1,7 @@
 ﻿namespace Vido.Parking
 {
   using System;
+  using System.Diagnostics;
   using System.Linq;
   using Vido.Qms;
 
@@ -74,10 +75,10 @@
               r.OutBackImg == null &&
               r.OutFrontImg == null));
           }
-          catch
+          catch (Exception ex)
           {
-            /// TODO: Địa phương hóa chuỗi thông báo.
-            RaiseNewMessage("IParking.IsFull: Lỗi truy xuất dữ liệu.");
+            Debug.WriteLine("EFEntryRecoreder.IsFull: " + ex.Message);
+            RaiseNewMessage("EFEntryRecoreder.IsFull: " + ex.Message);
             return (true);
           }
         }
@@ -110,10 +111,10 @@
 
           return (inRecords.Count() == 0);
         }
-        catch
+        catch (Exception ex)
         {
-          /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.CanIn: Lỗi truy xuất dữ liệu.");
+          Debug.WriteLine("EFEntryRecoreder.CanImport(): " + ex.Message);
+          RaiseNewMessage("EFEntryRecoreder.CanImport(): " + ex.Message);
           return (false);
         }
       }
@@ -138,18 +139,18 @@
             InEmployeeId = CurrentUserId,
             InLaneCode = entry.EntryGate,
             InTime = entry.EntryTime.ToString(ISO8601DateTimeFormat),
-            InBackImg = entry.BackImage,
-            InFrontImg = entry.FrontImage
+            InBackImg = entry.FirstImage,
+            InFrontImg = entry.SecondImage
           });
 
           /// Cập nhật thông tin vào DB.
           entities.SaveChanges();
           return (true);
         }
-        catch
+        catch (Exception ex)
         {
-          /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.In: Lỗi truy xuất dữ liệu.");
+          Debug.WriteLine("EFEntryRecoreder.Import(): " + ex.Message);
+          RaiseNewMessage("EFEntryRecoreder.Import(): " + ex.Message);
           return (false);
         }
       }
@@ -191,10 +192,10 @@
 
           return (false);
         }
-        catch
+        catch (Exception ex)
         {
-          /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.CanOut: Lỗi truy xuất dữ liệu.");
+          Debug.WriteLine("EFEntryRecoreder.CanExport(): " + ex.Message);
+          RaiseNewMessage("EFEntryRecoreder.CanExport(): " + ex.Message);
           return (false);
         }
       }
@@ -234,8 +235,8 @@
             record.OutEmployeeId = CurrentUserId;
             record.OutLaneCode = entry.EntryGate;
             record.OutTime = entry.EntryTime.ToString(ISO8601DateTimeFormat);
-            record.OutBackImg = entry.BackImage;
-            record.OutFrontImg = entry.FrontImage;
+            record.OutBackImg = entry.FirstImage;
+            record.OutFrontImg = entry.SecondImage;
 
             /// Cập nhật dữ liệu vào Database.
             entities.SaveChanges();
@@ -248,10 +249,10 @@
 
           return (true);
         }
-        catch
+        catch (Exception ex)
         {
-          /// TODO: Địa phương hóa chuỗi thông báo.
-          RaiseNewMessage("IParking.Out: Lỗi truy xuất dữ liệu.");
+          Debug.WriteLine("EFEntryRecoreder.Export(): " + ex.Message);
+          RaiseNewMessage("EFEntryRecoreder.Export(): " + ex.Message);
           return (false);
         }
       }

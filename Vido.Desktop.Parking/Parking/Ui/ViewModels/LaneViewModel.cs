@@ -1,97 +1,47 @@
 ﻿namespace Vido.Parking.Ui.ViewModels
 {
   using System;
-  using System.Collections.ObjectModel;
+  using System.Diagnostics;
   using System.Drawing;
   using System.Drawing.Imaging;
   using System.IO;
+  using System.Threading;
   using System.Windows.Input;
   using System.Windows.Media.Imaging;
   using Vido.Media;
   using Vido.Media.Capture;
+  using Vido.Parking.Ui.Commands;
   using Vido.Qms;
+  using Vido.Utilities;
 
-  public class LaneViewModel : Utilities.NotificationObject, IUniqueId, IUserData
+  public class LaneViewModel : Utilities.NotificationObject, IGate
   {
     #region Data Members
 
-    #region Text of Labels
-    private string uniqueIdText = null;
-    private string userDataText = null;
-    private string backCamText = null;
-    private string frontCamText = null;
-    private string backImgText = null;
-    private string frontImgText = null;
-    #endregion
-
-    private readonly Lane lane = null;
-
+    private string name = null;
     private string message = null;
-    private string laneCode = null;
-    private string uniqueId = null;
-    private string userData = null;
+    private IUniqueId uniqueId = null;
+    private IUserData userData = null;
     private BitmapSource backImageSaved = null;
     private BitmapSource frontImageSaved = null;
     private BitmapSource frontImageCamera = null;
     private BitmapSource backImageCamera = null;
 
-    private ICommand stopCommand = null;
+    private ICommand blockCommand = null;
+    private ICommand allowCommand = null;
+    private ICapture cameraFirst;
+    private ICapture cameraSecond;
     #endregion
-    public string UniqueIdText
-    {
-      get { return (uniqueIdText); }
-      set
-      {
-        uniqueIdText = value;
-        RaisePropertyChanged(() => UniqueIdText);
-      }
-    }
-    public string UserDataText
-    {
-      get { return (userDataText); }
-      set
-      {
-        userDataText = value;
-        RaisePropertyChanged(() => UserDataText);
-      }
-    }
-    public string BackCamText
-    {
-      get { return (backCamText); }
-      set
-      {
-        backCamText = value;
-        RaisePropertyChanged(() => BackCamText);
-      }
-    }
-    public string FrontCamText
-    {
-      get { return (frontCamText); }
-      set
-      {
-        frontCamText = value;
-        RaisePropertyChanged(() => FrontCamText);
-      }
-    }
-    public string BackImgText
-    {
-      get { return (backImgText); }
-      set
-      {
-        backImgText = value;
-        RaisePropertyChanged(() => BackImgText);
-      }
-    }
-    public string FrontImgText
-    {
-      get { return (frontImgText); }
-      set
-      {
-        frontImgText = value;
-        RaisePropertyChanged(() => FrontImgText);
-      }
-    }
 
+    public string Name
+    {
+      get { return (name); }
+      set
+      {
+        name = value;
+        RaisePropertyChanged(() => Name);
+      }
+    }
     public string Message
     {
       get { return (message); }
@@ -102,160 +52,225 @@
       }
     }
 
-    public string LaneCode
-    {
-      get { return (laneCode); }
-      set
-      {
-        laneCode = value;
-        RaisePropertyChanged(() => LaneCode);
-      }
-    }
     public string UniqueId
     {
-      get { return (uniqueId); }
+      get { return (uniqueId.UniqueId); }
       set
       {
-        uniqueId = value;
+        uniqueId.UniqueId = value;
         RaisePropertyChanged(() => UniqueId);
       }
     }
     public string UserData
     {
-      get { return (userData); }
+      get { return (userData.UserData); }
       set
       {
-        userData = value;
+        userData.UserData = value;
         RaisePropertyChanged(() => UserData);
       }
     }
-    public BitmapSource BackImageCamera
+
+    public BitmapSource CameraImageBack
     {
       get { return (backImageCamera); }
       set
       {
         backImageCamera = value;
-        RaisePropertyChanged(() => BackImageCamera);
+        RaisePropertyChanged(() => CameraImageBack);
       }
     }
-    public BitmapSource FrontImageCamera
+    public BitmapSource CameraImageFront
     {
       get { return (frontImageCamera); }
       set
       {
         frontImageCamera = value;
-        RaisePropertyChanged(() => FrontImageCamera);
+        RaisePropertyChanged(() => CameraImageFront);
       }
     }
-    public BitmapSource BackImageSaved
+    public BitmapSource SavedImageBack
     {
       get { return (backImageSaved); }
       set
       {
         backImageSaved = value;
-        RaisePropertyChanged(() => BackImageSaved);
+        RaisePropertyChanged(() => SavedImageBack);
       }
     }
-    public BitmapSource FrontImageSaved
+    public BitmapSource SavedImageFront
     {
       get { return (frontImageSaved); }
       set
       {
         frontImageSaved = value;
-        RaisePropertyChanged(() => FrontImageSaved);
+        RaisePropertyChanged(() => SavedImageFront);
       }
     }
 
-    #region Public Construtors
-    public LaneViewModel(Lane lane)
-    {
-      if (lane == null)
-        throw new ArgumentNullException("lane");
-
-      this.lane = lane;
-      this.lane.NewMessage += lane_NewMessage;
-
-      this.LaneCode = lane.Name;
-
-      if (this.lane.CameraBack != null)
-      {
-        this.lane.CameraBack.NewFrame += BackCamera_NewFrame;
-      }
-
-      if (this.lane.CameraFront != null)
-      {
-        this.lane.CameraFront.NewFrame += FrontCamera_NewFrame;
-      }
-
-      /// TODO: Địa phương hóa chuỗi thông báo.
-      UniqueIdText = "Thẻ xe";
-      UserDataText = "Biển số";
-      
-      BackCamText = "Camera phía sau";
-      FrontCamText = "Camera phía trước";
-
-      BackImgText = "Ảnh chụp phía sau";
-      FrontImgText = "Ảnh chụp phía sau";
-
-      if (this.lane.Direction == Direction.Import)
-      {
-        this.LaneCode += " \nVào";
-      }
-      else
-      {
-        this.BackImgText += " - Lúc VÀO";
-        this.FrontImgText += " - Lúc VÀO";
-
-        this.LaneCode += " \nRa";
-      }
-    }
-    #endregion
-
-
-    #region Event Handlers
-
-    private void lane_NewMessage(object sender, EventArgs e)
-    {
-      this.Message = (e as NewMessageEventArgs).Message;
-    }
-
-    private void BackCamera_NewFrame(object sender, EventArgs e)
-    {
-      var args = e as NewFrameEventArgs;
-      var image = args.Image as BitmapImageHolder;
-      if (image != null)
-      {
-        this.BackImageCamera = image.Image;
-      }
-    }
-
-    private void FrontCamera_NewFrame(object sender, EventArgs e)
-    {
-      var args = e as NewFrameEventArgs;
-      var image = args.Image as BitmapImageHolder;
-      if (image != null)
-      {
-        this.FrontImageCamera = image.Image;
-      }
-    }
-    #endregion
-
-    #region Stop Commnand
-    public ICommand StopCommand
+    #region Public Commnands
+    public ICommand AllowCommand
     {
       get
       {
-        return (stopCommand ?? (stopCommand = new Commands.RelayCommand<object>(StopExecute, StopCanExecute)));
+        return (allowCommand ?? (allowCommand =
+          new RelayCommand((x) => { Allow.Set(); })));
       }
     }
-    private bool StopCanExecute(object obj)
+
+    public ICommand BlockCommand
     {
-      return (false);
-    }
-    private void StopExecute(object obj)
-    {
-      lane.Block.Set();
+      get
+      {
+        return (blockCommand ?? (blockCommand =
+          new RelayCommand((x) => { Block.Set(); })));
+      }
     }
     #endregion
+
+    public GateState State { get; set; }
+    public Direction Direction { get; set; }
+
+    public IDisposable Deregister { get; set; }
+
+    public EventWaitHandle Allow { get; set; }
+    public EventWaitHandle Block { get; set; }
+
+    public ICapture CameraFirst
+    {
+      get { return (cameraFirst); }
+      set
+      {
+        if (cameraFirst != null)
+        {
+          cameraFirst.NewFrame -= cameraFirst_NewFrame;
+        }
+
+        cameraFirst = value;
+
+        if (cameraFirst != null)
+        {
+          cameraFirst.NewFrame += cameraFirst_NewFrame;
+        }
+      }
+    }
+    public ICapture CameraSecond
+    {
+      get { return (cameraSecond); }
+      set
+      {
+        if (cameraSecond != null)
+        {
+          cameraSecond.NewFrame -= cameraSecond_NewFrame;
+        }
+
+        cameraSecond = value;
+
+        if (cameraSecond != null)
+        {
+          cameraSecond.NewFrame += cameraSecond_NewFrame;
+        }
+      }
+    }
+
+    public IInputDevice Input { get; set; }
+
+    public IPrinter Printer { get; set; }
+
+    public LaneViewModel(IInputDevice input)
+    {
+      Requires.NotNull(input, "input");
+
+      Input = input;
+      Allow = new AutoResetEvent(false);
+      Block = new AutoResetEvent(false);
+
+      uniqueId = new UniqueId(string.Empty);
+      userData = new UserData(string.Empty);
+
+      Deregister = CenterUnit.Current.Reporter.Register(this);
+    }
+
+    public void SavedImage(IFileStorage fileStorage, string first, string second)
+    {
+      SavedImageBack = fileStorage.Exists(first) ? 
+        BitmapImageFromStream(fileStorage.Open(first)) : null;
+
+      SavedImageFront = fileStorage.Exists(second) ?
+        BitmapImageFromStream(fileStorage.Open(second)) : null;
+    }
+    public void NewMessage(string messages)
+    {
+      this.Message = messages;
+    }
+    public void NewEntries(EntryArgs entryArgs)
+    {
+      uniqueId = entryArgs.UniqueId;
+      RaisePropertyChanged(() => UniqueId);
+
+      userData = entryArgs.UserData;
+      RaisePropertyChanged(() => UserData);
+
+      var first = entryArgs.Images.First as BitmapImageHolder;
+      SavedImageBack = (first == null || !first.Available) ? null : first.Image;
+
+      var second = entryArgs.Images.Second as BitmapImageHolder;
+      SavedImageFront = (second == null || !second.Available) ? null : second.Image;
+
+      NewMessage("{Time:HH:mm:ss} - Đang chờ sự cho phép...".NamedFormat(new {Time = DateTime.Now}));
+    }
+    public void EntryAllow(string userData)
+    {
+      NewMessage("{Time:HH:mm:ss} - Mời {UserData} {Direction} Bãi"
+        .NamedFormat(new
+        {
+          Time = DateTime.Now,
+          UserData = userData,
+          Direction = GetDirectionString()
+        }));
+    }
+    public void EntryBlock(string userData)
+    {
+      NewMessage("{Time:HH:mm:ss} - {UserData} KHÔNG ĐƯỢC PHÉP {Direction} Bãi"
+        .NamedFormat(new
+        {
+          Time = DateTime.Now,
+          UserData = userData,
+          Direction = GetDirectionString()
+        }));
+    }
+
+    private string GetDirectionString()
+    {
+      return (Direction == Qms.Direction.Import ? "Vào" : "Ra");
+    }
+    private void cameraFirst_NewFrame(object sender, EventArgs e)
+    {
+      var args = e as NewFrameEventArgs;
+      var image = args.Image as BitmapImageHolder;
+      if (image != null)
+      {
+        this.CameraImageBack = image.Image;
+      }
+    }
+    private void cameraSecond_NewFrame(object sender, EventArgs e)
+    {
+      var args = e as NewFrameEventArgs;
+      var image = args.Image as BitmapImageHolder;
+      if (image != null)
+      {
+        this.CameraImageFront = image.Image;
+      }
+    }
+    private static BitmapImage BitmapImageFromStream(Stream stream)
+    {
+      BitmapImage bi = new BitmapImage();
+      bi.BeginInit();
+      bi.StreamSource = stream;
+      bi.EndInit();
+      bi.Freeze();
+
+      return (bi);
+    }
   }
 }

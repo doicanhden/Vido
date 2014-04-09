@@ -1,4 +1,5 @@
 ﻿using System;
+using Vido.Media.Capture;
 using Vido.Qms;
 namespace Vido.Parking
 {
@@ -10,6 +11,7 @@ namespace Vido.Parking
     private ReporterServices services = null;
     private InputDeviceList inputList = null;
     private EntryReporter reporter = null;
+    private CaptureList captureList = null;
 
     private static CenterUnit current = new CenterUnit();
 
@@ -22,7 +24,7 @@ namespace Vido.Parking
     {
     }
 
-    public void RegisterDependencies(IntPtr mainWindowHandle)
+    public void RegisterDependencies(IntPtr mainWindowHandle, ICaptureFactory captureFactory)
     {
       imageRoot = new DailyDirectory();
       recorder  = new EFEntryRecorder();
@@ -31,6 +33,7 @@ namespace Vido.Parking
       services  = new ReporterServices() { ImageRoot = imageRoot };
       inputList = new InputDeviceList(mainWindowHandle);
       reporter  = new EntryReporter(services, inputList, idStorage, recorder);
+      captureList = new CaptureList(captureFactory);
     }
 
     public DailyDirectory ImageRoot
@@ -52,6 +55,10 @@ namespace Vido.Parking
     public EFUniqueIdStorage IdStorage
     {
       get { return (idStorage); }
+    }
+    public CaptureList CaptureList
+    {
+      get { return (captureList); }
     }
   }
 }

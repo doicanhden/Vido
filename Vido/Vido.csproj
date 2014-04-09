@@ -11,7 +11,7 @@
     <RootNamespace>Vido</RootNamespace>
     <AssemblyName>Vido</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile5</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile136</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
@@ -50,6 +50,7 @@
     <Compile Include="DataInArgs.cs" />
     <Compile Include="Qms\IEntryReporter.cs" />
     <Compile Include="Qms\NewMessageArgs.cs" />
+    <Compile Include="Qms\Queue.cs" />
     <Compile Include="Qms\ReporterServices.cs" />
     <Compile Include="Qms\SavedImagesArgs.cs" />
     <Compile Include="Qms\EntryArgs.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Qms\TaskState.cs" />
     <Compile Include="Qms\UniqueId.cs" />
     <Compile Include="Qms\UserData.cs" />
+    <Compile Include="Utilities\NamedFormat.cs" />
     <Compile Include="Utilities\Requires.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

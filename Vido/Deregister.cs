@@ -7,8 +7,8 @@ namespace Vido
   public class Deregister<T> : IDisposable
     where T: class
   {
-    private readonly Action<T> deregister;
     private readonly T obj;
+    private readonly Action<T> deregister;
 
     public Deregister(T obj, Action<T> deregister)
     {

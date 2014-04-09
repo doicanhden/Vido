@@ -14,7 +14,15 @@ namespace Vido.Qms
     public string ImportString { get; set; }
     public string ExportString { get; set; }
 
-    /// Time, Gate, Im/Ex, Unique Id, User data, Index.
+
+    /// <summary>
+    /// {EntryTime} Thời điểm vào cổng,
+    /// {EntryGate} Tên cổng vào,
+    /// {Direction} Hướng di chuyển (vào/ra),
+    /// {UniqueId} Định danh duy nhất,
+    /// {UserData} Dữ liệu người dùng,
+    /// {ImgIndex} Chỉ số ảnh
+    ///</summary>
     public string ImageNameFormat { get; set; }
 
     public ReporterServices()
@@ -23,16 +31,23 @@ namespace Vido.Qms
       this.EntryRequestTimeout = 15000;
       this.ImportString = "IM";
       this.ExportString = "EX";
-      this.ImageNameFormat = "IMG_{0:HHmmss}{1}{2}_{3}{4}{5}.jpg";
+      this.ImageNameFormat = "IMG_{EntryTime:HHmmss}{EntryGate}{Direction}_{UniqueId}_{UserData}{ImgIndex}.jpg";
     }
 
     public virtual IUniqueId GetUniqueId(byte[] uniqueId, bool printable)
     {
-      return (new UniqueId(printable ?
-        Encoding.Unicode.GetString(uniqueId, 0, uniqueId.Length) :
-        Convert.ToBase64String(uniqueId)));
+      return (new UniqueId(printable ? GetAscii(uniqueId) : Convert.ToBase64String(uniqueId)));
     }
+    private string GetAscii(byte[] bytes)
+    {
+      StringBuilder sb = new StringBuilder();
+      foreach (var b in bytes)
+      {
+        sb.Append(Convert.ToChar(b));
+      }
 
+      return (sb.ToString());
+    }
     public virtual IUserData GetUserData(ImagePair image)
     {
       return (new UserData(string.Empty));
@@ -70,26 +85,43 @@ namespace Vido.Qms
     public virtual bool SaveImage(ImagePair image, Entry entry, Direction direction)
     {
       var imEx = direction == Direction.Import ? ImportString : ExportString;
-
       if (image.First != null && image.First.Available)
       {
-        var path = ImageRoot.GetPath(entry.EntryTime, string.Format(ImageNameFormat,
-          entry.EntryTime, entry.EntryGate, imEx, entry.UniqueId, entry.UserData, 0));
+        var formatArgs = new
+        {
+          EntryTime = entry.EntryTime,
+          EntryGate = entry.EntryGate,
+          Direction = imEx,
+          UniqueId = entry.UniqueId,
+          UserData = entry.UserData,
+          ImgIndex = 0
+        };
+
+        var path = ImageRoot.GetPath(entry.EntryTime, ImageNameFormat.NamedFormat(formatArgs));
 
         if (image.First.Save(ImageRoot, path))
         {
-          entry.BackImage = path;
+          entry.FirstImage = path;
         }
       }
 
       if (image.Second != null && image.Second.Available)
       {
-        var path = ImageRoot.GetPath(entry.EntryTime, string.Format(ImageNameFormat,
-          entry.EntryTime, entry.EntryGate, imEx, entry.UniqueId, entry.UserData, 1));
+        var formatArgs = new
+        {
+          EntryTime = entry.EntryTime,
+          EntryGate = entry.EntryGate,
+          Direction = imEx,
+          UniqueId = entry.UniqueId,
+          UserData = entry.UserData,
+          ImgIndex = 1
+        };
+
+        var path = ImageRoot.GetPath(entry.EntryTime, ImageNameFormat.NamedFormat(formatArgs));
 
         if (image.Second.Save(ImageRoot, path))
         {
-          entry.FrontImage = path;
+          entry.SecondImage = path;
         }
       }
 

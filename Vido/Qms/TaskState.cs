@@ -3,7 +3,6 @@
 namespace Vido.Qms
 {
   using System;
-  using System.Collections.Concurrent;
   using System.Threading;
   using System.Threading.Tasks;
 
@@ -12,20 +11,18 @@ namespace Vido.Qms
     private readonly Task task;
 
     public IGate Gate { get; private set; }
-    public ConcurrentQueue<EntryArgs> Entries { get; private set; }
+    public Queue<EntryArgs> Entries { get; private set; }
 
     public EventWaitHandle EntryAllow { get; private set; }
     public EventWaitHandle EntryBlock { get; private set; }
-    public EventWaitHandle NewEntries { get; private set; }
     public EventWaitHandle StopTask { get; private set; }
 
     public TaskState(IGate gate, Action<TaskState> workerThread)
     {
       this.Gate = gate;
-      this.Entries = new ConcurrentQueue<EntryArgs>();
+      this.Entries = new Queue<EntryArgs>();
       this.EntryAllow = gate.Allow;
       this.EntryBlock = gate.Block;
-      this.NewEntries = new ManualResetEvent(false);
       this.StopTask = new ManualResetEvent(false);
 
       this.task = new Task((x) => workerThread(x as TaskState), this);

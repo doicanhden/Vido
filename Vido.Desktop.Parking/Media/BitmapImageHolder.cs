@@ -1,7 +1,9 @@
 ﻿namespace Vido.Media
 {
-  using System.IO;
   using System.Windows.Media.Imaging;
+  using System.IO;
+  using System;
+  using System.Diagnostics;
 
   public class BitmapImageHolder : IImageHolder
   {
@@ -13,7 +15,7 @@
     #region Public Constructors
     public BitmapImageHolder()
     {
-      this.image = new BitmapImage();
+      this.image = null;
     }
 
     public BitmapImageHolder(BitmapImage image)
@@ -51,34 +53,25 @@
     {
       lock (locker)
       {
-        if (image != null)
-        {
-          var stream = new MemoryStream();
-          this.Save(stream);
-
-          var copy = new BitmapImageHolder();
-          copy.Load(stream);
-
-          return (copy);
-        }
-
-        return (null);
+        if (image == null)
+          return (null);
       }
+
+      var copy = new BitmapImageHolder();
+
+      var stream = new MemoryStream();
+      if (this.Save(stream) && copy.Load(stream))
+      {
+        return (copy);
+      }
+
+      return (null);
     }
 
     public bool Load(IFileStorage storage, string fileName)
     {
-      using (var stream = storage.Open(fileName))
-      {
-        return (Load(stream));
-      }
-    }
-    public bool Save(IFileStorage storage, string fileName)
-    {
-      using (var stream = storage.Open(fileName))
-      {
-        return (Save(stream));
-      }
+      var stream = storage.Open(fileName);
+      return (Load(stream));
     }
 
     public bool Load(Stream stream)
@@ -87,10 +80,9 @@
       {
         try
         {
-          if (image == null)
-          {
-            image = new BitmapImage();
-          }
+          stream.Seek(0, SeekOrigin.Begin);
+
+          image = new BitmapImage();
           image.BeginInit();
           image.StreamSource = stream;
           image.EndInit();
@@ -98,13 +90,21 @@
 
           return (true);
         }
-        catch
+        catch (Exception ex)
         {
+          Debug.WriteLine("BitmapImageHolder.Load(Stream): " + ex.Message);
           image = null;
           return (false);
         }
       }
     }
+
+    public bool Save(IFileStorage storage, string fileName)
+    {
+      var stream = storage.Open(fileName);
+      return (Save(stream));
+    }
+
     public bool Save(Stream stream)
     {
       lock (locker)
@@ -113,16 +113,17 @@
         {
           if (image != null)
           {
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(image));
-            encoder.Save(stream);
+            JpegBitmapEncoder encode = new JpegBitmapEncoder();
+            encode.Frames.Add(BitmapFrame.Create(image));
+            encode.Save(stream);
             return (true);
           }
 
           return (false);
         }
-        catch
+        catch (Exception ex)
         {
+          Debug.WriteLine("BitmapImageHolder.Save(Stream): " + ex.Message);
           return (false);
         }
       }

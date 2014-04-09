@@ -1,6 +1,7 @@
 ﻿namespace Vido.Qms
 {
   using System;
+  using System.Diagnostics;
   using System.IO;
   using System.Text;
 
@@ -78,8 +79,9 @@
 
         return (true);
       }
-      catch
+      catch (Exception ex)
       {
+        Debug.WriteLine("CreateDirectory" + ex.Message);
         return (false);
       }
     }

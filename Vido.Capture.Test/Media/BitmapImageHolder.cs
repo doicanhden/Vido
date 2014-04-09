@@ -1,5 +1,7 @@
 ﻿namespace Vido.Media
 {
+  using System;
+  using System.Diagnostics;
   using System.Drawing;
   using System.IO;
 
@@ -91,8 +93,9 @@
 
           return (true);
         }
-        catch
+        catch (Exception ex)
         {
+          Debug.WriteLine("BitmapImageHolder.Load(Stream): " + ex.Message);
           image = null;
           return (false);
         }
@@ -112,8 +115,9 @@
 
           return (false);
         }
-        catch
+        catch (Exception ex)
         {
+          Debug.WriteLine("BitmapImageHolder.Save(Stream): " + ex.Message);
           return (false);
         }
       }

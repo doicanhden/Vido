@@ -164,12 +164,12 @@
         }
         catch (WebException ex)
         {
-          Debug.WriteLine("JpegStream" + ex.Message);
+          Debug.WriteLine("JpegStream: " + ex.Message);
           Thread.Sleep(250);
         }
         catch (Exception ex)
         {
-          Debug.WriteLine("JpegStream" + ex.Message);
+          Debug.WriteLine("JpegStream: " + ex.Message);
         }
         finally
         {

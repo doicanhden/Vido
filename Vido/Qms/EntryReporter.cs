@@ -3,7 +3,6 @@
 namespace Vido.Qms
 {
   using System;
-  using System.Collections.Concurrent;
   using System.Collections.Generic;
   using System.Threading;
   using System.Threading.Tasks;
@@ -32,7 +31,18 @@ namespace Vido.Qms
 
     public IDisposable Register(IGate gate)
     {
-      if (!tasks.Exists((g) => g.Gate == gate))
+      /// Không dùng được phương thức List.Exists() ở đây. (-_-)
+      bool exists = false;
+      foreach (var task in tasks)
+      {
+        if (task.Gate == gate)
+        {
+          exists = true;
+          break;
+        }
+      }
+
+      if (!exists)
       {
         gate.Input.DataIn += Input_DataIn;
         gate.Input.Deregister = inputList.Register(gate.Input);
@@ -42,16 +52,20 @@ namespace Vido.Qms
 
       return (new Deregister<IGate>(gate, (g) =>
       {
-        var task = tasks.Find((t) => t.Gate == g);
-        if (task != null)
+        /// Thế đ' nào mà cái method List.Find() lại không dùng được. (>.<)
+        foreach (var task in tasks)
         {
-          tasks.Remove(task);
+          if (task.Gate == g)
+          {
+            tasks.Remove(task);
 
-          gate.Input.DataIn -= Input_DataIn;
-          gate.Input.Deregister.Dispose();
-          gate.Input.Deregister = null;
+            gate.Input.DataIn -= Input_DataIn;
+            gate.Input.Deregister.Dispose();
+            gate.Input.Deregister = null;
 
-          task.Close();
+            task.Close();
+            break;
+          }
         }
       }));
     }
@@ -60,31 +74,34 @@ namespace Vido.Qms
     private void Input_DataIn(object sender, EventArgs e)
     {
       var args = e as DataInEventArgs;
-      var task = tasks.Find((t) => t.Gate.Input == sender);
 
-      if (task != null)
+      /// Thế đ' nào mà cái method List.Find() lại không dùng được. (>.<)
+      foreach (var task in tasks)
       {
-        var gate = task.Gate;
-        var images = gate.CaptureImages();
-
-        if (images != null)
+        if (task.Gate.Input == sender)
         {
-          var entryArgs = new EntryArgs()
+          var gate = task.Gate;
+          var images = gate.CaptureImages();
+
+          if (images != null)
           {
-            Gate = gate,
-            UniqueId = services.GetUniqueId(args.Data, args.Printable),
-            UserData = services.GetUserData(images),
-            Images = images
-          };
-          gate.RasieNewEntries(entryArgs);
+            var entryArgs = new EntryArgs()
+            {
+              Gate = gate,
+              UniqueId = services.GetUniqueId(args.Data, args.Printable),
+              UserData = services.GetUserData(images),
+              Images = images
+            };
+            gate.NewEntries(entryArgs);
 
-          task.Entries.Enqueue(entryArgs);
-          task.NewEntries.Set();
-        }
-        else
-        {
-          /// TODO: Địa phương hóa chuỗi thông báo.
-          gate.RaiseNewMessage("Không chụp được ảnh");
+            task.Entries.Enqueue(entryArgs);
+          }
+          else
+          {
+            /// TODO: Địa phương hóa chuỗi thông báo.
+            gate.NewMessage("Không chụp được ảnh");
+          }
+          break;
         }
       }
     }
@@ -96,10 +113,9 @@ namespace Vido.Qms
       var stopTask = state.StopTask;
       var entryBlock = state.EntryBlock;
       var entryAllow = state.EntryAllow;
-      var newEntries = state.NewEntries;
 
       EntryArgs cur = null;
-      while (stopTask.WaitOne(10))
+      while (!stopTask.WaitOne(10))
       {
         if (entries.TryDequeue(out cur))
         {
@@ -111,7 +127,7 @@ namespace Vido.Qms
               #region Import Processes
               if (!recorder.IsFull)
               {
-                bool allow = services.EntryRequest(entryBlock, newEntries, entryAllow);
+                bool allow = services.EntryRequest(entryBlock, entries.NewItems, entryAllow);
 
                 /// Sao chép chuỗi, .Net ngu ngốc. T_+.
                 var userData = cur.UserData.UserData.Substring(0);
@@ -129,32 +145,32 @@ namespace Vido.Qms
                   {
                     if (recorder.Import(entry))
                     {
-                      gate.RaiseEntryAllow(userData);
+                      gate.EntryAllow(userData);
 
                       /// TODO: Add Printer
                     }
                     else
                     {
                       /// TODO: Địa phương hóa chuỗi thông báo.
-                      gate.RaiseNewMessage("Ghi dữ liệu thất bại.");
+                      gate.NewMessage("Ghi dữ liệu thất bại.");
                     }
                   }
                   else
                   {
                     recorder.Blocked(entry);
-                    gate.RaiseEntryBlock(userData);
+                    gate.EntryBlock(userData);
                   }
                 }
                 else
                 {
                   /// TODO: Địa phương hóa chuỗi thông báo.
-                  gate.RaiseNewMessage("Không lưu được ảnh");
+                  gate.NewMessage("Không lưu được ảnh");
                 }
               }
               else
               {
                 /// TODO: Địa phương hóa chuỗi thông báo.
-                gate.RaiseNewMessage("Đầy");
+                gate.NewMessage("Đầy");
               }
               #endregion
             }
@@ -178,36 +194,36 @@ namespace Vido.Qms
                 {
                   /// Tao đ' cần biết mày làm thế nào,
                   /// tao đưa đường dẫn đấy. Tự mà load ảnh. -_-
-                  gate.RaiseSavedImage(services.ImageRoot, first, second);
+                  gate.SavedImage(services.ImageRoot, first, second);
 
-                  if (services.EntryRequest(entryBlock, newEntries, entryAllow))
+                  if (services.EntryRequest(entryBlock, entries.NewItems, entryAllow))
                   {
                     if (recorder.Export(entry))
                     {
-                      gate.RaiseEntryAllow(userData);
+                      gate.EntryAllow(userData);
                     }
                     else
                     {
                       /// TODO: Địa phương hóa chuỗi thông báo.
-                      gate.RaiseNewMessage("Ghi dữ liệu thất bại");
+                      gate.NewMessage("Ghi dữ liệu thất bại");
                     }
                   }
                   else
                   {
                     recorder.Blocked(entry);
-                    gate.RaiseEntryBlock(userData);
+                    gate.EntryBlock(userData);
                   }
                 }
                 else
                 {
                   recorder.Blocked(entry);
-                  gate.RaiseEntryBlock(userData);
+                  gate.EntryBlock(userData);
                 }
               }
               else
               {
                 /// TODO: Địa phương hóa chuỗi thông báo.
-                gate.RaiseNewMessage("Không lưu được ảnh");
+                gate.NewMessage("Không lưu được ảnh");
               }
               #endregion
             }
@@ -215,12 +231,7 @@ namespace Vido.Qms
           else
           {
             /// TODO: Địa phương hóa chuỗi thông báo.
-            gate.RaiseNewMessage("Id không hợp lệ");
-          }
-
-          if (entries.Count <= 0)
-          {
-            newEntries.Reset();
+            gate.NewMessage("Id không hợp lệ");
           }
         }
       }

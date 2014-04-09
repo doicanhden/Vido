@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<DocumentElement>
+  <ControllerConfigs>
+    <Id>0</Id>
+    <ImageRootDirectoryName>F:\Github\Vido - Copy\Vido.Desktop.Parking\bin\Debug\Images</ImageRootDirectoryName>
+    <DailyDirectoryFormat>yyyy\MM\dd</DailyDirectoryFormat>
+    <ImageNameFormat>IMG_{EntryTime:HHmmss}{EntryGate}{Direction}_{UniqueId}_{UserData}{Index}.jpg</ImageNameFormat>
+    <ImportFormat>IM</ImportFormat>
+    <ExportFormat>EX</ExportFormat>
+  </ControllerConfigs>
+</DocumentElement>
