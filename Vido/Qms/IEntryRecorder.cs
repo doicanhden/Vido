@@ -5,8 +5,19 @@ namespace Vido.Qms
   public interface IEntryRecorder
   {
     #region Properties
+    /// <summary>
+    /// Số vị trí tối thiểu
+    /// </summary>
     int MinimumSlots { get; set; }
+
+    /// <summary>
+    /// Số vị trí tối đa.
+    /// </summary>
     int MaximumSlots { get; set; }
+
+    /// <summary>
+    /// Trạng thái đầy.
+    /// </summary>
     bool IsFull { get; }
     #endregion
 

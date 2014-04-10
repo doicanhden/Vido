@@ -5,14 +5,14 @@
     <Direction>0</Direction>
     <State>0</State>
     <UIdDeviceName>VID_0E6A&amp;PID_030B</UIdDeviceName>
-    <BackCamSource>http://pasteldth.dyndns.org/cgi-bin/net_jpeg.cgi?ch=1</BackCamSource>
-    <BackCamCoding>1</BackCamCoding>
+    <BackCamSource>http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240</BackCamSource>
+    <BackCamCoding>2</BackCamCoding>
     <BackCamUsername>admin</BackCamUsername>
-    <BackCamPassword>123456</BackCamPassword>
-    <FrontCamSource>http://pasteldth.dyndns.org/cgi-bin/net_jpeg.cgi?ch=2</FrontCamSource>
-    <FrontCamCoding>1</FrontCamCoding>
+    <BackCamPassword>admin</BackCamPassword>
+    <FrontCamSource>http://camera1.mairie-brest.fr/mjpg/video.mjpg?resolution=320x240</FrontCamSource>
+    <FrontCamCoding>2</FrontCamCoding>
     <FrontCamUsername>admin</FrontCamUsername>
-    <FrontCamPassword>123456</FrontCamPassword>
+    <FrontCamPassword>admin</FrontCamPassword>
   </LaneConfigs>
   <LaneConfigs>
     <Code>LANE2</Code>

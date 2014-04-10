@@ -5,38 +5,38 @@ namespace Vido.Qms
   using System;
 
   /// <summary>
-  /// Bảng ghi thông tin vào Làn.
+  /// Bảng ghi thông tin vào Cổng
   /// </summary>
   public class Entry
   {
     #region Public Properties
     /// <summary>
-    /// Thời gian vào Làn.
+    /// Thời gian vào Cổng
     /// </summary>
     public DateTime EntryTime { get; set; }
 
     /// <summary>
-    /// Mã Làn vào.
+    /// Tên Cổng vào
     /// </summary>
     public string EntryGate { get; set; }
 
     /// <summary>
-    /// Data từ thiết bị Uid.
+    /// Định danh duy nhất
     /// </summary>
     public string UniqueId { get; set; }
 
     /// <summary>
-    /// Dữ liệu người dùng.
+    /// Dữ liệu người dùng
     /// </summary>
     public string UserData { get; set; }
 
     /// <summary>
-    /// Đường dẫn đến ảnh chụp phía Trước.
+    /// Đường dẫn đến ảnh chụp thứ nhất
     /// </summary>
     public string FirstImage { get; set; }
 
     /// <summary>
-    /// Đường dẫn đến ảnh chụp phía Sau.
+    /// Đường dẫn đến ảnh chụp thứ hai
     /// </summary>
     public string SecondImage { get; set; }
     #endregion

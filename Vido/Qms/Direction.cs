@@ -2,9 +2,19 @@
 
 namespace Vido.Qms
 {
+  /// <summary>
+  /// Hướng di chuyển
+  /// </summary>
   public enum Direction
   {
+    /// <summary>
+    /// Nhập
+    /// </summary>
     Import = 0,
+
+    /// <summary>
+    /// Xuất
+    /// </summary>
     Export = 1
   }
 }

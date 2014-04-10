@@ -214,14 +214,7 @@
     <Resource Include="Parking\Ui\Images\no-image.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="bin\Release\Settings\Controllers.xml" />
-    <Resource Include="bin\Release\Settings\Lanes.xml" />
-    <Resource Include="bin\Release\Settings\Parkings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="bin\Debug\Settings\Controllers.xml" />
-    <Resource Include="bin\Debug\Settings\Lanes.xml" />
-    <Resource Include="bin\Debug\Settings\Parkings.xml" />
+    <Folder Include="bin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,7 +7,7 @@ namespace Vido.Qms
   using Vido.Media;
   using Vido.Media.Capture;
 
-  public interface IGate
+  public interface IGate : IObserver<EntryArgs>
   {
     #region Properties
     string Name { get; set; }
@@ -25,16 +25,12 @@ namespace Vido.Qms
 
     #region Methods
     void SavedImage(IFileStorage fileStorage, string firstPath, string secondPath);
-    void NewMessage(string messages);
-    void NewEntries(EntryArgs entryArgs);
-    void EntryAllow(string userData);
-    void EntryBlock(string userData);
     #endregion
   }
 
   public static class IGateExtensions
   {
-    public static ImagePair CaptureImages(this IGate gate)
+    public static ImagePair CaptureImage(this IGate gate)
     {
       IImageHolder back = null, front = null;
       if (gate.CameraFirst != null)

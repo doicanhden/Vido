@@ -8,9 +8,9 @@ namespace Vido.Parking
     private DailyDirectory imageRoot = null;
     private EFEntryRecorder recorder = null;
     private EFUniqueIdStorage idStorage = null;
-    private ReporterServices services = null;
+    private ControllerServices services = null;
     private InputDeviceList inputList = null;
-    private EntryReporter reporter = null;
+    private GateController reporter = null;
     private CaptureList captureList = null;
 
     private static CenterUnit current = new CenterUnit();
@@ -30,9 +30,9 @@ namespace Vido.Parking
       recorder  = new EFEntryRecorder();
       idStorage = new EFUniqueIdStorage();
 
-      services  = new ReporterServices() { ImageRoot = imageRoot };
+      services  = new ControllerServices() { ImageRoot = imageRoot };
       inputList = new InputDeviceList(mainWindowHandle);
-      reporter  = new EntryReporter(services, inputList, idStorage, recorder);
+      reporter  = new GateController(services, inputList, idStorage, recorder);
       captureList = new CaptureList(captureFactory);
     }
 
@@ -40,11 +40,11 @@ namespace Vido.Parking
     {
       get { return (imageRoot); }
     }
-    public EntryReporter Reporter
+    public GateController Reporter
     {
       get { return (reporter); }
     }
-    public ReporterServices ReporterServices
+    public ControllerServices ReporterServices
     {
       get { return (services); }
     }

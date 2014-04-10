@@ -2,9 +2,19 @@
 
 namespace Vido.Qms
 {
+  /// <summary>
+  /// Trạng thái cổng.
+  /// </summary>
   public enum GateState
   {
+    /// <summary>
+    /// Đã mở.
+    /// </summary>
     Opened,
+
+    /// <summary>
+    /// Đã đóng.
+    /// </summary>
     Closed
   }
 }

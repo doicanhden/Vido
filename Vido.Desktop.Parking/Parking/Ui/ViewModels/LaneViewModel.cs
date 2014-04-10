@@ -6,12 +6,14 @@
   using System.Drawing.Imaging;
   using System.IO;
   using System.Threading;
+  using System.Windows;
   using System.Windows.Input;
   using System.Windows.Media.Imaging;
   using Vido.Media;
   using Vido.Media.Capture;
   using Vido.Parking.Ui.Commands;
   using Vido.Qms;
+  using Vido.Qms.Exceptions;
   using Vido.Utilities;
 
   public class LaneViewModel : Utilities.NotificationObject, IGate
@@ -188,7 +190,7 @@
       uniqueId = new UniqueId(string.Empty);
       userData = new UserData(string.Empty);
 
-      Deregister = CenterUnit.Current.Reporter.Register(this);
+      Deregister = CenterUnit.Current.Reporter.Subscribe(this);
     }
 
     public void SavedImage(IFileStorage fileStorage, string first, string second)
@@ -199,47 +201,6 @@
       SavedImageFront = fileStorage.Exists(second) ?
         BitmapImageFromStream(fileStorage.Open(second)) : null;
     }
-    public void NewMessage(string messages)
-    {
-      this.Message = messages;
-    }
-    public void NewEntries(EntryArgs entryArgs)
-    {
-      uniqueId = entryArgs.UniqueId;
-      RaisePropertyChanged(() => UniqueId);
-
-      userData = entryArgs.UserData;
-      RaisePropertyChanged(() => UserData);
-
-      var first = entryArgs.Images.First as BitmapImageHolder;
-      SavedImageBack = (first == null || !first.Available) ? null : first.Image;
-
-      var second = entryArgs.Images.Second as BitmapImageHolder;
-      SavedImageFront = (second == null || !second.Available) ? null : second.Image;
-
-      NewMessage("{Time:HH:mm:ss} - Đang chờ sự cho phép...".NamedFormat(new {Time = DateTime.Now}));
-    }
-    public void EntryAllow(string userData)
-    {
-      NewMessage("{Time:HH:mm:ss} - Mời {UserData} {Direction} Bãi"
-        .NamedFormat(new
-        {
-          Time = DateTime.Now,
-          UserData = userData,
-          Direction = GetDirectionString()
-        }));
-    }
-    public void EntryBlock(string userData)
-    {
-      NewMessage("{Time:HH:mm:ss} - {UserData} KHÔNG ĐƯỢC PHÉP {Direction} Bãi"
-        .NamedFormat(new
-        {
-          Time = DateTime.Now,
-          UserData = userData,
-          Direction = GetDirectionString()
-        }));
-    }
-
     private string GetDirectionString()
     {
       return (Direction == Qms.Direction.Import ? "Vào" : "Ra");
@@ -271,6 +232,45 @@
       bi.Freeze();
 
       return (bi);
+    }
+
+    public void OnCompleted()
+    {
+    }
+
+    public void OnError(Exception error)
+    {
+      try
+      {
+        /// Lọc ngoại lệ. (^_^)
+        /// TODO: Review dòng bên dưới
+        throw error;
+      }
+      catch (SystemErrorException ex)
+      {
+        Debug.WriteLine(
+          "{Lane}: Có lỗi hệ thống xảy ra.\n{Message}\nVui lòng thông báo với quản trị."
+          .NamedFormat(new { Lane = Name, Message = ex.Message}));
+      }
+      catch (Exception ex)
+      {
+        this.Message = ex.Message;
+      }
+    }
+
+    public void OnNext(EntryArgs value)
+    {
+      uniqueId = value.UniqueId;
+      RaisePropertyChanged(() => UniqueId);
+
+      userData = value.UserData;
+      RaisePropertyChanged(() => UserData);
+
+      var first = value.Images.First as BitmapImageHolder;
+      SavedImageBack = (first == null || !first.Available) ? null : first.Image;
+
+      var second = value.Images.Second as BitmapImageHolder;
+      SavedImageFront = (second == null || !second.Available) ? null : second.Image;
     }
   }
 }
