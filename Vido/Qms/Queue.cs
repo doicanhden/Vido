@@ -30,9 +30,9 @@ namespace Vido.Qms
       }
     }
 
-    public bool TryDequeue(out T item)
+    public bool TryDequeue(out T item, int milisecondsTimeout = -1)
     {
-      if (newItems.WaitOne())
+      if (newItems.WaitOne(milisecondsTimeout))
       {
         lock (locker)
         {
